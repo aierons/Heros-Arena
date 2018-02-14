@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
 	private BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
 	private int level = 1;                                  //Current level number, expressed in game as "Day 1".
-	private List<Enemy> enemies;                          //List of all Enemy units, used to issue them move commands.
+	//private List<Enemy> enemies;                          //List of all Enemy units, used to issue them move commands.
 	private bool enemiesMoving;                             //Boolean to check if enemies are moving.
 
 
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 
 		//Assign enemies to a new List of Enemy objects.
-		enemies = new List<Enemy>();
+		//enemies = new List<Enemy>();
 
 		//Get a component reference to the attached BoardManager script
 		boardScript = GetComponent<BoardManager>();
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
 	{
 
 		//Clear any Enemy objects in our List to prepare for next level.
-		enemies.Clear();
+	//	enemies.Clear();
 
 		//Call the SetupScene function of the BoardManager script, pass it current level number.
 		boardScript.SetupScene(level);
@@ -84,21 +84,21 @@ public class GameManager : MonoBehaviour
 		//Start moving enemies.
 		StartCoroutine (MoveEnemies ());
 	}
-
+	/*
 	//Call this to add the passed in Enemy to the List of Enemy objects.
 	public void AddEnemyToList(Enemy script)
 	{
 		//Add Enemy to List enemies.
-		enemies.Add(script);
+		//enemies.Add(script);
 	}
-
+	*/
 
 	//GameOver is called when the player reaches 0 hp points
 	public void GameOver()
 	{
 
 		//Enable black background image gameObject.
-		levelImage.SetActive(true);
+	//	levelImage.SetActive(true);
 
 		//Disable this GameManager.
 		enabled = false;
@@ -113,6 +113,7 @@ public class GameManager : MonoBehaviour
 		//Wait for turnDelay seconds, defaults to .1 (100 ms).
 		yield return new WaitForSeconds(turnDelay);
 
+		/*
 		//If there are no enemies spawned (IE in first level):
 		if (enemies.Count == 0) 
 		{
@@ -129,6 +130,7 @@ public class GameManager : MonoBehaviour
 			//Wait for Enemy's moveTime before moving next Enemy, 
 			yield return new WaitForSeconds(enemies[i].moveTime);
 		}
+		*/
 		//Once Enemies are done moving, set playersTurn to true so player can move.
 		playersTurn = true;
 

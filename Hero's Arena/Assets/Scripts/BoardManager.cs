@@ -23,7 +23,7 @@ public class BoardManager : MonoBehaviour {
 	public Count wallCount = new Count(5,9);
 	public GameObject[] floorTiles;
 	public GameObject[] wallTiles;
-	public GameObject[] enemyTiles;
+	//public GameObject[] enemyTiles;
 	public GameObject[] outerWallTiles;
 
 	private Transform boardHolder;
@@ -78,7 +78,7 @@ public class BoardManager : MonoBehaviour {
 		BoardSetup();
 		InitializeList ();
 		LayoutObjectAtRandom (wallTiles, wallCount.minimum, wallCount.maximum);
-		int enemyCount = (int)Mathf.Log (level, 2f);
-		LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
+		//int enemyCount = (int)Mathf.Log (level, 2f);
+		//LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
 	}
 }
