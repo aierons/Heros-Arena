@@ -3,13 +3,11 @@ using System.Collections;
 using UnityEngine.UI;	//Allows us to use UI.
 using UnityEngine.SceneManagement;
 
-namespace Completed
-{
 	//Player inherits from MovingObject, our base class for objects that can move, Enemy also inherits from this.
 	public class Player : MovingObject
 	{
 		public float restartLevelDelay = 1f;		//Delay time in seconds to restart level.
-		public int pointsperFood = 10;				//Number of points to add to player hp points when picking up a hp object.
+		public int pointsPerhp = 10;				//Number of points to add to player hp points when picking up a hp object.
 		public int pointsPerSoda = 20;				//Number of points to add to player hp points when picking up a soda object.
 		public int wallDamage = 1;					//How much damage a player does to a wall when chopping it.
 		public Text hpText;						//UI Text to display current player hp total.
@@ -188,11 +186,11 @@ namespace Completed
 			//Check if the tag of the trigger collided with is hp.
 			else if(other.tag == "hp")
 			{
-				//Add pointsperFood to the players current hp total.
-				hp += pointsperFood;
+				//Add pointsPerhp to the players current hp total.
+				hp += pointsPerhp;
 				
 				//Update hpText to represent current total and notify player that they gained points
-				hpText.text = "+" + pointsperFood + " hp: " + hp;
+				hpText.text = "+" + pointsPerhp + " hp: " + hp;
 				
 				//Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.
 				SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
@@ -263,5 +261,4 @@ namespace Completed
 			}
 		}
 	}
-}
 

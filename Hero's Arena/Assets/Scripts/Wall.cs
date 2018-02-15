@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Completed
-{
 	public class Wall : MonoBehaviour
 	{
 		public AudioClip chopSound1;				//1 of 2 audio clips that play when the wall is attacked by the player.
@@ -39,4 +37,3 @@ namespace Completed
 				gameObject.SetActive (false);
 		}
 	}
-}
