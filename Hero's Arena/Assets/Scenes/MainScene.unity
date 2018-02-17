@@ -124,7 +124,6 @@ GameObject:
   - component: {fileID: 81422338}
   - component: {fileID: 81422337}
   - component: {fileID: 81422336}
-  - component: {fileID: 81422335}
   m_Layer: 5
   m_Name: Player2Skill1_Button
   m_TagString: Untagged
@@ -151,18 +150,6 @@ RectTransform:
   m_AnchoredPosition: {x: 255.05, y: -81.3}
   m_SizeDelta: {x: 80.4, y: 43}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &81422335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 81422333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b948c91403ba9e048bc749490cc4cc62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player1: {fileID: 1590357148}
 --- !u!114 &81422336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,7 +519,6 @@ GameObject:
   - component: {fileID: 568555279}
   - component: {fileID: 568555278}
   - component: {fileID: 568555277}
-  - component: {fileID: 568555276}
   m_Layer: 5
   m_Name: Player2Ultimate_Button
   m_TagString: Untagged
@@ -559,18 +545,6 @@ RectTransform:
   m_AnchoredPosition: {x: 304, y: -130.8}
   m_SizeDelta: {x: 131.5, y: 44.2}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &568555276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 568555274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b948c91403ba9e048bc749490cc4cc62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player1: {fileID: 1590357148}
 --- !u!114 &568555277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -843,7 +817,6 @@ GameObject:
   - component: {fileID: 877030379}
   - component: {fileID: 877030378}
   - component: {fileID: 877030377}
-  - component: {fileID: 877030376}
   m_Layer: 5
   m_Name: Player2Skill2_Button
   m_TagString: Untagged
@@ -870,18 +843,6 @@ RectTransform:
   m_AnchoredPosition: {x: 344, y: -81.3}
   m_SizeDelta: {x: 80.4, y: 43}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &877030376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 877030374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b948c91403ba9e048bc749490cc4cc62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player1: {fileID: 1590357148}
 --- !u!114 &877030377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -967,7 +928,6 @@ GameObject:
   - component: {fileID: 943261498}
   - component: {fileID: 943261497}
   - component: {fileID: 943261496}
-  - component: {fileID: 943261495}
   m_Layer: 5
   m_Name: Player1Skill1_Button
   m_TagString: Untagged
@@ -994,18 +954,6 @@ RectTransform:
   m_AnchoredPosition: {x: -342, y: -81.3}
   m_SizeDelta: {x: 80.4, y: 43}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &943261495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 943261493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b948c91403ba9e048bc749490cc4cc62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player1: {fileID: 1590357148}
 --- !u!114 &943261496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1593,7 +1541,6 @@ GameObject:
   - component: {fileID: 1295808560}
   - component: {fileID: 1295808559}
   - component: {fileID: 1295808558}
-  - component: {fileID: 1295808557}
   m_Layer: 5
   m_Name: Player1Skill2_Button
   m_TagString: Untagged
@@ -1620,18 +1567,6 @@ RectTransform:
   m_AnchoredPosition: {x: -250, y: -81.3}
   m_SizeDelta: {x: 80.4, y: 43}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1295808557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1295808555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b948c91403ba9e048bc749490cc4cc62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player1: {fileID: 1590357148}
 --- !u!114 &1295808558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2014,6 +1949,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: foodTiles.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4113216870956976, guid: 774881e07cdc61b468447b2c09236a6d, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2051,6 +1991,18 @@ Prefab:
       propertyPath: floorTiles.Array.data[7]
       value: 
       objectReference: {fileID: 1621325249100564, guid: c7f6b6b7d72446c4daf755949cd25208,
+        type: 2}
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: foodTiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 1355230908519504, guid: 4c01934b158760943856c3ec5d9ef4e9,
+        type: 2}
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: foodTiles.Array.data[1]
+      value: 
+      objectReference: {fileID: 1967953484358266, guid: ded2eaf04b330014aa60bf82c6448737,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 774881e07cdc61b468447b2c09236a6d, type: 2}
@@ -2363,7 +2315,6 @@ GameObject:
   - component: {fileID: 2083779010}
   - component: {fileID: 2083779009}
   - component: {fileID: 2083779008}
-  - component: {fileID: 2083779007}
   m_Layer: 5
   m_Name: Player1Ultimate_Button
   m_TagString: Untagged
@@ -2390,18 +2341,6 @@ RectTransform:
   m_AnchoredPosition: {x: -293.7, y: -130.8}
   m_SizeDelta: {x: 131.5, y: 44.2}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2083779007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2083779005}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b948c91403ba9e048bc749490cc4cc62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player1: {fileID: 1590357148}
 --- !u!114 &2083779008
 MonoBehaviour:
   m_ObjectHideFlags: 0
