@@ -184,7 +184,7 @@ using UnityEngine.SceneManagement;
 			}
 			
 			//Check if the tag of the trigger collided with is hp.
-			else if(other.tag == "hp")
+			else if(other.tag == "Food")
 			{
 				//Add pointsPerhp to the players current hp total.
 				hp += pointsPerhp;
