@@ -1,101 +1,79 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.UI;
-
-	//Allows us to use UI.
+using UnityEngine.UI;	//Allows us to use UI.
 using UnityEngine.SceneManagement;
 
-//Player inherits from MovingObject, our base class for objects that can move, Enemy also inherits from this.
-public class Player : MovingObject
-{
-	public float restartLevelDelay = 1f;
-	//Delay time in seconds to restart level.
-	public int pointsPerhp = 10;
-	//Number of points to add to player hp points when picking up a hp object.
-	public int pointsPerSoda = 20;
-	//Number of points to add to player hp points when picking up a soda object.
-	public int wallDamage = 1;
-	//How much damage a player does to a wall when chopping it.
-	public Text hpText;
-	//UI Text to display current player hp total.
-	public AudioClip moveSound1;
-	//1 of 2 Audio clips to play when player moves.
-	public AudioClip moveSound2;
-	//2 of 2 Audio clips to play when player moves.
-	public AudioClip eatSound1;
-	//1 of 2 Audio clips to play when player collects a hp object.
-	public AudioClip eatSound2;
-	//2 of 2 Audio clips to play when player collects a hp object.
-	public AudioClip drinkSound1;
-	//1 of 2 Audio clips to play when player collects a soda object.
-	public AudioClip drinkSound2;
-	//2 of 2 Audio clips to play when player collects a soda object.
-	public AudioClip gameOverSound;
-	//Audio clip to play when player dies.
+	//Player inherits from MovingObject, our base class for objects that can move, Enemy also inherits from this.
+	public class Player : MovingObject
+	{
+		public float restartLevelDelay = 1f;		//Delay time in seconds to restart level.
+		public int pointsPerhp = 10;				//Number of points to add to player hp points when picking up a hp object.
+		public int pointsPerSoda = 20;				//Number of points to add to player hp points when picking up a soda object.
+		public int wallDamage = 1;					//How much damage a player does to a wall when chopping it.
+		public Text hpText;						//UI Text to display current player hp total.
+		public AudioClip moveSound1;				//1 of 2 Audio clips to play when player moves.
+		public AudioClip moveSound2;				//2 of 2 Audio clips to play when player moves.
+		public AudioClip eatSound1;					//1 of 2 Audio clips to play when player collects a hp object.
+		public AudioClip eatSound2;					//2 of 2 Audio clips to play when player collects a hp object.
+		public AudioClip drinkSound1;				//1 of 2 Audio clips to play when player collects a soda object.
+		public AudioClip drinkSound2;				//2 of 2 Audio clips to play when player collects a soda object.
+		public AudioClip gameOverSound;				//Audio clip to play when player dies.
 		
-	private Animator animator;
-	//Used to store a reference to the Player's animator component.
-	private int hp;
-	//Used to store player hp points total during level.
-	#if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
+		private Animator animator;					//Used to store a reference to the Player's animator component.
+		private int hp;                           //Used to store player hp points total during level.
+#if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
         private Vector2 touchOrigin = -Vector2.one;	//Used to store location of screen touch origin for mobile controls.
 #endif
 		
 		
-	//Start overrides the Start function of MovingObject
-	protected override void Start ()
-	{
-		//Get a component reference to the Player's animator component
-		animator = GetComponent<Animator> ();
+		//Start overrides the Start function of MovingObject
+		protected override void Start ()
+		{
+			//Get a component reference to the Player's animator component
+			animator = GetComponent<Animator>();
 			
-		//Get the current hp point total stored in GameManager.instance between levels.
-		hp = GameManager.instance.playerhp;
+			//Get the current hp point total stored in GameManager.instance between levels.
+			hp = GameManager.instance.playerhp;
 			
-<<<<<<< HEAD
 			//Set the hpText to reflect the current player hp total.
 			//hpText.text = "hp: " + hp;
-=======
-		//Set the hpText to reflect the current player hp total.
-		hpText.text = "hp: " + hp;
->>>>>>> 3d794ee134a0bce024eb4193141d481e9cc348b4
 			
-		//Call the Start function of the MovingObject base class.
-		base.Start ();
-	}
+			//Call the Start function of the MovingObject base class.
+			base.Start ();
+		}
 		
 		
-	//This function is called when the behaviour becomes disabled or inactive.
-	private void OnDisable ()
-	{
-		//When Player object is disabled, store the current local hp total in the GameManager so it can be re-loaded in next level.
-		GameManager.instance.playerhp = hp;
-	}
-
+		//This function is called when the behaviour becomes disabled or inactive.
+		private void OnDisable ()
+		{
+			//When Player object is disabled, store the current local hp total in the GameManager so it can be re-loaded in next level.
+			GameManager.instance.playerhp = hp;
+		}
 		
-	private void Update ()
-	{
-		//If it's not the player's turn, exit the function.
-		if (!GameManager.instance.playersTurn)
-			return;
+		
+		private void Update ()
+		{
+			//If it's not the player's turn, exit the function.
+			if(!GameManager.instance.playersTurn) return;
 			
-		int horizontal = 0;  	//Used to store the horizontal move direction.
-		int vertical = 0;		//Used to store the vertical move direction.
+			int horizontal = 0;  	//Used to store the horizontal move direction.
+			int vertical = 0;		//Used to store the vertical move direction.
 			
-		//Check if we are running either in the Unity editor or in a standalone build.
+			//Check if we are running either in the Unity editor or in a standalone build.
 #if UNITY_STANDALONE || UNITY_WEBPLAYER
 			
-		//Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
-		horizontal = (int)(Input.GetAxisRaw ("Horizontal"));
+			//Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
+			horizontal = (int) (Input.GetAxisRaw ("Horizontal"));
 			
-		//Get input from the input manager, round it to an integer and store in vertical to set y axis move direction
-		vertical = (int)(Input.GetAxisRaw ("Vertical"));
+			//Get input from the input manager, round it to an integer and store in vertical to set y axis move direction
+			vertical = (int) (Input.GetAxisRaw ("Vertical"));
 			
-		//Check if moving horizontally, if so set vertical to zero.
-		if (horizontal != 0) {
-			vertical = 0;
-		}
-		//Check if we are running on iOS, Android, Windows Phone 8 or Unity iPhone
+			//Check if moving horizontally, if so set vertical to zero.
+			if(horizontal != 0)
+			{
+				vertical = 0;
+			}
+			//Check if we are running on iOS, Android, Windows Phone 8 or Unity iPhone
 #elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
 			
 			//Check if Input has registered more than zero touches
@@ -137,15 +115,15 @@ public class Player : MovingObject
 			}
 			
 #endif //End of mobile platform dependendent compilation section started above with #elif
-		//Check if we have a non-zero value for horizontal or vertical
-		if (horizontal != 0 || vertical != 0) {
-			//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
-			//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
-			AttemptMove<Wall> (horizontal, vertical);
+			//Check if we have a non-zero value for horizontal or vertical
+			if(horizontal != 0 || vertical != 0)
+			{
+				//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
+				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
+				AttemptMove<Wall> (horizontal, vertical);
+			}
 		}
-	}
 		
-<<<<<<< HEAD
 		//AttemptMove overrides the AttemptMove function in the base class MovingObject
 		//AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.
 		protected override void AttemptMove <T> (int xDir, int yDir)
@@ -155,22 +133,10 @@ public class Player : MovingObject
 			
 			//Update hp text display to reflect current score.
 			//hpText.text = "hp: " + hp;
-=======
-	//AttemptMove overrides the AttemptMove function in the base class MovingObject
-	//AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.
-	protected override void AttemptMove <T> (int xDir, int yDir)
-	{
-		//Every time player moves, subtract from hp points total.
-		hp--;
 			
-		//Update hp text display to reflect current score.
-		hpText.text = "hp: " + hp;
->>>>>>> 3d794ee134a0bce024eb4193141d481e9cc348b4
+			//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
+			base.AttemptMove <T> (xDir, yDir);
 			
-		//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
-		base.AttemptMove <T> (xDir, yDir);
-			
-<<<<<<< HEAD
 			//Hit allows us to reference the result of the Linecast done in Move.
 			RaycastHit2D hit;
 
@@ -183,125 +149,116 @@ public class Player : MovingObject
 
 			//Since the player has moved and lost hp points, check if the game has ended.
 			CheckIfGameOver ();
-=======
-		//Hit allows us to reference the result of the Linecast done in Move.
-		RaycastHit2D hit;
 			
-		//If Move returns true, meaning Player was able to move into an empty space.
-		if (Move (xDir, yDir, out hit)) {
-			//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
-			SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
+			//Set the playersTurn boolean of GameManager to false now that players turn is over.
+			GameManager.instance.playersTurn = false;
 		}
-			
-		//Since the player has moved and lost hp points, check if the game has ended.
-		CheckIfGameOver ();
->>>>>>> 3d794ee134a0bce024eb4193141d481e9cc348b4
-			
-		//Set the playersTurn boolean of GameManager to false now that players turn is over.
-		GameManager.instance.playersTurn = false;
-	}
 		
 		
-	//OnCantMove overrides the abstract function OnCantMove in MovingObject.
-	//It takes a generic parameter T which in the case of Player is a Wall which the player can attack and destroy.
-	protected override void OnCantMove <T> (T component)
-	{
-		//Set hitWall to equal the component passed in as a parameter.
-		Wall hitWall = component as Wall;
+		//OnCantMove overrides the abstract function OnCantMove in MovingObject.
+		//It takes a generic parameter T which in the case of Player is a Wall which the player can attack and destroy.
+		protected override void OnCantMove <T> (T component)
+		{
+			//Set hitWall to equal the component passed in as a parameter.
+			Wall hitWall = component as Wall;
 			
-		//Call the DamageWall function of the Wall we are hitting.
-		hitWall.DamageWall (wallDamage);
+			//Call the DamageWall function of the Wall we are hitting.
+			hitWall.DamageWall (wallDamage);
 			
-		//Set the attack trigger of the player's animation controller in order to play the player's attack animation.
-		animator.SetTrigger ("playerChop");
-	}
+			//Set the attack trigger of the player's animation controller in order to play the player's attack animation.
+			animator.SetTrigger ("playerChop");
+		}
 		
 		
-	//OnTriggerEnter2D is sent when another object enters a trigger collider attached to this object (2D physics only).
-	private void OnTriggerEnter2D (Collider2D other)
-	{
-		//Check if the tag of the trigger collided with is Exit.
-		if (other.tag == "Exit") {
-			//Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
-			Invoke ("Restart", restartLevelDelay);
+		//OnTriggerEnter2D is sent when another object enters a trigger collider attached to this object (2D physics only).
+		private void OnTriggerEnter2D (Collider2D other)
+		{
+			//Check if the tag of the trigger collided with is Exit.
+			if(other.tag == "Exit")
+			{
+				//Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
+				Invoke ("Restart", restartLevelDelay);
 				
-			//Disable the player object since level is over.
-			enabled = false;
-		}
+				//Disable the player object since level is over.
+				enabled = false;
+			}
 			
 			//Check if the tag of the trigger collided with is hp.
-			else if (other.tag == "hp") {
-			//Add pointsPerhp to the players current hp total.
-			hp += pointsPerhp;
+			else if(other.tag == "hp")
+			{
+				//Add pointsPerhp to the players current hp total.
+				hp += pointsPerhp;
 				
-			//Update hpText to represent current total and notify player that they gained points
-			hpText.text = "+" + pointsPerhp + " hp: " + hp;
+				//Update hpText to represent current total and notify player that they gained points
+				hpText.text = "+" + pointsPerhp + " hp: " + hp;
 				
-			//Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.
-			SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
+				//Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.
+				SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
 				
-			//Disable the hp object the player collided with.
-			other.gameObject.SetActive (false);
-		}
+				//Disable the hp object the player collided with.
+				other.gameObject.SetActive (false);
+			}
 			
 			//Check if the tag of the trigger collided with is Soda.
-			else if (other.tag == "Soda") {
-			//Add pointsPerSoda to players hp points total
-			hp += pointsPerSoda;
+			else if(other.tag == "Soda")
+			{
+				//Add pointsPerSoda to players hp points total
+				hp += pointsPerSoda;
 				
-			//Update hpText to represent current total and notify player that they gained points
-			hpText.text = "+" + pointsPerSoda + " hp: " + hp;
+				//Update hpText to represent current total and notify player that they gained points
+				hpText.text = "+" + pointsPerSoda + " hp: " + hp;
 				
-			//Call the RandomizeSfx function of SoundManager and pass in two drinking sounds to choose between to play the drinking sound effect.
-			SoundManager.instance.RandomizeSfx (drinkSound1, drinkSound2);
+				//Call the RandomizeSfx function of SoundManager and pass in two drinking sounds to choose between to play the drinking sound effect.
+				SoundManager.instance.RandomizeSfx (drinkSound1, drinkSound2);
 				
-			//Disable the soda object the player collided with.
-			other.gameObject.SetActive (false);
+				//Disable the soda object the player collided with.
+				other.gameObject.SetActive (false);
+			}
+		}
+		
+		
+		//Restart reloads the scene when called.
+		private void Restart ()
+		{
+			//Load the last scene loaded, in this case Main, the only scene in the game. And we load it in "Single" mode so it replace the existing one
+            //and not load all the scene object in the current scene.
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+		}
+		
+		
+		//Losehp is called when an enemy attacks the player.
+		//It takes a parameter loss which specifies how many points to lose.
+		public void Losehp (int loss)
+		{
+			//Set the trigger for the player animator to transition to the playerHit animation.
+			animator.SetTrigger ("playerHit");
+			
+			//Subtract lost hp points from the players total.
+			hp -= loss;
+			
+			//Update the hp display with the new total.
+			hpText.text = "-"+ loss + " hp: " + hp;
+			
+			//Check to see if game has ended.
+			CheckIfGameOver ();
+		}
+		
+		
+		//CheckIfGameOver checks if the player is out of hp points and if so, ends the game.
+		private void CheckIfGameOver ()
+		{
+			//Check if hp point total is less than or equal to zero.
+			if (hp <= 0) 
+			{
+				//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
+				SoundManager.instance.PlaySingle (gameOverSound);
+				
+				//Stop the background music.
+				SoundManager.instance.musicSource.Stop();
+				
+				//Call the GameOver function of GameManager.
+				GameManager.instance.GameOver ();
+			}
 		}
 	}
-		
-		
-	//Restart reloads the scene when called.
-	private void Restart ()
-	{
-		//Load the last scene loaded, in this case Main, the only scene in the game. And we load it in "Single" mode so it replace the existing one
-		//and not load all the scene object in the current scene.
-		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex, LoadSceneMode.Single);
-	}
-		
-		
-	//Losehp is called when an enemy attacks the player.
-	//It takes a parameter loss which specifies how many points to lose.
-	public void Losehp (int loss)
-	{
-		//Set the trigger for the player animator to transition to the playerHit animation.
-		animator.SetTrigger ("playerHit");
-			
-		//Subtract lost hp points from the players total.
-		hp -= loss;
-			
-		//Update the hp display with the new total.
-		hpText.text = "-" + loss + " hp: " + hp;
-			
-		//Check to see if game has ended.
-		CheckIfGameOver ();
-	}
-		
-		
-	//CheckIfGameOver checks if the player is out of hp points and if so, ends the game.
-	private void CheckIfGameOver ()
-	{
-		//Check if hp point total is less than or equal to zero.
-		if (hp <= 0) {
-			//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
-			SoundManager.instance.PlaySingle (gameOverSound);
-				
-			//Stop the background music.
-			SoundManager.instance.musicSource.Stop ();
-				
-			//Call the GameOver function of GameManager.
-			GameManager.instance.GameOver ();
-		}
-	}
-}
 

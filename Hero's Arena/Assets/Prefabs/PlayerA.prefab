@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 61174208552180636}
   - component: {fileID: 50400889943993168}
   - component: {fileID: 114184921431294024}
+  - component: {fileID: 114772371066973814}
   m_Layer: 8
   m_Name: PlayerA
   m_TagString: Player
@@ -115,6 +116,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e59f234c0ec9fc24d873b38c4df72dae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveTime: 0.1
+  blockingLayer:
+    m_Bits: 256
+  boxCollider: {fileID: 0}
+  rb2D: {fileID: 0}
+  inverseMoveTime: 0
+  restartLevelDelay: 1
+  pointsPerhp: 10
+  pointsPerSoda: 20
+  wallDamage: 1
+  hpText: {fileID: 0}
+  moveSound1: {fileID: 0}
+  moveSound2: {fileID: 0}
+  eatSound1: {fileID: 0}
+  eatSound2: {fileID: 0}
+  drinkSound1: {fileID: 0}
+  drinkSound2: {fileID: 0}
+  gameOverSound: {fileID: 0}
+  animator: {fileID: 0}
+  hp: 0
+--- !u!114 &114772371066973814
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1741542770426410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e7ce1d89d3b4c94b9a1bf554e495e13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveTime: 0.1
