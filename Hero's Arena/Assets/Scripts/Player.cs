@@ -52,8 +52,13 @@ public class Player : MovingObject
 		//Get the current hp point total stored in GameManager.instance between levels.
 		hp = GameManager.instance.playerhp;
 			
+<<<<<<< HEAD
+			//Set the hpText to reflect the current player hp total.
+			//hpText.text = "hp: " + hp;
+=======
 		//Set the hpText to reflect the current player hp total.
 		hpText.text = "hp: " + hp;
+>>>>>>> 3d794ee134a0bce024eb4193141d481e9cc348b4
 			
 		//Call the Start function of the MovingObject base class.
 		base.Start ();
@@ -140,6 +145,17 @@ public class Player : MovingObject
 		}
 	}
 		
+<<<<<<< HEAD
+		//AttemptMove overrides the AttemptMove function in the base class MovingObject
+		//AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.
+		protected override void AttemptMove <T> (int xDir, int yDir)
+		{
+			//Every time player moves, subtract from hp points total.
+			//hp--;
+			
+			//Update hp text display to reflect current score.
+			//hpText.text = "hp: " + hp;
+=======
 	//AttemptMove overrides the AttemptMove function in the base class MovingObject
 	//AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.
 	protected override void AttemptMove <T> (int xDir, int yDir)
@@ -149,10 +165,25 @@ public class Player : MovingObject
 			
 		//Update hp text display to reflect current score.
 		hpText.text = "hp: " + hp;
+>>>>>>> 3d794ee134a0bce024eb4193141d481e9cc348b4
 			
 		//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
 		base.AttemptMove <T> (xDir, yDir);
 			
+<<<<<<< HEAD
+			//Hit allows us to reference the result of the Linecast done in Move.
+			RaycastHit2D hit;
+
+			//If Move returns true, meaning Player was able to move into an empty space.
+			if (Move (xDir, yDir, out hit)) 
+			{
+				//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
+				//SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
+			}
+
+			//Since the player has moved and lost hp points, check if the game has ended.
+			CheckIfGameOver ();
+=======
 		//Hit allows us to reference the result of the Linecast done in Move.
 		RaycastHit2D hit;
 			
@@ -164,6 +195,7 @@ public class Player : MovingObject
 			
 		//Since the player has moved and lost hp points, check if the game has ended.
 		CheckIfGameOver ();
+>>>>>>> 3d794ee134a0bce024eb4193141d481e9cc348b4
 			
 		//Set the playersTurn boolean of GameManager to false now that players turn is over.
 		GameManager.instance.playersTurn = false;
