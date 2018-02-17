@@ -19,7 +19,7 @@ public class Player1AttackButton : MonoBehaviour {
 		/*
 		if ((player2.transform - player1.transform.position).sqrMagnitude < 1 ) {
 			anim.SetTrigger ("playerChop");
-
+			player2.hp -= 10; 
 		}*/
 		anim.SetTrigger ("playerChop");
 	}
