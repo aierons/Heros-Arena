@@ -930,9 +930,42 @@ Prefab:
       propertyPath: drinkSound2
       value: 
       objectReference: {fileID: 8300000, guid: bcb9dda73ee914d3e8f252895f73f461, type: 3}
+    - target: {fileID: 114184921431294024, guid: 5287063261670a645bc281dbd597a348,
+        type: 2}
+      propertyPath: hpText
+      value: 
+      objectReference: {fileID: 970933707}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5287063261670a645bc281dbd597a348, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1964397259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1964397260}
+  m_Layer: 0
+  m_Name: 'Player2 '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1964397260
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1964397259}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 374.6491, y: 194.04124, z: 9.625}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2050729594
 GameObject:
   m_ObjectHideFlags: 0
