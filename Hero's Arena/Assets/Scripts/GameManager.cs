@@ -160,10 +160,10 @@ public class GameManager : MonoBehaviour
 			//Wait for Enemy's moveTime before moving next Enemy, 
 			yield return new WaitForSeconds(enemies[i].moveTime);
 		}
-		//Once Enemies are done moving, set playersTurn to true so player can move.
+		//Once Enemies are done moving, set playersTurn to true so player can move.*/
 		playersTurn = true;
 
 		//Enemies are done moving, set enemiesMoving to false.
-		enemiesMoving = false;*/
+		enemiesMoving = false;
 	}
 }

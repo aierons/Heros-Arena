@@ -36,7 +36,7 @@ using UnityEngine.SceneManagement;
 			hp = GameManager.instance.playerhp;
 			
 			//Set the hpText to reflect the current player hp total.
-			hpText.text = "hp: " + hp;
+			//hpText.text = "hp: " + hp;
 			
 			//Call the Start function of the MovingObject base class.
 			base.Start ();
@@ -129,24 +129,24 @@ using UnityEngine.SceneManagement;
 		protected override void AttemptMove <T> (int xDir, int yDir)
 		{
 			//Every time player moves, subtract from hp points total.
-			hp--;
+			//hp--;
 			
 			//Update hp text display to reflect current score.
-			hpText.text = "hp: " + hp;
+			//hpText.text = "hp: " + hp;
 			
 			//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
 			base.AttemptMove <T> (xDir, yDir);
 			
 			//Hit allows us to reference the result of the Linecast done in Move.
 			RaycastHit2D hit;
-			
+
 			//If Move returns true, meaning Player was able to move into an empty space.
 			if (Move (xDir, yDir, out hit)) 
 			{
 				//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
-				SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
+				//SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
 			}
-			
+
 			//Since the player has moved and lost hp points, check if the game has ended.
 			CheckIfGameOver ();
 			
