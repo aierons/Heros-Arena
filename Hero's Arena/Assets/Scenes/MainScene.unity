@@ -1743,6 +1743,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: foodTiles.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4113216870956976, guid: 774881e07cdc61b468447b2c09236a6d, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1780,6 +1785,18 @@ Prefab:
       propertyPath: floorTiles.Array.data[7]
       value: 
       objectReference: {fileID: 1621325249100564, guid: c7f6b6b7d72446c4daf755949cd25208,
+        type: 2}
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: foodTiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 1355230908519504, guid: 4c01934b158760943856c3ec5d9ef4e9,
+        type: 2}
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: foodTiles.Array.data[1]
+      value: 
+      objectReference: {fileID: 1967953484358266, guid: ded2eaf04b330014aa60bf82c6448737,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 774881e07cdc61b468447b2c09236a6d, type: 2}
