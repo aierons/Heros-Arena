@@ -41,7 +41,7 @@ public class Player2 : MovingObject {
 	// Update is called once per frame
 	void Update () {
 		//If it's not the player's turn, exit the function.
-		if(!GameManager.instance.playersTurn) return;
+		if(GameManager.instance.playersTurn) return;
 
 		hpText.text = "hp: " + hp;
 
@@ -99,7 +99,7 @@ public class Player2 : MovingObject {
 		CheckIfGameOver ();
 
 		//Set the playersTurn boolean of GameManager to false now that players turn is over.
-		GameManager.instance.playersTurn = false;
+		GameManager.instance.playersTurn = true;
 	}
 
 	//OnCantMove overrides the abstract function OnCantMove in MovingObject.

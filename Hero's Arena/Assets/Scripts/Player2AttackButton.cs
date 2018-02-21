@@ -16,11 +16,13 @@ public class Player2AttackButton : MonoBehaviour {
 	}
 
 	private void TriggerPlayer2() {
+		if(GameManager.instance.playersTurn) return;
 		/*
 		if ((player2.transform - player1.transform.position).sqrMagnitude < 1 ) {
 			anim.SetTrigger ("playerChop");
 			player2.hp -= 10; 
 		}*/
 		anim.SetTrigger ("enemyChop"); // whatever it's called i can't recall 
+		GameManager.instance.playersTurn = true;
 	}
 }
