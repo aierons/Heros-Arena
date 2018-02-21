@@ -35,6 +35,8 @@ public class Player : MovingObject
 	//Grabs reference to attack button 
 	public Button attackButton;
 
+	private int movement = 4; 
+
 	//Used to store a reference to the Player's animator component.
 	private Animator animator;
 
@@ -98,6 +100,7 @@ public class Player : MovingObject
 				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
 				AttemptMove<Wall> (horizontal, vertical);
 			}
+			movement--;
 		}
 	}
 		
@@ -126,8 +129,10 @@ public class Player : MovingObject
 		//Since the player has moved and lost hp points, check if the game has ended.
 		CheckIfGameOver ();
 			
-		//Set the playersTurn boolean of GameManager to false now that players turn is over.
-		GameManager.instance.playersTurn = false;
+		//if (endTurn) {
+			//Set the playersTurn boolean of GameManager to false now that players turn is over.
+			GameManager.instance.playersTurn = false;
+		//}
 	}
 		
 		
