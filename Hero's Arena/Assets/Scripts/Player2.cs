@@ -114,7 +114,7 @@ public class Player2 : MovingObject {
 		hitWall.DamageWall (wallDamage);
 
 		//Set the attack trigger of the player's animation controller in order to play the player's attack animation.
-		animator.SetTrigger ("playerChop");
+		animator.SetTrigger ("EnemyChop");
 	}
 
 	//OnTriggerEnter2D is sent when another object enters a trigger collider attached to this object (2D physics only).
