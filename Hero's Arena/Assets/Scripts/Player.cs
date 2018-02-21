@@ -18,6 +18,8 @@ using UnityEngine.SceneManagement;
 		public AudioClip drinkSound1;				//1 of 2 Audio clips to play when player collects a soda object.
 		public AudioClip drinkSound2;				//2 of 2 Audio clips to play when player collects a soda object.
 		public AudioClip gameOverSound;				//Audio clip to play when player dies.
+
+		private int movement = 2;
 		
 		private Animator animator;					//Used to store a reference to the Player's animator component.
 		private int hp;                           //Used to store player hp points total during level.
