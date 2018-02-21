@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 	//Player inherits from MovingObject, our base class for objects that can move, Enemy also inherits from this.
 	public class Player : MovingObject
 	{
+<<<<<<< HEAD
 		public float restartLevelDelay = 1f;		//Delay time in seconds to restart level.
 		public int pointsPerhp = 10;				//Number of points to add to player hp points when picking up a hp object.
 		public int pointsPerSoda = 20;				//Number of points to add to player hp points when picking up a soda object.
@@ -30,6 +31,8 @@ using UnityEngine.SceneManagement;
 		{
 			//Get a component reference to the Player's animator component
 			animator = GetComponent<Animator>();
+=======
+>>>>>>> 485ada4ee34dbb09a3fe28d74bacc596117a0480
 			
 			//Get the current hp point total stored in GameManager.instance between levels.
 			hp = GameManager.instance.playerhp;

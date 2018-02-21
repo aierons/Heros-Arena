@@ -556,14 +556,14 @@ Prefab:
       propertyPath: hpText
       value: 
       objectReference: {fileID: 671376359}
+    - target: {fileID: 114397807239107796, guid: d315081bbad481140bd522bacacc9f4b,
+        type: 2}
+      propertyPath: attackButton
+      value: 
+      objectReference: {fileID: 610404944}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d315081bbad481140bd522bacacc9f4b, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &563739361 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1857606338742144, guid: d315081bbad481140bd522bacacc9f4b,
-    type: 2}
-  m_PrefabInternal: {fileID: 563739360}
 --- !u!1 &568555274
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,7 +686,6 @@ GameObject:
   - component: {fileID: 610404946}
   - component: {fileID: 610404945}
   - component: {fileID: 610404944}
-  - component: {fileID: 610404947}
   m_Layer: 5
   m_Name: Player2Attack_Button
   m_TagString: Untagged
@@ -787,18 +786,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 610404942}
---- !u!114 &610404947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 610404942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea37d255bea2c7d48b5c18e6774cc4fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player2: {fileID: 563739361}
 --- !u!1 &671376357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,7 +1708,6 @@ GameObject:
   - component: {fileID: 1297444098}
   - component: {fileID: 1297444097}
   - component: {fileID: 1297444096}
-  - component: {fileID: 1297444099}
   m_Layer: 5
   m_Name: Player1Attack_Button
   m_TagString: Untagged
@@ -1822,18 +1808,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1297444094}
---- !u!114 &1297444099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1297444094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b948c91403ba9e048bc749490cc4cc62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player1: {fileID: 1590357148}
 --- !u!1 &1438327248
 GameObject:
   m_ObjectHideFlags: 0
@@ -2076,11 +2050,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 774881e07cdc61b468447b2c09236a6d, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1590357148 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1741542770426410, guid: 5287063261670a645bc281dbd597a348,
-    type: 2}
-  m_PrefabInternal: {fileID: 1823398838}
 --- !u!1001 &1823398838
 Prefab:
   m_ObjectHideFlags: 0
@@ -2200,6 +2169,11 @@ Prefab:
       propertyPath: gameOverSound
       value: 
       objectReference: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
+    - target: {fileID: 114772371066973814, guid: 5287063261670a645bc281dbd597a348,
+        type: 2}
+      propertyPath: attackButton
+      value: 
+      objectReference: {fileID: 1297444096}
     m_RemovedComponents:
     - {fileID: 114184921431294024, guid: 5287063261670a645bc281dbd597a348, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 5287063261670a645bc281dbd597a348, type: 2}
