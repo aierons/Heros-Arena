@@ -34,6 +34,8 @@ public class Player : MovingObject
 	public AudioClip gameOverSound;
 	//Grabs reference to attack button 
 	public Button attackButton;
+	//Grabs reference to end button
+	public Button endTurnButton;
 
 	private int movement = 4;
 
@@ -42,7 +44,9 @@ public class Player : MovingObject
 
 	//Used to store player hp points total during level.
 	private int hp;
-			
+
+	private bool endTurn;
+				
 	//Start overrides the Start function of MovingObject
 	protected override void Start ()
 	{
@@ -58,7 +62,10 @@ public class Player : MovingObject
 		//Call the Start function of the MovingObject base class.
 		base.Start ();
 
+		endTurn = false;
+
 		attackButton.onClick.AddListener (TriggerAttack);
+		endTurnButton.onClick.AddListener (TurnEnd);
 	}
 		
 		
@@ -253,6 +260,13 @@ public class Player : MovingObject
 		   + Mathf.Abs (transform.position.y - pb.transform.position.y) == 1) {
 			p2.takeDamage (10);
 			animator.SetTrigger ("playerChop");
+		}
+	}
+		
+	private void TurnEnd() {
+		if (endTurn) {
+			attackButton.interactable = false;
+			endTurnButton.interactable = false;
 		}
 	}
 }
