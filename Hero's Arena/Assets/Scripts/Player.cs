@@ -233,8 +233,19 @@ public class Player : MovingObject
 		}
 	}
 
+	public void takeDamage(int dam) {
+		hp -= dam;
+	}
+
 	private void TriggerAttack() {
-		animator.SetTrigger ("playerChop");
+		GameObject pb = GameObject.Find ("PlayerB");
+		Player2 p2 = pb.GetComponent<Player2> ();
+
+		if (Mathf.Abs (transform.position.x - pb.transform.position.x)
+		   + Mathf.Abs (transform.position.y - pb.transform.position.y) == 1) {
+			p2.takeDamage (10);
+			animator.SetTrigger ("playerChop");
+		}
 	}
 }
 
