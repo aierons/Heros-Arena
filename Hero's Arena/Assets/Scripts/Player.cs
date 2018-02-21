@@ -37,6 +37,8 @@ public class Player : MovingObject
 	//Grabs reference to end button
 	public Button endTurnButton;
 
+	private int movement = 4; 
+
 	//Used to store a reference to the Player's animator component.
 	private Animator animator;
 
@@ -105,6 +107,7 @@ public class Player : MovingObject
 				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
 				AttemptMove<Wall> (horizontal, vertical);
 			}
+			movement--;
 		}
 	}
 		
@@ -133,8 +136,10 @@ public class Player : MovingObject
 		//Since the player has moved and lost hp points, check if the game has ended.
 		CheckIfGameOver ();
 			
-		//Set the playersTurn boolean of GameManager to false now that players turn is over.
-		GameManager.instance.playersTurn = false;
+		//if (endTurn) {
+			//Set the playersTurn boolean of GameManager to false now that players turn is over.
+			GameManager.instance.playersTurn = false;
+		//}
 	}
 		
 		
@@ -240,8 +245,19 @@ public class Player : MovingObject
 		}
 	}
 
+	public void takeDamage(int dam) {
+		hp -= dam;
+	}
+
 	private void TriggerAttack() {
-		animator.SetTrigger ("playerChop");
+		GameObject pb = GameObject.Find ("PlayerB");
+		Player2 p2 = pb.GetComponent<Player2> ();
+
+		if (Mathf.Abs (transform.position.x - pb.transform.position.x)
+		   + Mathf.Abs (transform.position.y - pb.transform.position.y) == 1) {
+			p2.takeDamage (10);
+			animator.SetTrigger ("playerChop");
+		}
 	}
 		
 	private void TurnEnd() {
