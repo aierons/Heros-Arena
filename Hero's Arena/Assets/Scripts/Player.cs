@@ -34,13 +34,19 @@ public class Player : MovingObject
 	public AudioClip gameOverSound;
 	//Grabs reference to attack button 
 	public Button attackButton;
+	//Grabs reference to end button
+	public Button endTurnButton;
+
+	private int movement = 4;
 
 	//Used to store a reference to the Player's animator component.
 	private Animator animator;
 
 	//Used to store player hp points total during level.
 	private int hp;
-			
+
+	private bool endTurn;
+				
 	//Start overrides the Start function of MovingObject
 	protected override void Start ()
 	{
@@ -56,7 +62,10 @@ public class Player : MovingObject
 		//Call the Start function of the MovingObject base class.
 		base.Start ();
 
+		endTurn = false;
+
 		attackButton.onClick.AddListener (TriggerAttack);
+		endTurnButton.onClick.AddListener (TurnEnd);
 	}
 		
 		
@@ -76,7 +85,8 @@ public class Player : MovingObject
 		if (!GameManager.instance.playersTurn)
 			return;
 			
-		if (Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D)) {
+		if (Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D)
+			&& movement >0) {
 				
 			int horizontal = 0;  	//Used to store the horizontal move direction.
 			int vertical = 0;		//Used to store the vertical move direction.
@@ -98,6 +108,7 @@ public class Player : MovingObject
 				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
 				AttemptMove<Wall> (horizontal, vertical);
 			}
+			movement--;
 		}
 	}
 		
@@ -126,8 +137,12 @@ public class Player : MovingObject
 		//Since the player has moved and lost hp points, check if the game has ended.
 		CheckIfGameOver ();
 			
-		//Set the playersTurn boolean of GameManager to false now that players turn is over.
-		GameManager.instance.playersTurn = false;
+		if (endTurn) {
+			//Set the playersTurn boolean of GameManager to false now that players turn is over.
+			movement = 4;
+			endTurn = false;
+			GameManager.instance.playersTurn = false;
+		}
 	}
 		
 		
@@ -246,6 +261,13 @@ public class Player : MovingObject
 				animator.SetTrigger ("playerChop");
 				GameManager.instance.playersTurn = false;
 			}
+		}
+	}
+		
+	private void TurnEnd() {
+		if (endTurn) {
+			attackButton.interactable = false;
+			endTurnButton.interactable = false;
 		}
 	}
 }

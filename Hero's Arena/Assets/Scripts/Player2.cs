@@ -18,15 +18,16 @@ public class Player2 : MovingObject {
 	public AudioClip drinkSound2;				//2 of 2 Audio clips to play when player collects a soda object.
 	public AudioClip gameOverSound;				//Audio clip to play when player dies.
 
-	private int movement = 2;
-
 	public Button attackButton;
+
+	private int movement = 4;
 
 	private Animator animator;					//Used to store a reference to the Player's animator component.
 	private int hp;                           //Used to store player hp points total during level.
 
 	// Use this for initialization
 	void Start () {
+		
 		//Get a component reference to the Player's animator component
 		animator = GetComponent<Animator>();
 
@@ -53,7 +54,8 @@ public class Player2 : MovingObject {
 		int horizontal = 0;  	//Used to store the horizontal move direction.
 		int vertical = 0;		//Used to store the vertical move direction.
 
-		if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) {
+		if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)
+			&& movement > 0) {
 
 			//Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
 			horizontal = (int) (Input.GetAxisRaw ("Horizontal"));
@@ -74,6 +76,7 @@ public class Player2 : MovingObject {
 				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
 				AttemptMove<Wall> (horizontal, vertical);
 			}
+			movement--;
 		}
 	}
 
@@ -103,8 +106,12 @@ public class Player2 : MovingObject {
 		//Since the player has moved and lost hp points, check if the game has ended.
 		CheckIfGameOver ();
 
-		//Set the playersTurn boolean of GameManager to false now that players turn is over.
-		GameManager.instance.playersTurn = true;
+		if (endTurn) {
+			//Set the playersTurn boolean of GameManager to false now that players turn is over.
+			movement = 4;
+			endTurn = false;
+			GameManager.instance.playersTurn = true;
+		}
 	}
 
 	//OnCantMove overrides the abstract function OnCantMove in MovingObject.
