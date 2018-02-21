@@ -250,9 +250,9 @@ public class Player : MovingObject
 
 			if (Mathf.Abs (transform.position.x - pb.transform.position.x)
 			   + Mathf.Abs (transform.position.y - pb.transform.position.y) == 1) {
-				p2.takeDamage (10);
+				p2.Losehp (10);
 				animator.SetTrigger ("playerChop");
-				GameManager.instance.playersTurn = false;
+				attackButton.interactable = false;
 			}
 		}
 	}

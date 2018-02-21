@@ -223,7 +223,7 @@ public class Player2 : MovingObject {
 			   + Mathf.Abs (transform.position.y - pa.transform.position.y) == 1) {
 				p1.Losehp (10);
 				animator.SetTrigger ("EnemyChop");
-				GameManager.instance.playersTurn = true;
+				attackButton.interactable = false;
 			}
 		}
 	}
