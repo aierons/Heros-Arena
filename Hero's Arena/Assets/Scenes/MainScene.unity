@@ -709,6 +709,11 @@ Prefab:
       propertyPath: attackButton
       value: 
       objectReference: {fileID: 610404944}
+    - target: {fileID: 114397807239107796, guid: d315081bbad481140bd522bacacc9f4b,
+        type: 2}
+      propertyPath: endTurnButton
+      value: 
+      objectReference: {fileID: 400250695}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d315081bbad481140bd522bacacc9f4b, type: 2}
   m_IsPrefabParent: 0
@@ -2476,6 +2481,11 @@ Prefab:
       propertyPath: attackButton
       value: 
       objectReference: {fileID: 1297444096}
+    - target: {fileID: 114772371066973814, guid: 5287063261670a645bc281dbd597a348,
+        type: 2}
+      propertyPath: endTurnButton
+      value: 
+      objectReference: {fileID: 760913614}
     m_RemovedComponents:
     - {fileID: 114184921431294024, guid: 5287063261670a645bc281dbd597a348, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 5287063261670a645bc281dbd597a348, type: 2}
