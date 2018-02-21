@@ -35,7 +35,7 @@ public class Player : MovingObject
 	//Grabs reference to attack button 
 	public Button attackButton;
 
-	private int movement = 4; 
+	private int movement = 4;
 
 	//Used to store a reference to the Player's animator component.
 	private Animator animator;
@@ -78,7 +78,8 @@ public class Player : MovingObject
 
 		hpText.text = "hp: " + hp;
 			
-		if (Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D)) {
+		if (Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D)
+			&& movement >0) {
 				
 			int horizontal = 0;  	//Used to store the horizontal move direction.
 			int vertical = 0;		//Used to store the vertical move direction.
@@ -129,10 +130,12 @@ public class Player : MovingObject
 		//Since the player has moved and lost hp points, check if the game has ended.
 		CheckIfGameOver ();
 			
-		//if (endTurn) {
+		if (endTurn) {
 			//Set the playersTurn boolean of GameManager to false now that players turn is over.
+			movement = 4;
+			endTurn = false;
 			GameManager.instance.playersTurn = false;
-		//}
+		}
 	}
 		
 		
