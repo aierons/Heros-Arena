@@ -85,7 +85,7 @@ public class Player : MovingObject
 		if (!GameManager.instance.playersTurn)
 			return;
 			
-		if (Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D)
+		if ((Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D))
 			&& movement >0) {
 				
 			int horizontal = 0;  	//Used to store the horizontal move direction.
@@ -136,13 +136,6 @@ public class Player : MovingObject
 
 		//Since the player has moved and lost hp points, check if the game has ended.
 		CheckIfGameOver ();
-			
-		if (endTurn) {
-			//Set the playersTurn boolean of GameManager to false now that players turn is over.
-			movement = 4;
-			endTurn = false;
-			GameManager.instance.playersTurn = false;
-		}
 	}
 		
 		
@@ -265,9 +258,16 @@ public class Player : MovingObject
 	}
 		
 	private void TurnEnd() {
-		if (endTurn) {
+		if (GameManager.instance.playersTurn) {
 			attackButton.interactable = false;
 			endTurnButton.interactable = false;
+			GameObject e = GameObject.FindWithTag ("Enemy");
+			e.GetComponent<Player2> ().attackButton.interactable = true;
+			e.GetComponent<Player2> ().endTurnButton.interactable = true;
+			//Set the playersTurn boolean of GameManager to false now that players turn is over.
+			movement = 4;
+			endTurn = false;
+			GameManager.instance.playersTurn = false;
 		}
 	}
 }

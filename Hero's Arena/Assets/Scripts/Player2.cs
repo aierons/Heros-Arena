@@ -19,8 +19,10 @@ public class Player2 : MovingObject {
 	public AudioClip gameOverSound;				//Audio clip to play when player dies.
 
 	public Button attackButton;
+	public Button endTurnButton;
 
 	private int movement = 4;
+	private bool endTurn = false;
 
 	private Animator animator;					//Used to store a reference to the Player's animator component.
 	private int hp;                           //Used to store player hp points total during level.
@@ -41,6 +43,7 @@ public class Player2 : MovingObject {
 		base.Start ();
 		
 		attackButton.onClick.AddListener (TriggerAttack);
+		endTurnButton.onClick.AddListener (TurnEnd);
 	}
 	
 	// Update is called once per frame
@@ -54,7 +57,7 @@ public class Player2 : MovingObject {
 		int horizontal = 0;  	//Used to store the horizontal move direction.
 		int vertical = 0;		//Used to store the vertical move direction.
 
-		if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)
+		if ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
 			&& movement > 0) {
 
 			//Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
@@ -105,13 +108,6 @@ public class Player2 : MovingObject {
 
 		//Since the player has moved and lost hp points, check if the game has ended.
 		CheckIfGameOver ();
-
-		if (endTurn) {
-			//Set the playersTurn boolean of GameManager to false now that players turn is over.
-			movement = 4;
-			endTurn = false;
-			GameManager.instance.playersTurn = true;
-		}
 	}
 
 	//OnCantMove overrides the abstract function OnCantMove in MovingObject.
@@ -226,6 +222,20 @@ public class Player2 : MovingObject {
 				animator.SetTrigger ("EnemyChop");
 				GameManager.instance.playersTurn = true;
 			}
+		}
+	}
+
+	private void TurnEnd() {
+		if (!GameManager.instance.playersTurn) {
+			attackButton.interactable = false;
+			endTurnButton.interactable = false;
+			GameObject p = GameObject.FindWithTag ("Player");
+			p.GetComponent<Player> ().attackButton.interactable = true;
+			p.GetComponent<Player> ().endTurnButton.interactable = true;
+			//Set the playersTurn boolean of GameManager to false now that players turn is over.
+			movement = 4;
+			endTurn = false;
+			GameManager.instance.playersTurn = true;
 		}
 	}
 }
