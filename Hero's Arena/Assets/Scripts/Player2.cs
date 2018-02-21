@@ -41,6 +41,9 @@ public class Player2 : MovingObject {
 
 		//Call the Start function of the MovingObject base class.
 		base.Start ();
+
+		attackButton.interactable = false;
+		endTurnButton.interactable = false;
 		
 		attackButton.onClick.AddListener (TriggerAttack);
 		endTurnButton.onClick.AddListener (TurnEnd);
@@ -48,10 +51,11 @@ public class Player2 : MovingObject {
 	
 	// Update is called once per frame
 	void Update () {
+		hpText.text = "hp: " + hp;
+		CheckIfGameOver ();
+
 		//If it's not the player's turn, exit the function.
 		if(GameManager.instance.playersTurn) return;
-
-		hpText.text = "hp: " + hp;
 
 		int horizontal = 0;  	//Used to store the horizontal move direction.
 		int vertical = 0;		//Used to store the vertical move direction.
@@ -181,9 +185,6 @@ public class Player2 : MovingObject {
 	//It takes a parameter loss which specifies how many points to lose.
 	public void Losehp (int loss)
 	{
-		//Set the trigger for the player animator to transition to the playerHit animation.
-		animator.SetTrigger ("playerHit");
-
 		//Subtract lost hp points from the players total.
 		hp -= loss;
 
@@ -208,21 +209,22 @@ public class Player2 : MovingObject {
 
 			//Call the GameOver function of GameManager.
 			GameManager.instance.GameOver ();
+
+			this.gameObject.SetActive (false);
 		}
 	}
 
-	public void takeDamage(int dam) {
-		hp -= dam;
-	}
-
 	private void TriggerAttack() {
-		GameObject pa = GameObject.Find ("PlayerA");
-		Player p1 = pa.GetComponent<Player> ();
+		if (!GameManager.instance.playersTurn) {
+			GameObject pa = GameObject.Find ("PlayerA");
+			Player p1 = pa.GetComponent<Player> ();
 
-		if (Mathf.Abs (transform.position.x - pa.transform.position.x)
-			+ Mathf.Abs (transform.position.y - pa.transform.position.y) == 1) {
-			p1.takeDamage (10);
-			animator.SetTrigger ("EnemyChop");
+			if (Mathf.Abs (transform.position.x - pa.transform.position.x)
+			   + Mathf.Abs (transform.position.y - pa.transform.position.y) == 1) {
+				p1.Losehp (10);
+				animator.SetTrigger ("EnemyChop");
+				GameManager.instance.playersTurn = true;
+			}
 		}
 	}
 
