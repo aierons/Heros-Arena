@@ -18,6 +18,10 @@ public class Player2 : MovingObject {
 	public AudioClip drinkSound2;				//2 of 2 Audio clips to play when player collects a soda object.
 	public AudioClip gameOverSound;				//Audio clip to play when player dies.
 
+	private int movement = 2;
+
+	public Button attackButton;
+
 	private Animator animator;					//Used to store a reference to the Player's animator component.
 	private int hp;                           //Used to store player hp points total during level.
 
@@ -35,7 +39,7 @@ public class Player2 : MovingObject {
 		//Call the Start function of the MovingObject base class.
 		base.Start ();
 		
-		
+		attackButton.onClick.AddListener (TriggerAttack);
 	}
 	
 	// Update is called once per frame
@@ -113,7 +117,7 @@ public class Player2 : MovingObject {
 		hitWall.DamageWall (wallDamage);
 
 		//Set the attack trigger of the player's animation controller in order to play the player's attack animation.
-		animator.SetTrigger ("playerChop");
+		animator.SetTrigger ("EnemyChop");
 	}
 
 	//OnTriggerEnter2D is sent when another object enters a trigger collider attached to this object (2D physics only).
@@ -202,5 +206,9 @@ public class Player2 : MovingObject {
 			//Call the GameOver function of GameManager.
 			GameManager.instance.GameOver ();
 		}
+	}
+
+	private void TriggerAttack() {
+		animator.SetTrigger ("EnemyChop");
 	}
 }
