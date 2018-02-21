@@ -17,10 +17,10 @@ public class Player2 : MovingObject {
 	public AudioClip drinkSound1;				//1 of 2 Audio clips to play when player collects a soda object.
 	public AudioClip drinkSound2;				//2 of 2 Audio clips to play when player collects a soda object.
 	public AudioClip gameOverSound;				//Audio clip to play when player dies.
-<<<<<<< HEAD
+
 	private int movement = 2;
-=======
->>>>>>> 485ada4ee34dbb09a3fe28d74bacc596117a0480
+
+	public Button attackButton;
 
 	private Animator animator;					//Used to store a reference to the Player's animator component.
 	private int hp;                           //Used to store player hp points total during level.
@@ -39,6 +39,7 @@ public class Player2 : MovingObject {
 		//Call the Start function of the MovingObject base class.
 		base.Start ();
 		
+		attackButton.onClick.AddListener (TriggerAttack);
 	}
 	
 	// Update is called once per frame
@@ -207,4 +208,7 @@ public class Player2 : MovingObject {
 		}
 	}
 
+	private void TriggerAttack() {
+		animator.SetTrigger ("EnemyChop");
+	}
 }
