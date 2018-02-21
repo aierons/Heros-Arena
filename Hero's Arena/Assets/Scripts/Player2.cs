@@ -212,7 +212,18 @@ public class Player2 : MovingObject {
 		}
 	}
 
+	public void takeDamage(int dam) {
+		hp -= dam;
+	}
+
 	private void TriggerAttack() {
-		animator.SetTrigger ("EnemyChop");
+		GameObject pa = GameObject.Find ("PlayerA");
+		Player p1 = pa.GetComponent<Player> ();
+
+		if (Mathf.Abs (transform.position.x - pa.transform.position.x)
+			+ Mathf.Abs (transform.position.y - pa.transform.position.y) == 1) {
+			p1.takeDamage (10);
+			animator.SetTrigger ("EnemyChop");
+		}
 	}
 }

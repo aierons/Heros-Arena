@@ -123,9 +123,6 @@ public class GameManager : MonoBehaviour
 	//GameOver is called when the player reaches 0 hp points
 	public void GameOver()
 	{
-		//Set levelText to display number of levels passed and game over message
-		levelText.text = "After " + level + " days, you starved.";
-
 		//Enable black background image gameObject.
 		//levelImage.SetActive(true);
 
