@@ -41,6 +41,9 @@ public class Player2 : MovingObject {
 
 		//Call the Start function of the MovingObject base class.
 		base.Start ();
+
+		attackButton.interactable = false;
+		endTurnButton.interactable = false;
 		
 		attackButton.onClick.AddListener (TriggerAttack);
 		endTurnButton.onClick.AddListener (TurnEnd);
