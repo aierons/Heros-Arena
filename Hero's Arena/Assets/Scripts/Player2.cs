@@ -22,7 +22,6 @@ public class Player2 : MovingObject {
 	public Button endTurnButton;
 
 	private int movement = 4;
-	private bool endTurn = false;
 
 	private Animator animator;					//Used to store a reference to the Player's animator component.
 	private int hp;                           //Used to store player hp points total during level.
@@ -90,11 +89,6 @@ public class Player2 : MovingObject {
 	//AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.
 	protected override void AttemptMove <T> (int xDir, int yDir)
 	{
-		//Every time player moves, subtract from hp points total.
-		//hp--;
-
-		//Update hp text display to reflect current score.
-		//hpText.text = "hp: " + hp;
 
 		//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
 		base.AttemptMove <T> (xDir, yDir);
@@ -178,7 +172,7 @@ public class Player2 : MovingObject {
 	{
 		//Load the last scene loaded, in this case Main, the only scene in the game. And we load it in "Single" mode so it replace the existing one
 		//and not load all the scene object in the current scene.
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+		//SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
 	}
 
 	//Losehp is called when an enemy attacks the player.
@@ -221,7 +215,7 @@ public class Player2 : MovingObject {
 
 			if (Mathf.Abs (transform.position.x - pa.transform.position.x)
 			   + Mathf.Abs (transform.position.y - pa.transform.position.y) == 1) {
-				p1.Losehp (10);
+				p1.Losehp (30);
 				animator.SetTrigger ("EnemyChop");
 				attackButton.interactable = false;
 			}
@@ -237,7 +231,6 @@ public class Player2 : MovingObject {
 			p.GetComponent<Player> ().endTurnButton.interactable = true;
 			//Set the playersTurn boolean of GameManager to false now that players turn is over.
 			movement = 4;
-			endTurn = false;
 			GameManager.instance.playersTurn = true;
 		}
 	}
