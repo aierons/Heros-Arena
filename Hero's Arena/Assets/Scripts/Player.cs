@@ -79,11 +79,11 @@ public class Player : MovingObject
 		
 	private void Update ()
 	{
+		hpText.text = "hp: " + hp;
+		CheckIfGameOver ();
 		//If it's not the player's turn, exit the function.
 		if (!GameManager.instance.playersTurn)
 			return;
-
-		hpText.text = "hp: " + hp;
 			
 		if ((Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D))
 			&& movement >0) {
@@ -238,21 +238,22 @@ public class Player : MovingObject
 				
 			//Call the GameOver function of GameManager.
 			GameManager.instance.GameOver ();
+
+			this.gameObject.SetActive (false);
 		}
 	}
 
-	public void takeDamage(int dam) {
-		hp -= dam;
-	}
-
 	private void TriggerAttack() {
-		GameObject pb = GameObject.Find ("PlayerB");
-		Player2 p2 = pb.GetComponent<Player2> ();
+		if (GameManager.instance.playersTurn) {
+			GameObject pb = GameObject.Find ("PlayerB");
+			Player2 p2 = pb.GetComponent<Player2> ();
 
-		if (Mathf.Abs (transform.position.x - pb.transform.position.x)
-		   + Mathf.Abs (transform.position.y - pb.transform.position.y) == 1) {
-			p2.takeDamage (10);
-			animator.SetTrigger ("playerChop");
+			if (Mathf.Abs (transform.position.x - pb.transform.position.x)
+			   + Mathf.Abs (transform.position.y - pb.transform.position.y) == 1) {
+				p2.takeDamage (10);
+				animator.SetTrigger ("playerChop");
+				GameManager.instance.playersTurn = false;
+			}
 		}
 	}
 		
