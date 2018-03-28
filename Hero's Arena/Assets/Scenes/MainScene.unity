@@ -667,6 +667,8 @@ Prefab:
       propertyPath: m_LocalPosition.x
 <<<<<<< HEAD
       value: 2
+=======
+      value: 23
 >>>>>>> 9b0a78f6c660f8ae66ec8cc7f627cab4ae5c6bc2
       objectReference: {fileID: 0}
     - target: {fileID: 4878744291225668, guid: 5c45b8e0ecfbae248a1748e03f2b4bb3, type: 2}
@@ -674,6 +676,7 @@ Prefab:
 <<<<<<< HEAD
       value: 0
 =======
+      value: 16
 >>>>>>> 9b0a78f6c660f8ae66ec8cc7f627cab4ae5c6bc2
       objectReference: {fileID: 0}
     - target: {fileID: 4878744291225668, guid: 5c45b8e0ecfbae248a1748e03f2b4bb3, type: 2}
@@ -3175,6 +3178,35 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
 =======
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: columns
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: rows
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: wallCount.minimum
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: wallCount.maximum
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: foodCount.minimum
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114545582836900072, guid: 774881e07cdc61b468447b2c09236a6d,
+        type: 2}
+      propertyPath: foodCount.maximum
+      value: 15
 >>>>>>> 9b0a78f6c660f8ae66ec8cc7f627cab4ae5c6bc2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3488,7 +3520,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 95
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -3513,7 +3545,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2050729594}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 3, z: -10}
+  m_LocalPosition: {x: 12, y: 8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
