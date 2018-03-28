@@ -1,26 +1,24 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI; 
+
+public class MatchManager : MonoBehaviour {
+
+	public float levelStartDelay = 2f;                      
+	public float turnDelay = 0.1f;                          
+	//public int Team1HP = 3;
+	//public int Team2HP = 3;
+	public static MatchManager instance = null;   
 
 
-using System.Collections.Generic;       //Allows us to use Lists. 
-using UnityEngine.UI;                   //Allows us to use UI.
-
-public class GameManager : MonoBehaviour
-{
-	public float levelStartDelay = 2f;                      //Time to wait before starting level, in seconds.
-	public float turnDelay = 0.1f;                          //Delay between each Player turn.
-	public int playerhp = 100;                      //Starting value for Player food points.
-	public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
-	[HideInInspector] public bool Team1Turn = true;       //Boolean to check if it's players turn, hidden in inspector but public.
 	[HideInInspector] public string turn = "Team1";
 
-	private Text levelText;                                 //Text to display current level number.
-	private BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
-	private int level = 1;                                  //Current level number, expressed in game as "Day 1".
-	//private List<Enemy> enemies;                          //List of all Enemy units, used to issue them move commands.
-	private bool doingSetup = true;                         //Boolean to check if we're setting up board, prevent Player from moving during setup.
+	private int level = 1; 
 
-	//Awake is always called before any Start functions
+	private BoardManager boardScript;
+	private bool doingSetup = true;
+
 	void Awake()
 	{
 		//Check if instance already exists
@@ -48,15 +46,6 @@ public class GameManager : MonoBehaviour
 		InitGame();
 	}
 
-	//This is called each time a scene is loaded.
-	void OnLevelWasLoaded(int index)
-	{
-		//Add one to our level number.
-		level++;
-		//Call InitGame to initialize our level.
-		InitGame();
-	}
-
 	//Initializes the game for each level.
 	void InitGame()
 	{
@@ -74,7 +63,6 @@ public class GameManager : MonoBehaviour
 
 	}
 
-
 	//Hides black image used between levels
 	void HideLevelImage()
 	{
@@ -83,11 +71,15 @@ public class GameManager : MonoBehaviour
 		doingSetup = false;
 	}
 
-	//Update is called every frame.
-	void Update()
-	{
+	// Use this for initialization
+	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
 		//Check that playersTurn or doingSetup are not currently true.
-		if(Team1Turn  || doingSetup)
+		if(turn == "Team1"  || doingSetup)
 
 			//If any of these are true, return and do not start MoveEnemies.
 			return;
@@ -100,5 +92,4 @@ public class GameManager : MonoBehaviour
 		//Disable this GameManager.
 		enabled = false;
 	}
-		
 }
