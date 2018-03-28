@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
 	public float turnDelay = 0.1f;                          //Delay between each Player turn.
 	public int playerhp = 100;                      //Starting value for Player food points.
 	public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
-	[HideInInspector] public bool Team1Turn = true;       //Boolean to check if it's players turn, hidden in inspector but public.
-	[HideInInspector] public string turn = "Team1";
+	[HideInInspector] public bool playersTurn = true;       //Boolean to check if it's players turn, hidden in inspector but public.
+
 
 	private Text levelText;                                 //Text to display current level number.
 	private BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
 	void Update()
 	{
 		//Check that playersTurn or doingSetup are not currently true.
-		if(Team1Turn  || doingSetup)
+		if(playersTurn  || doingSetup)
 
 			//If any of these are true, return and do not start MoveEnemies.
 			return;
