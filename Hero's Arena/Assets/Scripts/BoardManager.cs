@@ -26,7 +26,6 @@ public class BoardManager : MonoBehaviour {
 	public GameObject[] wallTiles;
 	public GameObject[] foodTiles; 
 	public GameObject[] outerWallTiles;
-	public int boardAmount = 1;
 
 	private Transform boardHolder;
 	private List<Vector3> gridPositions = new List<Vector3>();
@@ -34,63 +33,28 @@ public class BoardManager : MonoBehaviour {
 	void InitializeList() {
 		gridPositions.Clear ();
 
-		for (int i = 0; i < 6; i++) {
-			if (i < 3) {
-				for (int x = 1; x < columns - 1; x++) {
+		for (int x = 1; x < columns - 1; x++) {
 
-					for (int y = 1; y < rows - 1; y++) {
-						gridPositions.Add (new Vector3 (x + (8 * i), y, 0f));
-					}
-				}
-			} else {
-				for (int x = 1; x < columns - 1; x++) {
-
-					for (int y = 1; y < rows - 1; y++) {
-						gridPositions.Add (new Vector3 (x + (8 * (i - 3)), y + 9, 0f));
-					}
-				}
+			for (int y = 1; y < rows - 1; y++) {
+				gridPositions.Add (new Vector3 (x, y, 0f));
 			}
 		}
 	}
 
 	void BoardSetup(){
 		boardHolder = new GameObject ("Board").transform;
-		for (int i = 0; i < 6; i++) {
-			if (i < 3) {
-				
-				for (int x = -1; x < columns + 1; x++) {
 
-					for (int y = -1; y < rows + 1; y++) {
-						GameObject toInstantiate = floorTiles [Random.Range (0, floorTiles.Length)];
-						/*if (x == -1 || x == columns || y == -1 || y == rows) {
-							toInstantiate = outerWallTiles [Random.Range (0, wallTiles.Length)];
-						}*/
-						if (x + i == -1 || x == columns || y == -1) {
-							toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
-						}
-						GameObject instance = Instantiate (toInstantiate, new Vector3 (x + (8 * i), y, 0f), Quaternion.identity) as GameObject;
+		for (int x = -1; x < columns + 1; x++) {
 
-						instance.transform.SetParent (boardHolder);
-					}
+			for (int y = -1; y < rows + 1; y++) {
+				GameObject toInstantiate = floorTiles [Random.Range (0, floorTiles.Length)];
+				if (x == -1 || x == columns || y == -1 || y == rows) {
+					toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
 				}
-			} else {
-				for (int x = -1; x < columns + 1; x++) {
+				GameObject instance = Instantiate (toInstantiate, new Vector3 (x, y, 0f), Quaternion.identity) as GameObject;
 
-					for (int y = -1; y < rows + 1; y++) {
-						GameObject toInstantiate = floorTiles [Random.Range (0, floorTiles.Length)];
-						if (x == -1 || x == columns || y == -1 || y == rows) {
-							toInstantiate = wallTiles [Random.Range (0, wallTiles.Length)];
-						}
-						if (x + (i - 3) == -1 || x == columns || y == rows) {
-							toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
-						}
-						GameObject instance = Instantiate (toInstantiate, new Vector3 (x + (8 * (i - 3)), y + 9, 0f), Quaternion.identity) as GameObject;
-
-						instance.transform.SetParent (boardHolder);
-					}
-				}
+				instance.transform.SetParent (boardHolder);
 			}
-			boardAmount++;
 		}
 	}
 
