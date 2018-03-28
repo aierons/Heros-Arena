@@ -8,6 +8,11 @@ TagManager:
   - Exit
   - Food
   - Soda
+  - Pendragon
+  - IronRebel
+  - Team1
+  - Team2
+  - Songbird
   layers:
   - Default
   - TransparentFX
