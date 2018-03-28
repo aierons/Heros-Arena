@@ -32,6 +32,7 @@ public class TeamManager : MonoBehaviour
 	private Hero hmember2;
 
 	public string turn;
+	private int turnCount;
 
 	public int BP;
 	public int maxBP;
@@ -89,7 +90,7 @@ public class TeamManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-
+		turnCount = 0;
 		BP = 1;
 		maxBP = 1;
 
@@ -124,11 +125,11 @@ public class TeamManager : MonoBehaviour
 		} else {
 			actText.text = "";
 		}
-		
-		if (hmember1.getHP () <= 0) {
+
+		if (hmember1.getHP () <= 0 && turn == member1.tag) {
 			turn = member2.tag;
 		}
-		if (hmember2.getHP () <= 0) {
+		if (hmember2.getHP () <= 0 && turn == member2.tag) {
 			turn = captain.tag;
 		}
 	}
@@ -233,10 +234,11 @@ public class TeamManager : MonoBehaviour
 
 			Hero h = getCurrentHero ();
 			h.EndTurn ();
-			GameManager.instance.turn = enemyTeam.tag;
-			if (turn == member2.tag) {
+			turnCount++;
+			if (turnCount % 3 == 0) {
 				RoundEnd ();
 			}
+			GameManager.instance.turn = enemyTeam.tag;
 			changeCurrentHero ();
 		}
 	}
