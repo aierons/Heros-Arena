@@ -14,16 +14,16 @@ public class Songbird : Hero {
 	// Use this for initialization
 	public override void Start () {
 		base.Start ();
-		HP = 6;
-		maxHP = 6;
+		HP = 200;
+		maxHP = 200;
 		DEF = 12;
-		SPEED = 5;
-		maxSPEED = 5;
+		SPEED = 15;
+		maxSPEED = 15;
 		ATK = 2;
-		DMG = 1;
+		DMG = 32;
 		wallDMG = 1;
 		RNG = 2;
-		sing = true;
+		sing = false;
 	}
 	
 	// Update is called once per frame
@@ -45,8 +45,8 @@ public class Songbird : Hero {
 			if (alliesInRange (1) && allyNeedsHealing()) {
 				List<Hero> h = getAlliesInRange (1);
 				foreach (Hero t in h) {
-					t.Heal (2);
-					text += t.tag + " was healed "  + "\n";
+					t.Heal (20);
+					text += t.tag + " was healed 20 HP"  + "\n";
 				}
 				tman.msgText.text = text;
 				tman.BP -= cost;
@@ -95,9 +95,9 @@ public class Songbird : Hero {
 	}
 
 	//inner song
-	public virtual void EndTurn() {
+	public override void EndTurn() {
 		if (sing) {
-			Heal (1);
+			Heal (10);
 			tman.msgText.text = this.tag + " passive (Inner Song) activated";
 			sing = false;
 		} else {

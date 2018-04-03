@@ -4,33 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Pendragon : Hero {
-
-	//private bool targeting;
-	//private Hero target;
-
-	private string s1name = "True Strike";
+	private string s1name = "Flash Strike";
 	private string s2name = "Shield Bash";
 	private string ultName = "Bolster The Army";
-	//private string passname = "Guardian's Flight";
-
-	//public Button passive;
+	//passive : Challenger deal 1 extra damage on hit if target has more hp than her.
 
 	// Use this for initialization
 	public override void Start () {
 		base.Start ();
-		HP = 8;
-		maxHP = 8;
+		HP = 300;
+		maxHP = 300;
 		DEF = 13;
-		SPEED = 5;
-		maxSPEED = 5;
+		SPEED = 15;
+		maxSPEED = 15;
 		ATK = 2;
-		DMG = 3;
+		DMG = 50;
 		wallDMG = 2;
 		RNG = 1;
-
-		//passive.onClick.AddListener (TriggerPassive);
-
-		//targeting = false;
 	}
 	
 	// Update is called once per frame
@@ -57,7 +47,8 @@ public class Pendragon : Hero {
 		if (tman.BP >= cost && GameManager.instance.turn == team.tag
 			&& tman.getCurrentHero ().tag == this.tag && !effects.Contains(Effects.ADV)) {
 			effects.Add (Effects.ADV);
-			tman.msgText.text = this.tag + " has gained advantage on their next attack";
+			SPEED++;
+			tman.msgText.text = this.tag + " has gained advantage on their next attack, SPEED has increased by 1";
 			tman.BP -= cost;
 			return true;
 		} else {
@@ -144,21 +135,91 @@ public class Pendragon : Hero {
 	}
 	*/
 
-	public override void Losehp (int loss) {
-		if (HP <= maxHP/2) {
-			if (loss > 1) {
-				loss--;
-				tman.msgText.text = this.tag + " passive (Tought) activated ";
-			}
-		}
-		base.Losehp (loss);
-	}
-		
+	public override bool Attack() {
+		if (GameManager.instance.turn == team.tag && tman.getCurrentHero ().tag == this.tag) {
+			GameObject t1 = tman.etman.captain;
+			GameObject t2 = tman.etman.member1;
+			GameObject t3 = tman.etman.member2;
+			Hero e1 = t1.GetComponent<Hero>();
+			Hero e2 = t2.GetComponent<Hero>();
+			Hero e3 = t3.GetComponent<Hero>();
+			bool challenger = false;
 
-	/*
-	//Guardian's Flight : 
-	private void TriggerPassive() {
+			if (Mathf.Abs (transform.position.x - t1.transform.position.x)
+				+ Mathf.Abs (transform.position.y - t1.transform.position.y) <= RNG) {
+				if (isHit (e1)) {
+					if (e1.getHP() > this.HP){
+						e1.Losehp (15);
+						challenger = true;
+					}
+					if (effects.Contains(Effects.DOUBLEDMG)) {
+						e1.Losehp (DMG * 2);
+						effects.Remove (Effects.DOUBLEDMG);
+					} else {
+						e1.Losehp (DMG);
+					}
+					tman.msgText.text = this.tag + " landed a hit on " + e1.tag;
+					if (challenger) {
+						tman.msgText.text += this.tag + " passive (Challenger) activated ";
+						challenger = false;
+					}
+					animator.SetTrigger ("ATK");
+				} else {
+					tman.msgText.text = this.tag + " missed a hit on " + e1.tag;
+				}
+				return true;
+			} 
+			if (Mathf.Abs (transform.position.x - t2.transform.position.x)
+				+ Mathf.Abs (transform.position.y - t2.transform.position.y) <= RNG) {
+				if (isHit (e2)) {
+					if (e1.getHP() > this.HP){
+						e1.Losehp (15);
+						challenger = true;
+					}
+					if (effects.Contains(Effects.DOUBLEDMG)) {
+						e2.Losehp (DMG * 2);
+						effects.Remove (Effects.DOUBLEDMG);
+					} else {
+						e2.Losehp (DMG);
+					}
+					tman.msgText.text = this.tag + " landed a hit on " + e2.tag;
+					if (challenger) {
+						tman.msgText.text += this.tag + " passive (Challenger) activated ";
+						challenger = false;
+					}
+					animator.SetTrigger ("ATK");
+				} else {
+					tman.msgText.text = this.tag + " missed a hit on " + e2.tag;
+				}
+				return true;
+			} 
+			if (Mathf.Abs (transform.position.x - t3.transform.position.x)
+				+ Mathf.Abs (transform.position.y - t3.transform.position.y) <= RNG) {
+				if (isHit (e3)) {
+					if (e1.getHP() > this.HP){
+						e1.Losehp (1);
+						challenger = true;
+					}
+					if (effects.Contains(Effects.DOUBLEDMG)) {
+						e3.Losehp (DMG * 2);
+						effects.Remove (Effects.DOUBLEDMG);
+					} else {
+						e3.Losehp (DMG);
+					}
+					tman.msgText.text = this.tag + " landed a hit on " + e3.tag;
+					if (challenger) {
+						tman.msgText.text += this.tag + " passive (Challenger) activated ";
+						challenger = false;
+					}
+					animator.SetTrigger ("ATK");
+				} else {
+					tman.msgText.text = this.tag + " missed a hit on " + e3.tag;
+				}
+				return true;
+			}
+
+		}
+		return false;
 	}
-	*/
 		
 }

@@ -23,6 +23,8 @@ public class Hero : MovingObject {
 	protected int wallDMG = 1;
 	protected int RNG = 1;
 
+	protected int Direction;
+
 	public AudioClip moveSound1;
 	//2 of 2 Audio clips to play when player moves.
 	public AudioClip moveSound2;
@@ -38,12 +40,17 @@ public class Hero : MovingObject {
 	//Audio clip to play when player dies.
 	public AudioClip gameOverSound;
 
-	private Animator animator;
+	protected Animator animator;
 
 	public GameObject team;
 	protected TeamManager tman;
 
 	//Getter and Setters
+	public virtual string getHeroText() {
+		return tag + " : " + HP + "/" + maxHP + " SPEED:" + SPEED;
+	}
+
+
 	public int getHP() {
 		return HP;
 	}
@@ -70,6 +77,8 @@ public class Hero : MovingObject {
 		//Get a component reference to the Player's animator component
 		animator = GetComponent<Animator> ();
 
+		Direction = 0;
+
 		//Call the Start function of the MovingObject base class.
 		base.Start ();
 	}
@@ -88,7 +97,7 @@ public class Hero : MovingObject {
 			((Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D)) && team.tag == "Team1")
 			|| ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) 
 				&& team.tag == "Team2"))
-			&& SPEED > 0)  {
+			)  {
 			//print (this.tag + ":" +team.tag + ":" + "reach");
 			int horizontal = 0;  	//Used to store the horizontal move direction.
 			int vertical = 0;		//Used to store the vertical move direction.
@@ -107,27 +116,32 @@ public class Hero : MovingObject {
 			if (vertical > 0)
 			{
 				animator.SetInteger("Direction", 2);
+				Direction = 2;
 			}
 			else if (vertical < 0)
 			{
 				animator.SetInteger("Direction", 0);
+				Direction = 0;
 			}
 			else if (horizontal > 0)
 			{
 				animator.SetInteger("Direction", 3);
+				Direction = 3;
 			}
 			else if (horizontal < 0)
 			{
 				animator.SetInteger("Direction", 1);
+				Direction = 1;
 			}
 
+			if (SPEED > 0) {
 			//Check if we have a non-zero value for horizontal or vertical
 			if (horizontal != 0 || vertical != 0) {
 				//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
 				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
 				AttemptMove<Wall> (horizontal, vertical);
 			}
-			SPEED--;
+			}
 		}
 	}
 
@@ -146,6 +160,7 @@ public class Hero : MovingObject {
 		if (Move (xDir, yDir, out hit)) {
 			//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
 			SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
+			SPEED--;
 		}
 
 		//Since the player has moved and lost hp points, check if the game has ended.
@@ -160,8 +175,10 @@ public class Hero : MovingObject {
 		Wall hitWall = component as Wall;
 
 		//Call the DamageWall function of the Wall we are hitting.
+		if (hitWall.hp > wallDMG) {
+			SPEED--;
+		}
 		hitWall.DamageWall (wallDMG);
-
 		//Set the attack trigger of the player's animation controller in order to play the player's attack animation.
 		animator.SetTrigger ("ATK");
 	}
@@ -241,8 +258,17 @@ public class Hero : MovingObject {
 			this.gameObject.SetActive (false);
 		}
 	}
+	/*
+	public virtual bool Attack() {
+		if (GameManager.instance.turn == team.tag && tman.getCurrentHero ().tag == this.tag) {
 
-	public bool Attack() {
+
+		} else {
+			return false;
+		}
+	}
+*/
+	public virtual bool Attack() {
 		if (GameManager.instance.turn == team.tag && tman.getCurrentHero ().tag == this.tag) {
 			GameObject t1 = tman.etman.captain;
 			GameObject t2 = tman.etman.member1;

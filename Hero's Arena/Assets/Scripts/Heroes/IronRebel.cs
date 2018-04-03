@@ -6,45 +6,41 @@ using UnityEngine.UI;
 public class IronRebel : Hero {
 
 	private string s1name = "Armor Spike";
-	private string s2name = "Armor Up";
-	private string s2name2 = "Armor Down";
-	private string ultName = "Heavy Panzer";
+	private string s2name = "Iron Hide";
+	private string ultName = "Panzer Smash";
 
 	private bool spiked;
 	private bool armorUp;
 
+	private int armor;
+
+	public override string getHeroText ()
+	{
+		return tag + " : " + HP + "+" + armor + "/" + maxHP + " SPEED:" + SPEED;
+	}
+
 	// Use this for initialization
 	public override void Start () {
 		base.Start ();
-		HP = 7;
-		maxHP = 7;
+		HP = 300;
+		maxHP = 300;
 		DEF = 14;
-		SPEED = 5;
-		maxSPEED = 5;
+		SPEED = 15;
+		maxSPEED = 15;
 		ATK = 2;
-		DMG = 2;
+		DMG = 45;
 		wallDMG = 3;
 		RNG = 1;
 		spiked = false;
 		armorUp = false;
+		armor = 0;
 	}
 	
 	public override void Update () {
 		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [2]";
-			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [1]";
-			if (armorUp) {
-				tman.skill2Button.GetComponentInChildren<Text> ().text = s2name2 + " [1]";
-			}
+			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [4]";
-		} 
-
-		if (armorUp) {
-			DEF = 15;
-			maxSPEED = 3;
-		} else {
-			DEF = 14;
-			maxSPEED = 5;
 		}
 
 		base.Update ();
@@ -66,31 +62,30 @@ public class IronRebel : Hero {
 
 	public override void Losehp (int loss) {
 		if (spiked) {
-			tman.etman.getCurrentHero ().Losehp (1);
-			tman.msgText.text = tman.etman.getCurrentHero ().tag + " took 2 damage from Armor Spike";
+			tman.etman.getCurrentHero ().Losehp (15);
+			tman.msgText.text = tman.etman.getCurrentHero ().tag + " took 15 damage from Armor Spike";
 			spiked = false;
 		}
 
-		//Unbreakable
-		if (HP > 1 && HP - loss <= 0) {
-			HP = 1;
-			tman.msgText.text = this.tag + " passive (Unbreakable) activated";
+		//Armor
+		if (armor > 0 && armor >= loss) {
+			armor -= loss;
+		} else if (armor > 0 && armor < loss) {
+			loss -= armor;
+			armor = 0;
+			base.Losehp(loss);
 		} else {
-			base.Losehp (loss);
+		base.Losehp (loss);
 		}
 	}
 
-	//Iron Defense : Raise Def by 2 until next turn
+	//Iron Hide : grant self some temp HP
 	override public bool Skill2() {
-		int cost = 1;
+		int cost = 2;
 		if (tman.BP >= cost && GameManager.instance.turn == team.tag
 			&& tman.getCurrentHero ().tag == this.tag) {
-			armorUp = !armorUp;
-			if (armorUp) {
-				tman.msgText.text = this.tag + " has activated Armor up";
-			} else {
-				tman.msgText.text = this.tag + " has activated Armor down";
-			}
+			armor = 50;
+			tman.msgText.text = this.tag + " has activated Iron Hide";
 			tman.BP -= cost;
 			return true;
 		} else {
@@ -98,12 +93,13 @@ public class IronRebel : Hero {
 		}
 	}
 
+	//Panzer Smash: next attack deals damage in a 3x4 rectangle space infront of him, goes through walls and destroys walls, all enemies hit are stunned {4BP}
 	public override bool Ult() {
 		int cost = 4;
 		if (tman.BP >= cost && GameManager.instance.turn == team.tag
 		    && tman.getCurrentHero ().tag == this.tag) {
 			effects.Add (Effects.DOUBLEDMG);
-			tman.msgText.text = this.tag + " has activated Heavy Panzer";
+			tman.msgText.text = this.tag + " has activated Panzer Smash";
 			tman.BP -= cost;
 			return true;
 		} else {

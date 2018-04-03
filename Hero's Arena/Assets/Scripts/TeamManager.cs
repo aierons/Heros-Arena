@@ -82,10 +82,7 @@ public class TeamManager : MonoBehaviour
 			turn = captain.tag;
 		}
 	}
-
-	private string getHeroText(Hero h) {
-		return h.tag + " : " + h.getHP () + "/" + h.getMaxHP () + " DEF:" + h.getDEF() + " SPEED:" + h.getSPEED();
-	}
+		
 
 	// Use this for initialization
 	void Start ()
@@ -102,7 +99,7 @@ public class TeamManager : MonoBehaviour
 
 		turn = captain.tag;
 
-		hpText.text = getHeroText(hcaptain) + "\n" + getHeroText(hmember1) + "\n" + getHeroText(hmember2)
+		hpText.text = hcaptain.getHeroText () + "\n" + hmember1.getHeroText () + "\n" + hmember2.getHeroText ()
 			+ "\n" + BP.ToString() + "/" + maxBP.ToString();
 		msgText.text = "";
 		actText.text = "";
@@ -116,7 +113,7 @@ public class TeamManager : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-		hpText.text = getHeroText(hcaptain) + "\n" + getHeroText(hmember1) + "\n" + getHeroText(hmember2)
+		hpText.text = hcaptain.getHeroText() + "\n" + hmember1.getHeroText() + "\n" + hmember2.getHeroText()
 			+ "\n" + BP.ToString() + "/" + maxBP.ToString();
 
 		if (GameManager.instance.turn == tag) {
