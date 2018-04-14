@@ -12,13 +12,19 @@ public class Pendragon : Hero {
 	// Use this for initialization
 	public override void Start () {
 		base.Start ();
+
+		EV = 1f;
+		ACCb = .90f;
+		ACC = 1f;
+
+		ATK = 18;
+		DEF = 16;
+		DMG = 88;
+
 		HP = 300;
 		maxHP = 300;
-		DEF = 13;
 		SPEED = 15;
 		maxSPEED = 15;
-		ATK = 2;
-		DMG = 50;
 		wallDMG = 2;
 		RNG = 1;
 	}
@@ -133,6 +139,7 @@ public class Pendragon : Hero {
 		}
 		return false;
 	}
+
 	*/
 
 	public override bool Attack() {
@@ -143,6 +150,7 @@ public class Pendragon : Hero {
 			Hero e1 = t1.GetComponent<Hero>();
 			Hero e2 = t2.GetComponent<Hero>();
 			Hero e3 = t3.GetComponent<Hero>();
+			int loss = 0;
 			bool challenger = false;
 
 			if (Mathf.Abs (transform.position.x - t1.transform.position.x)
@@ -152,13 +160,9 @@ public class Pendragon : Hero {
 						e1.Losehp (15);
 						challenger = true;
 					}
-					if (effects.Contains(Effects.DOUBLEDMG)) {
-						e1.Losehp (DMG * 2);
-						effects.Remove (Effects.DOUBLEDMG);
-					} else {
-						e1.Losehp (DMG);
-					}
-					tman.msgText.text = this.tag + " landed a hit on " + e1.tag;
+					loss = getDamage (e1.getDEF());
+					e1.Losehp (loss);
+					tman.msgText.text = this.tag + " landed a hit on " + e1.tag + " dealt " + loss + " damage";
 					if (challenger) {
 						tman.msgText.text += this.tag + " passive (Challenger) activated ";
 						challenger = false;
@@ -176,13 +180,9 @@ public class Pendragon : Hero {
 						e1.Losehp (15);
 						challenger = true;
 					}
-					if (effects.Contains(Effects.DOUBLEDMG)) {
-						e2.Losehp (DMG * 2);
-						effects.Remove (Effects.DOUBLEDMG);
-					} else {
-						e2.Losehp (DMG);
-					}
-					tman.msgText.text = this.tag + " landed a hit on " + e2.tag;
+					loss = getDamage (e2.getDEF());
+					e2.Losehp (loss);
+					tman.msgText.text = this.tag + " landed a hit on " + e2.tag + " dealt " + loss + " damage";
 					if (challenger) {
 						tman.msgText.text += this.tag + " passive (Challenger) activated ";
 						challenger = false;
@@ -197,16 +197,12 @@ public class Pendragon : Hero {
 				+ Mathf.Abs (transform.position.y - t3.transform.position.y) <= RNG) {
 				if (isHit (e3)) {
 					if (e1.getHP() > this.HP){
-						e1.Losehp (1);
+						e1.Losehp (15);
 						challenger = true;
 					}
-					if (effects.Contains(Effects.DOUBLEDMG)) {
-						e3.Losehp (DMG * 2);
-						effects.Remove (Effects.DOUBLEDMG);
-					} else {
-						e3.Losehp (DMG);
-					}
-					tman.msgText.text = this.tag + " landed a hit on " + e3.tag;
+					loss = getDamage (e3.getDEF());
+					e3.Losehp (loss);
+					tman.msgText.text = this.tag + " landed a hit on " + e3.tag + " dealt " + loss + " damage";
 					if (challenger) {
 						tman.msgText.text += this.tag + " passive (Challenger) activated ";
 						challenger = false;

@@ -10,7 +10,6 @@ public class IronRebel : Hero {
 	private string ultName = "Panzer Smash";
 
 	private bool spiked;
-	private bool armorUp;
 
 	private int armor;
 
@@ -22,17 +21,23 @@ public class IronRebel : Hero {
 	// Use this for initialization
 	public override void Start () {
 		base.Start ();
-		HP = 300;
-		maxHP = 300;
-		DEF = 14;
+	
+		EV = 1f;
+		ACCb = .90f;
+		ACC = 1f;
+
+		ATK = 15;
+		DEF = 18;
+		DMG = 80;
+
+		HP = 400;
+		maxHP = 400;
 		SPEED = 15;
 		maxSPEED = 15;
-		ATK = 2;
-		DMG = 45;
 		wallDMG = 3;
 		RNG = 1;
+
 		spiked = false;
-		armorUp = false;
 		armor = 0;
 	}
 	

@@ -14,15 +14,22 @@ public class Songbird : Hero {
 	// Use this for initialization
 	public override void Start () {
 		base.Start ();
+
+		EV = 1f;
+		ACCb = .90f;
+		ACC = 1f;
+
+		ATK = 14;
+		DEF = 14;
+		DMG = 70;
+
 		HP = 200;
 		maxHP = 200;
-		DEF = 12;
 		SPEED = 15;
 		maxSPEED = 15;
-		ATK = 2;
-		DMG = 32;
 		wallDMG = 1;
 		RNG = 2;
+
 		sing = false;
 	}
 	
@@ -45,7 +52,7 @@ public class Songbird : Hero {
 			if (alliesInRange (1) && allyNeedsHealing()) {
 				List<Hero> h = getAlliesInRange (1);
 				foreach (Hero t in h) {
-					t.Heal (20);
+					t.Heal (30);
 					text += t.tag + " was healed 20 HP"  + "\n";
 				}
 				tman.msgText.text = text;

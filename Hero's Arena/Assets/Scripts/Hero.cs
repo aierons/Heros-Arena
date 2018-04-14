@@ -12,7 +12,7 @@ public class Hero : MovingObject {
 	public enum Effects {ADV, DADV, STUN, DOUBLEDMG, BOOST, VBOOST};
 
 	public List<Effects> effects;
-
+	/*
 	protected int HP = 8;
 	protected int maxHP = 8;
 	protected int DEF = 13;
@@ -21,6 +21,21 @@ public class Hero : MovingObject {
 	protected int ATK = 2;
 	protected int DMG = 3;
 	protected int wallDMG = 1;
+	protected int RNG = 1;
+*/
+	protected float EV = 1f; // (.7 <STUN- 1 -QUICK> 1.1)
+	protected float ACCb = .90f; // unique for each character
+	protected float ACC = 1f; // (.7 <DISADV- 1 -ADV> 1.1)
+
+	protected int ATK = 18;
+	protected int DEF = 16;
+	protected int DMG = 80;
+
+	protected int HP = 300;
+	protected int maxHP = 300;
+	protected int SPEED = 15;
+	protected int maxSPEED = 15;
+	protected int wallDMG = 2;
 	protected int RNG = 1;
 
 	protected int Direction;
@@ -276,17 +291,14 @@ public class Hero : MovingObject {
 			Hero e1 = t1.GetComponent<Hero>();
 			Hero e2 = t2.GetComponent<Hero>();
 			Hero e3 = t3.GetComponent<Hero>();
+			int loss = 0;
 
 			if (Mathf.Abs (transform.position.x - t1.transform.position.x)
 				+ Mathf.Abs (transform.position.y - t1.transform.position.y) <= RNG) {
 				if (isHit (e1)) {
-					if (effects.Contains(Effects.DOUBLEDMG)) {
-						e1.Losehp (DMG * 2);
-						effects.Remove (Effects.DOUBLEDMG);
-					} else {
-						e1.Losehp (DMG);
-					}
-					tman.msgText.text = this.tag + " landed a hit on " + e1.tag;
+					loss = getDamage (e1.DEF);
+					e1.Losehp (loss);
+					tman.msgText.text = this.tag + " landed a hit on " + e1.tag + " dealt " + loss + " damage";
 					animator.SetTrigger ("ATK");
 				} else {
 					tman.msgText.text = this.tag + " missed a hit on " + e1.tag;
@@ -296,13 +308,9 @@ public class Hero : MovingObject {
 			if (Mathf.Abs (transform.position.x - t2.transform.position.x)
 				+ Mathf.Abs (transform.position.y - t2.transform.position.y) <= RNG) {
 				if (isHit (e2)) {
-					if (effects.Contains(Effects.DOUBLEDMG)) {
-						e2.Losehp (DMG * 2);
-						effects.Remove (Effects.DOUBLEDMG);
-					} else {
-						e2.Losehp (DMG);
-					}
-					tman.msgText.text = this.tag + " landed a hit on " + e2.tag;
+					loss = getDamage (e2.DEF);
+					e2.Losehp (loss);
+					tman.msgText.text = this.tag + " landed a hit on " + e2.tag + " dealt " + loss + " damage";
 					animator.SetTrigger ("ATK");
 				} else {
 					tman.msgText.text = this.tag + " missed a hit on " + e2.tag;
@@ -312,13 +320,9 @@ public class Hero : MovingObject {
 			if (Mathf.Abs (transform.position.x - t3.transform.position.x)
 				+ Mathf.Abs (transform.position.y - t3.transform.position.y) <= RNG) {
 				if (isHit (e3)) {
-					if (effects.Contains(Effects.DOUBLEDMG)) {
-						e3.Losehp (DMG * 2);
-						effects.Remove (Effects.DOUBLEDMG);
-					} else {
-						e3.Losehp (DMG);
-					}
-					tman.msgText.text = this.tag + " landed a hit on " + e3.tag;
+					loss = getDamage (e3.DEF);
+					e3.Losehp (loss);
+					tman.msgText.text = this.tag + " landed a hit on " + e3.tag + " dealt " + loss + " damage";
 					animator.SetTrigger ("ATK");
 				} else {
 					tman.msgText.text = this.tag + " missed a hit on " + e3.tag;
@@ -328,6 +332,17 @@ public class Hero : MovingObject {
 
 		}
 		return false;
+	}
+
+	public int getDamage(int eDEF) {
+		float r = Random.Range (2.85f, 4.85f);
+
+		if (effects.Contains(Effects.DOUBLEDMG)) {
+			effects.Remove (Effects.DOUBLEDMG);
+			return Mathf.RoundToInt( ((6 * DMG * ((float)ATK / (float)eDEF)) / 50 + 2) * r);
+		} else {
+			return Mathf.RoundToInt( ((6 * DMG * ((float)ATK / (float)eDEF)) / 50 + 2) * r);
+		}
 	}
 
 	public virtual void EndTurn() {
@@ -361,7 +376,7 @@ public class Hero : MovingObject {
 
 
 	//Buffs
-
+	/*
 	public bool isHit(Hero trgt) {
 		int r = 10;
 		if (effects.Contains (Effects.ADV)) {
@@ -383,6 +398,12 @@ public class Hero : MovingObject {
 		} else {
 			return false;
 		}
+	}
+*/
+	public bool isHit(Hero trgt) {
+		float r = Random.value;
+
+		return r < ACCb * (ACC / trgt.EV);
 	}
 
 	public void Boost() {
