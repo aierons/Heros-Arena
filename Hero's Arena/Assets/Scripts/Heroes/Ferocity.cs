@@ -13,7 +13,7 @@ public class Ferocity : Hero {
 	private float burn = .65f;
 
 	// Use this for initialization
-	void Start () {
+	public override void Start () {
 		base.Start ();
 
 		EV = 1f;
@@ -33,7 +33,7 @@ public class Ferocity : Hero {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	public override void Update () {
 		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [3]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";

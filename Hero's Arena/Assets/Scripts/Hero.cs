@@ -353,9 +353,9 @@ public class Hero : MovingObject {
 				effects.Remove (Effects.VBOOST);
 			}
 
-			if (effects.Contains (Effects.PSN) {
+			if (effects.Contains (Effects.PSN)) {
 				if (psn_count > 0) {
-				HP -= (HP * .1);
+					HP -= (int)(HP * .1);
 				} else {
 					psn_count--;
 				}
@@ -422,7 +422,7 @@ public class Hero : MovingObject {
 	public void RemoveHitEffects () {
 
 		if (effects.Contains (Effects.RNGUP)) {
-			effects.Remove (RangeUp);
+			effects.Remove (Effects.RNGUP);
 			RNG -= 1;
 		}
 

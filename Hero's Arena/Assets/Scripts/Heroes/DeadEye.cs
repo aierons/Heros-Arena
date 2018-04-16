@@ -11,7 +11,7 @@ public class DeadEye : Hero
 	private string ultName = "Mark The Dead Man";
 
 	// Use this for initialization
-	void Start ()
+	public override void Start ()
 	{
 
 		base.Start ();
@@ -33,7 +33,7 @@ public class DeadEye : Hero
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	public override void Update ()
 	{
 		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [1]";
@@ -52,13 +52,13 @@ public class DeadEye : Hero
 		if (tman.BP >= cost && GameManager.instance.turn == team.tag
 			&& tman.getCurrentHero ().tag == this.tag) {
 			if (effects.Contains (Effects.RNGUP) && effects.Contains (Effects.ADV)) {
-				tman.msgText = "can not currently activate this ability";
+				tman.msgText.text = "can not currently activate this ability";
 				return false;
 			} else {
 				base.RangeUp ();
 				effects.Add (Effects.ADV);
 				tman.BP -= cost;
-				tman.msgText = this.tag + " used Steady Hand, gained advantage and +1 RANGE for next attack.";
+				tman.msgText.text = this.tag + " used Steady Hand, gained advantage and +1 RANGE for next attack.";
 				return true;
 			}
 		} else {
