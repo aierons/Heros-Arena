@@ -131,6 +131,7 @@ MonoBehaviour:
   drinkSound1: {fileID: 8300000, guid: b6b608537288246c9a464915db27bf52, type: 3}
   drinkSound2: {fileID: 8300000, guid: bcb9dda73ee914d3e8f252895f73f461, type: 3}
   gameOverSound: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
+  Target: {fileID: 1495216852867464, guid: 3f11c150eaaa7e34fb0f825c89eb7b03, type: 2}
   team: {fileID: 0}
 --- !u!212 &212370502992371268
 SpriteRenderer:

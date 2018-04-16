@@ -57,6 +57,13 @@ public class Hero : MovingObject {
 	//Audio clip to play when player dies.
 	public AudioClip gameOverSound;
 
+	public GameObject Target;
+	private bool targeting;
+	private List<Hero> targets;
+	private List<GameObject> tileTargets;
+	private int currentTarget = 0;
+	private int selectedTarget;
+
 	protected Animator animator;
 
 	public GameObject team;
@@ -113,7 +120,7 @@ public class Hero : MovingObject {
 		if ((
 			((Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D)) && team.tag == "Team1")
 			|| ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) 
-				&& team.tag == "Team2"))
+				&& team.tag == "Team2")) && !targeting
 			)  {
 			//print (this.tag + ":" +team.tag + ":" + "reach");
 			int horizontal = 0;  	//Used to store the horizontal move direction.
@@ -158,6 +165,73 @@ public class Hero : MovingObject {
 				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
 				AttemptMove<Wall> (horizontal, vertical);
 			}
+			}
+		}
+		if (targeting) {
+			int lastTarget = currentTarget;
+			if ((Input.GetKeyDown(KeyCode.A) && team.tag == "Team1") ||
+				(Input.GetKeyDown (KeyCode.LeftArrow) && team.tag == "Team2")) {
+				--currentTarget;
+			}
+			if ((Input.GetKeyDown(KeyCode.D) && team.tag == "Team1") ||
+				(Input.GetKeyDown (KeyCode.RightArrow) && team.tag == "Team2")) {
+				++currentTarget;
+			}
+			currentTarget = (currentTarget % targets.Count + targets.Count) % targets.Count;
+			if (lastTarget != currentTarget) {
+				GameObject.Find("Target").transform.position = targets [currentTarget].transform.position;
+				if (targets [currentTarget].transform.position.y > transform.position.y) {
+					animator.SetInteger("Direction", 2);
+					Direction = 2;
+				} else if (targets [currentTarget].transform.position.y < transform.position.y) {
+					animator.SetInteger("Direction", 0);
+					Direction = 0;
+				} else if (targets [currentTarget].transform.position.x < transform.position.x) {
+					animator.SetInteger("Direction", 1);
+					Direction = 1;
+				} else if (targets [currentTarget].transform.position.x > transform.position.x) {
+					animator.SetInteger("Direction", 3);
+					Direction = 3;
+				}
+			}
+			if (Input.GetKeyDown (KeyCode.Space)) {
+				selectedTarget = currentTarget;
+				int loss = 0;
+				if (selectedTarget == 0) {
+					Hero e1 = targets [0].GetComponent<Hero> ();
+					if (isHit (e1)) {
+						loss = getDamage (e1.getDEF());
+						e1.Losehp (loss);
+						tman.msgText.text = this.tag + " landed a hit on " + e1.tag + " dealt " + loss + " damage";
+						animator.SetTrigger ("ATK");
+					} else {
+						tman.msgText.text = this.tag + " missed a hit on " + e1.tag;
+					}
+				} 
+				if (selectedTarget == 1) {
+					Hero e2 = targets [1].GetComponent<Hero> ();
+					if (isHit (e2)) {
+						loss = getDamage (e2.getDEF());
+						e2.Losehp (loss);
+						tman.msgText.text = this.tag + " landed a hit on " + e2.tag + " dealt " + loss + " damage";
+						animator.SetTrigger ("ATK");
+					} else {
+						tman.msgText.text = this.tag + " missed a hit on " + e2.tag;
+					}
+				} 
+				if (selectedTarget == 2) {
+					Hero e3 = targets [2].GetComponent<Hero> ();
+					if (isHit (e3)) {
+						loss = getDamage (e3.getDEF());
+						e3.Losehp (loss);
+						tman.msgText.text = this.tag + " landed a hit on " + e3.tag + " dealt " + loss + " damage";
+						animator.SetTrigger ("ATK");
+					} else {
+						tman.msgText.text = this.tag + " missed a hit on " + e3.tag;
+					}
+				}
+				targeting = false;
+				Destroy (GameObject.Find ("Target"));
 			}
 		}
 	}
@@ -278,53 +352,43 @@ public class Hero : MovingObject {
 
 	public virtual bool Attack() {
 		if (GameManager.instance.turn == team.tag && tman.getCurrentHero ().tag == this.tag) {
-			GameObject t1 = tman.etman.captain;
-			GameObject t2 = tman.etman.member1;
-			GameObject t3 = tman.etman.member2;
-			Hero e1 = t1.GetComponent<Hero>();
-			Hero e2 = t2.GetComponent<Hero>();
-			Hero e3 = t3.GetComponent<Hero>();
-			int loss = 0;
+			targeting = true;
 
-			if (Mathf.Abs (transform.position.x - t1.transform.position.x)
-				+ Mathf.Abs (transform.position.y - t1.transform.position.y) <= RNG) {
-				if (isHit (e1)) {
-					loss = getDamage (e1.DEF);
-					e1.Losehp (loss);
-					tman.msgText.text = this.tag + " landed a hit on " + e1.tag + " dealt " + loss + " damage";
-					animator.SetTrigger ("ATK");
-				} else {
-					tman.msgText.text = this.tag + " missed a hit on " + e1.tag;
-				}
-				return true;
-			} 
-			if (Mathf.Abs (transform.position.x - t2.transform.position.x)
-				+ Mathf.Abs (transform.position.y - t2.transform.position.y) <= RNG) {
-				if (isHit (e2)) {
-					loss = getDamage (e2.DEF);
-					e2.Losehp (loss);
-					tman.msgText.text = this.tag + " landed a hit on " + e2.tag + " dealt " + loss + " damage";
-					animator.SetTrigger ("ATK");
-				} else {
-					tman.msgText.text = this.tag + " missed a hit on " + e2.tag;
-				}
-				return true;
-			} 
-			if (Mathf.Abs (transform.position.x - t3.transform.position.x)
-				+ Mathf.Abs (transform.position.y - t3.transform.position.y) <= RNG) {
-				if (isHit (e3)) {
-					loss = getDamage (e3.DEF);
-					e3.Losehp (loss);
-					tman.msgText.text = this.tag + " landed a hit on " + e3.tag + " dealt " + loss + " damage";
-					animator.SetTrigger ("ATK");
-				} else {
-					tman.msgText.text = this.tag + " missed a hit on " + e3.tag;
-				}
-				return true;
+			findPlayerTargets (transform.position.x, transform.position.y, RNG);
+			if (targets.Count > 0) {
+				GameObject t = Instantiate (Target);
+				t.name = "Target";
+				t.transform.position = targets [0].transform.position;
+				t.layer = 8;
+			} else {
+				targeting = false;
 			}
-
+			return true;
 		}
 		return false;
+	}
+
+	public void findPlayerTargets(float centerX, float centerY, int range) {
+		List<Hero> enemies = tman.getEnemyTeam ();
+
+		targets = new List<Hero> ();
+		foreach (Hero enemy in enemies) {
+			if (Mathf.Abs (centerX - enemy.transform.position.x)
+			   + Mathf.Abs (centerY - enemy.transform.position.y) <= range
+			   && enemy.getHP () > 0) {
+				targets.Add (enemy);
+			}
+		}
+	}
+
+	public void findTileTargets(float centerX, float centerY, int range) {
+		tileTargets = new List<GameObject>();
+		foreach(GameObject tile in GameObject.FindGameObjectsWithTag("Floor")) {
+			if (Mathf.Abs (centerX - tile.transform.position.x)
+				+ Mathf.Abs (centerY - tile.transform.position.y) <= RNG) {
+				tileTargets.Add (tile);
+			}
+		}
 	}
 
 	public int getDamage(int eDEF) {
@@ -351,6 +415,8 @@ public class Hero : MovingObject {
 			}
 			if (effects.Contains (Effects.VBOOST)) {
 				effects.Remove (Effects.VBOOST);
+				ATK -= 3;
+				DMG -= 2;
 			}
 
 			if (effects.Contains (Effects.PSN)) {

@@ -20,6 +20,7 @@ TagManager:
   - Evergreen
   - DeadEye
   - RadioFreak
+  - Floor
   layers:
   - Default
   - TransparentFX

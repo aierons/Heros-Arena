@@ -1,11 +1,20 @@
 fileFormatVersion: 2
 guid: 13ed9c02b3ebbc24d827d360f3e194ab
-timeCreated: 1523902169
+timeCreated: 1523915716
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - moveSound1: {instanceID: 0}
+  - moveSound2: {instanceID: 0}
+  - eatSound1: {instanceID: 0}
+  - eatSound2: {instanceID: 0}
+  - drinkSound1: {instanceID: 0}
+  - drinkSound2: {instanceID: 0}
+  - gameOverSound: {instanceID: 0}
+  - Target: {fileID: 1495216852867464, guid: 3f11c150eaaa7e34fb0f825c89eb7b03, type: 2}
+  - team: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

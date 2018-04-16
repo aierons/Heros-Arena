@@ -117,6 +117,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d94ffef47b1d2c942b7d7193d6ed7762, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveTime: 0.1
+  blockingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  pointsPerFood: 1
+  pointsPerSoda: 2
+  effects: 
+  moveSound1: {fileID: 0}
+  moveSound2: {fileID: 0}
+  eatSound1: {fileID: 0}
+  eatSound2: {fileID: 0}
+  drinkSound1: {fileID: 0}
+  drinkSound2: {fileID: 0}
+  gameOverSound: {fileID: 0}
+  Target: {fileID: 1495216852867464, guid: 3f11c150eaaa7e34fb0f825c89eb7b03, type: 2}
+  team: {fileID: 0}
 --- !u!212 &212279970742309944
 SpriteRenderer:
   m_ObjectHideFlags: 1
