@@ -9,7 +9,7 @@ public class Hero : MovingObject {
 	//Number of points to add to player hp points when picking up a soda object.
 	public int pointsPerSoda = 2;
 
-	public enum Effects {ADV, DADV, STUN, DOUBLEDMG, BOOST, VBOOST};
+	public enum Effects {ADV, DADV, STUN, DOUBLEDMG, BOOST, VBOOST, RNGUP, PSN};
 
 	public List<Effects> effects;
 	/*
@@ -37,6 +37,8 @@ public class Hero : MovingObject {
 	protected int maxSPEED = 15;
 	protected int wallDMG = 2;
 	protected int RNG = 1;
+
+	protected int psn_count  = 0;
 
 	protected int Direction;
 
@@ -273,16 +275,7 @@ public class Hero : MovingObject {
 			this.gameObject.SetActive (false);
 		}
 	}
-	/*
-	public virtual bool Attack() {
-		if (GameManager.instance.turn == team.tag && tman.getCurrentHero ().tag == this.tag) {
 
-
-		} else {
-			return false;
-		}
-	}
-*/
 	public virtual bool Attack() {
 		if (GameManager.instance.turn == team.tag && tman.getCurrentHero ().tag == this.tag) {
 			GameObject t1 = tman.etman.captain;
@@ -359,6 +352,14 @@ public class Hero : MovingObject {
 			if (effects.Contains (Effects.VBOOST)) {
 				effects.Remove (Effects.VBOOST);
 			}
+
+			if (effects.Contains (Effects.PSN) {
+				if (psn_count > 0) {
+				HP -= (HP * .1);
+				} else {
+					psn_count--;
+				}
+			}
 		}
 	}
 
@@ -402,8 +403,34 @@ public class Hero : MovingObject {
 */
 	public bool isHit(Hero trgt) {
 		float r = Random.value;
+		if (effects.Contains(Effects.ADV) && !(effects.Contains(Effects.DADV))) {
+			effects.Remove (Effects.ADV);
+			RemoveHitEffects ();
+			return r < ACCb * (ACC + .3 / trgt.EV);
 
-		return r < ACCb * (ACC / trgt.EV);
+		} else if (effects.Contains(Effects.DADV) && !(effects.Contains(Effects.ADV))) {
+			effects.Remove (Effects.DADV);
+			RemoveHitEffects ();
+			return r < ACCb * (ACC - .3 / trgt.EV);
+		} else {
+			RemoveHitEffects ();
+			return r < ACCb * (ACC / trgt.EV);
+		}
+	}
+
+	//Removes effects which end once an attack lands 
+	public void RemoveHitEffects () {
+
+		if (effects.Contains (Effects.RNGUP)) {
+			effects.Remove (RangeUp);
+			RNG -= 1;
+		}
+
+		if (effects.Contains (Effects.ADV) && effects.Contains (Effects.DADV)) {
+			effects.Remove (Effects.ADV);
+			effects.Remove (Effects.DADV);
+		}
+		
 	}
 
 	public void Boost() {
@@ -412,16 +439,29 @@ public class Hero : MovingObject {
 		DMG += 1;
 	}
 
+	public void RangeUp() {
+		effects.Add (Effects.RNGUP);
+		RNG += 1;
+	}
+
 	public void ValorBoost() {
 		effects.Add (Effects.VBOOST);
 		ATK += 3;
 		DMG += 2;
 	}
+
 	//Debuffs
 
 	public void Stun() {
 		SPEED /= 2;
 		effects.Add (Effects.STUN);
+	}
+
+	public void Poison() {
+		if (!effects.Contains (Effects.PSN)) {
+			effects.Add (Effects.PSN);
+			psn_count = 3;
+		}
 	}
 
 }

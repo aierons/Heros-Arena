@@ -107,7 +107,7 @@ public class Pendragon : Hero {
 	public override bool Ult() {
 		int cost = 5;
 		if (tman.BP >= cost && GameManager.instance.turn == team.tag
-			&& tman.getCurrentHero ().tag == this.tag && tman.BP >= cost) {
+			&& tman.getCurrentHero ().tag == this.tag) {
 			List<Hero> t = tman.getTeam ();
 			List<Hero> e = tman.getEnemyTeam ();
 

@@ -16,6 +16,10 @@ TagManager:
   - JackFrost
   - Ferocity
   - Medico
+  - GameManager
+  - Evergreen
+  - DeadEye
+  - RadioFreak
   layers:
   - Default
   - TransparentFX

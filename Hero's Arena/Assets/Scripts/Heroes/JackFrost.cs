@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Ferocity : Hero {
+public class JackFrost : Hero {
+	private string s1name = "Arctic Cliff";
+	private string s2name = "Frostbite";
+	private string ultname = "Zeroth Hour";
+	private string passname = "Permafrost";
 
-	private string s1name = "Explosion";
-	private string s2name = "Ignition";
-	private string ultname = "Hellfire";
-	private string passname = "Immolate";
-
-	private float burn = .65f;
+	private float freeze = .65f;
 
 	// Use this for initialization
 	void Start () {
@@ -20,18 +19,18 @@ public class Ferocity : Hero {
 		ACCb = .90f;
 		ACC = 1f;
 
-		ATK = 17;
-		DEF = 14;
-		DMG = 90;
+		ATK = 16;
+		DEF = 15;
+		DMG = 85;
 
-		HP = 280;
-		maxHP = 280;
+		HP = 295;
+		maxHP = 295;
 		SPEED = 15;
 		maxSPEED = 15;
-		wallDMG = 2;
-		RNG = 3;
+		wallDMG = 1;
+		RNG = 2;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
@@ -39,24 +38,23 @@ public class Ferocity : Hero {
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultname + " [4]";
 		}
-
 		base.Update ();
 	}
 
-	//Explosion: next attack deals splash damage to spaces above and below target.
+	//Arctic Cliff: create a wall covering 3 spaces within 5 spaces (lasts 2 turns or till canceled).
 	override public bool Skill1() {
 		return true;
 	}
 
-	//Ignition: next attack has increased range and inflicts burn on enemy
+	//Frostbite: next attack has a chance of freezing the target
 	override public bool Skill2() {
 		return true;
 	}
 
-	//Hellfire: for the next two turns DMG is increased and all abilities have a large chance of inflicting burn on targets.
+	//Zeroth hour: for the next 2 turns frostbite costs 0BP and Permafrost has chance to freeze targets in range.
 	public override bool Ult() {
 		return true;
 	}
 
-	//Immolate: all direct attacks (basically the chosen target)
+	//Permafrost: when target ends turn within 1 space their speed is reduced on their next turn
 }
