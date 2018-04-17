@@ -58,11 +58,13 @@ public class Hero : MovingObject {
 	public AudioClip gameOverSound;
 
 	public GameObject Target;
-	private bool targeting;
-	private List<Hero> targets;
+	protected bool targeting;
+	//0 = Attack, 1 = Skill 1, 2 = Skill 2, 3 = Ultimate
+	protected int targetingType;
+	protected List<Hero> targets;
 	private List<GameObject> tileTargets;
-	private int currentTarget = 0;
-	private int selectedTarget;
+	protected int currentTarget = 0;
+	protected Hero selectedTarget;
 
 	protected Animator animator;
 
@@ -195,45 +197,45 @@ public class Hero : MovingObject {
 				}
 			}
 			if (Input.GetKeyDown (KeyCode.Space)) {
-				selectedTarget = currentTarget;
-				int loss = 0;
-				if (selectedTarget == 0) {
-					Hero e1 = targets [0].GetComponent<Hero> ();
-					if (isHit (e1)) {
-						loss = getDamage (e1.getDEF());
-						e1.Losehp (loss);
-						tman.msgText.text = this.tag + " landed a hit on " + e1.tag + " dealt " + loss + " damage";
-						animator.SetTrigger ("ATK");
-					} else {
-						tman.msgText.text = this.tag + " missed a hit on " + e1.tag;
-					}
-				} 
-				if (selectedTarget == 1) {
-					Hero e2 = targets [1].GetComponent<Hero> ();
-					if (isHit (e2)) {
-						loss = getDamage (e2.getDEF());
-						e2.Losehp (loss);
-						tman.msgText.text = this.tag + " landed a hit on " + e2.tag + " dealt " + loss + " damage";
-						animator.SetTrigger ("ATK");
-					} else {
-						tman.msgText.text = this.tag + " missed a hit on " + e2.tag;
-					}
-				} 
-				if (selectedTarget == 2) {
-					Hero e3 = targets [2].GetComponent<Hero> ();
-					if (isHit (e3)) {
-						loss = getDamage (e3.getDEF());
-						e3.Losehp (loss);
-						tman.msgText.text = this.tag + " landed a hit on " + e3.tag + " dealt " + loss + " damage";
-						animator.SetTrigger ("ATK");
-					} else {
-						tman.msgText.text = this.tag + " missed a hit on " + e3.tag;
-					}
+				selectedTarget = targets[currentTarget];
+				if (targetingType == 0) {
+					AttackCalc ();
 				}
-				targeting = false;
-				Destroy (GameObject.Find ("Target"));
+				if (targetingType == 1) {
+					Skill1Calc ();
+				}
+				if (targetingType == 2) {
+					Skill2Calc ();
+				}
+				if (targetingType == 3) {
+					UltCalc ();
+				}
 			}
 		}
+	}
+
+	protected virtual void Skill1Calc() {
+	}
+
+	protected virtual void Skill2Calc() {
+	}
+
+	protected virtual void UltCalc() {
+	}
+
+	protected void AttackCalc() {
+		//attack calcs
+		int loss = 0;
+		if (isHit (selectedTarget)) {
+			loss = getDamage (selectedTarget.getDEF());
+			selectedTarget.Losehp (loss);
+			tman.msgText.text = this.tag + " landed a hit on " + selectedTarget.tag + " dealt " + loss + " damage";
+				animator.SetTrigger ("ATK");
+			} else {
+			tman.msgText.text = this.tag + " missed a hit on " + selectedTarget.tag;
+			}
+		targeting = false;
+		Destroy (GameObject.Find ("Target"));
 	}
 
 	//AttemptMove overrides the AttemptMove function in the base class MovingObject
@@ -350,19 +352,24 @@ public class Hero : MovingObject {
 		}
 	}
 
+	protected void makeTarget(int r) {
+		Vector3 pos = transform.position;
+		findPlayerTargets (pos.x, pos.y, r);
+		if (targets.Count > 0) {
+			GameObject t = Instantiate (Target);
+			t.name = "Target";
+			t.transform.position = targets [0].transform.position;
+			t.layer = 8;
+		} else {
+			targeting = false;
+		}
+	}
+
 	public virtual bool Attack() {
 		if (GameManager.instance.turn == team.tag && tman.getCurrentHero ().tag == this.tag) {
 			targeting = true;
-
-			findPlayerTargets (transform.position.x, transform.position.y, RNG);
-			if (targets.Count > 0) {
-				GameObject t = Instantiate (Target);
-				t.name = "Target";
-				t.transform.position = targets [0].transform.position;
-				t.layer = 8;
-			} else {
-				targeting = false;
-			}
+			targetingType = 0;
+			makeTarget (RNG);
 			return true;
 		}
 		return false;

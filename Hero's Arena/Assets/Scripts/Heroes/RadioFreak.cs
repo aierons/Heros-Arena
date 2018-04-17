@@ -4,14 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class RadioFreak : Hero {
+public class RadioFreak : Hero
+{
 
 	private string s1name = "Static";
 	private string s2name = "SMPTE";
 	private string ultName = "Glitch";
 
 	// Use this for initialization
-	public override void Start () {
+	public override void Start ()
+	{
 
 		base.Start ();
 
@@ -32,7 +34,8 @@ public class RadioFreak : Hero {
 	}
 
 	// Update is called once per frame
-	public override void Update () {
+	public override void Update ()
+	{
 		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [2]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
@@ -44,20 +47,46 @@ public class RadioFreak : Hero {
 	}
 
 	//Static: target enemy can't use one of their skills (chosen by random) during their next turn {2BP}
-	override public bool Skill1() {
+	override public bool Skill1 ()
+	{
 		return true;
 	}
 
 	//SMPTE: inflict 1 random debuff on target [stun, freeze, DISADV, burn, poison, bleed] {2BP}
-	override public bool Skill2() {
-		return true;
+	override public bool Skill2 ()
+	{
+		int cost = 2;
+		if (tman.BP >= cost && GameManager.instance.turn == team.tag
+		    && tman.getCurrentHero ().tag == this.tag) {
+			targeting = true;
+			targetingType = 2;
+			makeTarget (3);
+			return true;
+		}
+		return false;
+	}
+
+	override protected void Skill2Calc ()
+	{
+		int cost = 2;
+		float r = Random.value;
+		if (r <= .25) {
+			selectedTarget.Stun ();
+		} else if (r <= .50) {
+			selectedTarget.effects.Add (Effects.DADV);
+		} else if (r <= .75) {
+			selectedTarget.Poison ();
+		}
+		targeting = false;
+		Destroy (GameObject.Find ("Target"));
 	}
 
 	//Glitch: all allies get a random buff, all enemies get a random debuff {5BP}
-	public override bool Ult() {
+	public override bool Ult ()
+	{
 		int cost = 5;
 		if (tman.BP >= cost && GameManager.instance.turn == team.tag
-			&& tman.getCurrentHero ().tag == this.tag) {
+		    && tman.getCurrentHero ().tag == this.tag) {
 			List<Hero> allies = tman.getTeam ();
 			List<Hero> enemies = tman.getEnemyTeam ();
 
