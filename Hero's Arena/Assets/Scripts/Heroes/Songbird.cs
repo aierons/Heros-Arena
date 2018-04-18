@@ -8,6 +8,10 @@ public class Songbird : Hero {
 	private string s1name = "Song of Healing";
 	private string s2name = "Song of Battle";
 	private string ultName = "Song of Valor";
+	private string info = "Song of Healing: all allies within 1 space heal 2 hp. {3BP}\n\t" +
+	                      "Song of Battle: allies within 1 space get a bonus to ATK and a bonus to DMG {3BP} \n\t" +
+	                      "Song of Valor: all allies within 3 spaces gain a large bonus to ATK and a larger bonus to DMG until the end of their next turn. {5 BP}\n\t" +
+	                      "Inner Song: Heal a small amount of health to self every other turn.";
 
 	private bool sing;
 
@@ -99,6 +103,10 @@ public class Songbird : Hero {
 			return true;
 		}
 		return false;
+	}
+
+	public override string Info() {
+		return info;
 	}
 
 	//inner song
