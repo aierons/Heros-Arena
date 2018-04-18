@@ -9,7 +9,9 @@ public class Hero : MovingObject {
 	//Number of points to add to player hp points when picking up a soda object.
 	public int pointsPerSoda = 2;
 
-	public enum Effects {ADV, DADV, STUN, DOUBLEDMG, BOOST, VBOOST, RNGUP, PSN};
+	public int ult = 0;
+
+	public enum Effects {ADV, DADV, STUN, DOUBLEDMG, BOOST, VBOOST, RNGUP, PSN, FROZEN, BURN};
 
 	public List<Effects> effects;
 	/*
@@ -39,6 +41,7 @@ public class Hero : MovingObject {
 	protected int RNG = 1;
 
 	protected int psn_count  = 0;
+	protected int brn_count = 0;
 
 	protected int Direction;
 
@@ -59,12 +62,14 @@ public class Hero : MovingObject {
 
 	public GameObject Target;
 	protected bool targeting;
+	protected bool tileTargeting;
 	//0 = Attack, 1 = Skill 1, 2 = Skill 2, 3 = Ultimate
 	protected int targetingType;
 	protected List<Hero> targets;
-	private List<GameObject> tileTargets;
+	protected List<GameObject> tileTargets;
 	protected int currentTarget = 0;
 	protected Hero selectedTarget;
+	protected GameObject selectedTile;
 
 	protected Animator animator;
 
@@ -124,80 +129,102 @@ public class Hero : MovingObject {
 			|| ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) 
 				&& team.tag == "Team2")) && !targeting
 			)  {
-			//print (this.tag + ":" +team.tag + ":" + "reach");
-			int horizontal = 0;  	//Used to store the horizontal move direction.
-			int vertical = 0;		//Used to store the vertical move direction.
+			if (effects.Contains (Effects.FROZEN)) {
+				tman.msgText.text = this.tag + " is frozen and unable to move";
+				EndTurn ();
+			} else {
+				//print (this.tag + ":" +team.tag + ":" + "reach");
+				int horizontal = 0;  	//Used to store the horizontal move direction.
+				int vertical = 0;		//Used to store the vertical move direction.
 
-			//Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
-			horizontal = (int)(Input.GetAxisRaw ("Horizontal"));
+				//Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
+				horizontal = (int)(Input.GetAxisRaw ("Horizontal"));
 
-			//Get input from the input manager, round it to an integer and store in vertical to set y axis move direction
-			vertical = (int)(Input.GetAxisRaw ("Vertical"));
+				//Get input from the input manager, round it to an integer and store in vertical to set y axis move direction
+				vertical = (int)(Input.GetAxisRaw ("Vertical"));
 
-			//Check if moving horizontally, if so set vertical to zero.
-			if (horizontal != 0) {
-				vertical = 0;
-			}
+				//Check if moving horizontally, if so set vertical to zero.
+				if (horizontal != 0) {
+					vertical = 0;
+				}
 
-			if (vertical > 0)
-			{
-				animator.SetInteger("Direction", 2);
-				Direction = 2;
-			}
-			else if (vertical < 0)
-			{
-				animator.SetInteger("Direction", 0);
-				Direction = 0;
-			}
-			else if (horizontal > 0)
-			{
-				animator.SetInteger("Direction", 3);
-				Direction = 3;
-			}
-			else if (horizontal < 0)
-			{
-				animator.SetInteger("Direction", 1);
-				Direction = 1;
-			}
+				if (vertical > 0) {
+					animator.SetInteger ("Direction", 2);
+					Direction = 2;
+				} else if (vertical < 0) {
+					animator.SetInteger ("Direction", 0);
+					Direction = 0;
+				} else if (horizontal > 0) {
+					animator.SetInteger ("Direction", 3);
+					Direction = 3;
+				} else if (horizontal < 0) {
+					animator.SetInteger ("Direction", 1);
+					Direction = 1;
+				}
 
-			if (SPEED > 0) {
-			//Check if we have a non-zero value for horizontal or vertical
-			if (horizontal != 0 || vertical != 0) {
-				//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
-				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
-				AttemptMove<Wall> (horizontal, vertical);
-			}
+				if (SPEED > 0) {
+					//Check if we have a non-zero value for horizontal or vertical
+					if (horizontal != 0 || vertical != 0) {
+						//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
+						//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
+						AttemptMove<Wall> (horizontal, vertical);
+					}
+				}
 			}
 		}
 		if (targeting) {
 			int lastTarget = currentTarget;
-			if ((Input.GetKeyDown(KeyCode.A) && team.tag == "Team1") ||
+			if ((Input.GetKeyDown (KeyCode.A) && team.tag == "Team1") ||
 				(Input.GetKeyDown (KeyCode.LeftArrow) && team.tag == "Team2")) {
 				--currentTarget;
 			}
-			if ((Input.GetKeyDown(KeyCode.D) && team.tag == "Team1") ||
+			if ((Input.GetKeyDown (KeyCode.D) && team.tag == "Team1") ||
 				(Input.GetKeyDown (KeyCode.RightArrow) && team.tag == "Team2")) {
 				++currentTarget;
 			}
-			currentTarget = (currentTarget % targets.Count + targets.Count) % targets.Count;
-			if (lastTarget != currentTarget) {
-				GameObject.Find("Target").transform.position = targets [currentTarget].transform.position;
-				if (targets [currentTarget].transform.position.y > transform.position.y) {
-					animator.SetInteger("Direction", 2);
-					Direction = 2;
-				} else if (targets [currentTarget].transform.position.y < transform.position.y) {
-					animator.SetInteger("Direction", 0);
-					Direction = 0;
-				} else if (targets [currentTarget].transform.position.x < transform.position.x) {
-					animator.SetInteger("Direction", 1);
-					Direction = 1;
-				} else if (targets [currentTarget].transform.position.x > transform.position.x) {
-					animator.SetInteger("Direction", 3);
-					Direction = 3;
+			if (tileTargeting) {
+				currentTarget = (currentTarget % tileTargets.Count + tileTargets.Count) % tileTargets.Count;
+				if (lastTarget != currentTarget) {
+					GameObject.Find ("Target").transform.position = tileTargets [currentTarget].transform.position;
+					if (tileTargets [currentTarget].transform.position.y > transform.position.y) {
+						animator.SetInteger ("Direction", 2);
+						Direction = 2;
+					} else if (tileTargets [currentTarget].transform.position.y < transform.position.y) {
+						animator.SetInteger ("Direction", 0);
+						Direction = 0;
+					} else if (tileTargets [currentTarget].transform.position.x < transform.position.x) {
+						animator.SetInteger ("Direction", 1);
+						Direction = 1;
+					} else if (tileTargets [currentTarget].transform.position.x > transform.position.x) {
+						animator.SetInteger ("Direction", 3);
+						Direction = 3;
+					}
+				}
+			} else {
+				currentTarget = (currentTarget % targets.Count + targets.Count) % targets.Count;
+				if (lastTarget != currentTarget) {
+					GameObject.Find ("Target").transform.position = targets [currentTarget].transform.position;
+					if (targets [currentTarget].transform.position.y > transform.position.y) {
+						animator.SetInteger ("Direction", 2);
+						Direction = 2;
+					} else if (targets [currentTarget].transform.position.y < transform.position.y) {
+						animator.SetInteger ("Direction", 0);
+						Direction = 0;
+					} else if (targets [currentTarget].transform.position.x < transform.position.x) {
+						animator.SetInteger ("Direction", 1);
+						Direction = 1;
+					} else if (targets [currentTarget].transform.position.x > transform.position.x) {
+						animator.SetInteger ("Direction", 3);
+						Direction = 3;
+					}
 				}
 			}
 			if (Input.GetKeyDown (KeyCode.Space)) {
-				selectedTarget = targets[currentTarget];
+				if (tileTargeting) {
+					selectedTile = tileTargets [currentTarget];
+				} else {
+					selectedTarget = targets [currentTarget];
+				}
 				if (targetingType == 0) {
 					AttackCalc ();
 				}
@@ -214,7 +241,7 @@ public class Hero : MovingObject {
 		}
 	}
 
-	protected virtual void Skill1Calc() {
+	protected virtual void Skill1Calc () {
 	}
 
 	protected virtual void Skill2Calc() {
@@ -411,26 +438,65 @@ public class Hero : MovingObject {
 
 	public virtual void EndTurn() {
 		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
+			if (ult > 0) {
+				--ult;
+			}
 			SPEED = maxSPEED;
 			if (effects.Contains(Effects.STUN)) {
 				effects.Remove(Effects.STUN);
+				tman.msgText.text += "\n" + this.tag + "'s stun has worn off";
 			}
 			if (effects.Contains (Effects.BOOST)) {
 				effects.Remove (Effects.BOOST);
 				ATK -= 1;
 				DMG -= 1;
+				tman.msgText.text += this.tag + "'s boost has worn off";
 			}
 			if (effects.Contains (Effects.VBOOST)) {
 				effects.Remove (Effects.VBOOST);
 				ATK -= 3;
 				DMG -= 2;
+				tman.msgText.text += this.tag + "'s victory boost has worn off";
 			}
 
 			if (effects.Contains (Effects.PSN)) {
 				if (psn_count > 0) {
+					tman.msgText.text += this.tag + " took " + (int)(HP * .1) + " damage from poison";
 					HP -= (int)(HP * .1);
-				} else {
-					psn_count--;
+					--psn_count;
+					if(psn_count == 0) {
+						tman.msgText.text += this.tag + "'s poison has worn off";
+					}
+				}
+			}
+
+			if(effects.Contains(Effects.FROZEN)) {
+				effects.Remove(Effects.FROZEN);
+				tman.msgText.text += "\n" + this.tag + " thawed out";
+			}
+
+			if (effects.Contains (Effects.BURN)) {
+				if (brn_count > 0) {
+					tman.msgText.text += this.tag + " was burned for 15 damage";
+					HP -= 15;
+					--brn_count;
+					if(brn_count == 0) {
+						tman.msgText.text += this.tag + "'s burn has worn off";
+					}
+				}
+			}
+
+			foreach(Hero enemy in tman.getEnemyTeam()) {
+				if (Mathf.Abs (this.transform.position.x - enemy.transform.position.x)
+					+ Mathf.Abs (this.transform.position.y - enemy.transform.position.y) <= 1) {
+					if(enemy.tag == "JackFrost") {
+						SPEED /= 2;
+						if(enemy.ult > 0) {
+							if(Random.value < 0.65f) {
+								this.Freeze();
+							}
+						}
+					}
 				}
 			}
 		}
@@ -535,6 +601,17 @@ public class Hero : MovingObject {
 			effects.Add (Effects.PSN);
 			psn_count = 3;
 		}
+	}
+
+	public void Freeze() {
+		effects.Add(Effects.FROZEN);
+	}
+
+	public void Burn() {
+		if (!effects.Contains (Effects.BURN)) {
+			effects.Add (Effects.BURN);
+		}
+		brn_count = 2;
 	}
 
 }

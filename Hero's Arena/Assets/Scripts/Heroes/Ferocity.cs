@@ -43,19 +43,101 @@ public class Ferocity : Hero {
 		base.Update ();
 	}
 
+	protected void AttackCalc ()
+	{
+		int beforeAttack = selectedTarget.getHP ();
+		base.AttackCalc ();
+		if (beforeAttack != selectedTarget.getHP ()) {
+			if (Random.value < burn) {
+				selectedTarget.Burn ();
+				tman.msgText.text += "\n" + this.tag + " was burned!";
+			}
+		}
+	}
+
 	//Explosion: next attack deals splash damage to spaces above and below target.
-	override public bool Skill1() {
-		return true;
+	public override bool Skill1() {
+		int cost = 3;
+		if (tman.BP >= cost && GameManager.instance.turn == team.tag
+			&& tman.getCurrentHero ().tag == this.tag) {
+			targeting = true;
+			targetingType = 1;
+			makeTarget (RNG);
+			return true;
+		}
+		return false;
+	}
+
+	protected override void Skill1Calc() {
+		int cost = 2;
+		int loss = 0;
+		if (isHit (selectedTarget)) {
+			loss = getDamage (selectedTarget.getDEF());
+			selectedTarget.Losehp (loss);
+			tman.msgText.text = this.tag + " landed a hit on " + selectedTarget.tag + " dealt " + loss + " damage";
+			animator.SetTrigger ("ATK");
+			if (ult > 0 && Random.value < burn) {
+				selectedTarget.Burn ();
+				tman.msgText.text += "\n" + this.tag + " was burned!";
+			}
+			foreach (Hero e in tman.getEnemyTeam()) {
+				if (e.transform.position.y == selectedTarget.transform.position.y + 1
+				   || e.transform.position.y == selectedTarget.transform.position.y - 1) {
+					loss = getDamage (e.getDEF ());
+					e.Losehp (loss);
+					tman.msgText.text += "\n" + e.tag + " took " + loss + "splash damage";
+				}
+			}
+		} else {
+			tman.msgText.text = this.tag + " missed a hit on " + selectedTarget.tag;
+		}
+		targeting = false;
+		tman.BP -= cost;
+		Destroy (GameObject.Find ("Target"));
 	}
 
 	//Ignition: next attack has increased range and inflicts burn on enemy
-	override public bool Skill2() {
-		return true;
+	public override bool Skill2() {
+		int cost = 2;
+		if (tman.BP >= cost && GameManager.instance.turn == team.tag
+			&& tman.getCurrentHero ().tag == this.tag) {
+			targeting = true;
+			targetingType = 2;
+			makeTarget (RNG + 1);
+			return true;
+		}
+		return false;
+	}
+
+	protected override void Skill2Calc() {
+		int cost = 2;
+		int loss = 0;
+		if (isHit (selectedTarget)) {
+			loss = getDamage (selectedTarget.getDEF());
+			selectedTarget.Losehp (loss);
+			tman.msgText.text = this.tag + " landed a hit on " + selectedTarget.tag + " dealt " + loss + " damage";
+			animator.SetTrigger ("ATK");
+			selectedTarget.Burn ();
+			tman.msgText.text += "\n" + this.tag + " was burned!";
+		} else {
+			tman.msgText.text = this.tag + " missed a hit on " + selectedTarget.tag;
+		}
+		targeting = false;
+		tman.BP -= cost;
+		Destroy (GameObject.Find ("Target"));
 	}
 
 	//Hellfire: for the next two turns DMG is increased and all abilities have a large chance of inflicting burn on targets.
 	public override bool Ult() {
-		return true;
+		int cost = 5;
+		if (tman.BP >= cost && GameManager.instance.turn == team.tag
+			&& tman.getCurrentHero ().tag == this.tag) {
+			tman.BP -= cost;
+			ult = 2;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	//Immolate: all direct attacks (basically the chosen target)
