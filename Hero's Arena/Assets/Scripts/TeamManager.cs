@@ -17,14 +17,14 @@ public class TeamManager : MonoBehaviour
 	public Button skill1Button;
 	public Button skill2Button;
 	public Button ultButton;
-	public Button infoButton; 
+	//public Button infoButton; 
 
 	//UI Text to display current hp for each hero
 	public Text hpText;
 
 	public Text msgText;
 	public Text actText;
-	public Text infoText;
+	//public Text infoText;
 
 	public GameObject captain;
 	public GameObject member1;
@@ -94,7 +94,7 @@ public class TeamManager : MonoBehaviour
 		BP = 1;
 		maxBP = 1;
 
-		SetCaptain (captain.GetComponent<Hero> ());
+		hcaptain = captain.GetComponent<Hero> ();
 		hmember1 = member1.GetComponent<Hero>();
 		hmember2 = member2.GetComponent<Hero>();
 
@@ -106,14 +106,14 @@ public class TeamManager : MonoBehaviour
 			+ "\n" + BP.ToString() + "/" + maxBP.ToString();
 		msgText.text = "";
 		actText.text = "";
-		infoText.text = "";
+		//infoText.text = "";
 
 		attackButton.onClick.AddListener (TriggerAttack);
 		endTurnButton.onClick.AddListener (TurnEnd);
 		skill1Button.onClick.AddListener (TriggerSkill1);
 		skill2Button.onClick.AddListener (TriggerSkill2);
 		ultButton.onClick.AddListener (TriggerUlt);
-		infoButton.onClick.AddListener (TriggerInfo);
+		//infoButton.onClick.AddListener (TriggerInfo);
 	}
 	
 	// Update is called once per frame
@@ -137,7 +137,21 @@ public class TeamManager : MonoBehaviour
 	}
 
 	public void SetCaptain(Hero cap) {
+		captain.SetActive (false);
 		hcaptain = cap;
+		captain.SetActive (true);
+	}
+
+	public void SetMember1(Hero member) {
+		member1.SetActive (false);
+		hmember1 = member;
+		member1.SetActive (true);
+	}
+
+	public void SetMember2(Hero member) {
+		member2.SetActive (false);
+		hmember2 = member;
+		member2.SetActive (true);
 	}
 
 	public void CheckIfGameOver() {
@@ -224,7 +238,7 @@ public class TeamManager : MonoBehaviour
 		bool act;
 		if (GameManager.instance.turn == tag) {
 			if (turn == captain.tag || turn == member1.tag || turn == member2.tag) {
-				infoText.text = hcaptain.Info () + hmember1.Info () + hmember2.Info ();
+				//infoText.text = hcaptain.Info () + hmember1.Info () + hmember2.Info ();
 			} 
 		}
 	}
@@ -236,19 +250,19 @@ public class TeamManager : MonoBehaviour
 			skill1Button.interactable = false;
 			skill2Button.interactable = false;
 			ultButton.interactable = false;
-			infoButton.interactable = false;
+			//infoButton.interactable = false;
 
 			etman.attackButton.interactable = true;
 			etman.endTurnButton.interactable = true;
 			etman.skill1Button.interactable = true;
 			etman.skill2Button.interactable = true;
 			etman.ultButton.interactable = true;
-			etman.infoButton.interactable = true;
+			//etman.infoButton.interactable = true;
 
 			skill1Button.GetComponentInChildren<Text> ().text = "Skill1";
 			skill2Button.GetComponentInChildren<Text> ().text = "Skill2";
 			ultButton.GetComponentInChildren<Text> ().text = "Ultimate";
-			infoButton.GetComponentInChildren<Text> ().text = "Info";
+			//infoButton.GetComponentInChildren<Text> ().text = "Info";
 
 			Hero h = getCurrentHero ();
 			h.EndTurn ();

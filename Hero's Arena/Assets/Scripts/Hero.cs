@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class Hero : MovingObject {
 
 	//Number of points to add to player hp points when picking up a hp object.
-	public int pointsPerFood = 1;
+	public int pointsPerFood = 10;
 	//Number of points to add to player hp points when picking up a soda object.
-	public int pointsPerSoda = 2;
+	public int pointsPerSoda = 20;
 
 	public int ult = 0;
 
