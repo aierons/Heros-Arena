@@ -454,6 +454,7 @@ public class Hero : MovingObject {
 			}
 		}
 	}
+<<<<<<< HEAD
 
 	public void findAllyTargets(float centerX, float centerY, int range) {
 		List<Hero> allies = tman.getTeam ();
@@ -468,6 +469,9 @@ public class Hero : MovingObject {
 		}
 	}
 
+=======
+
+>>>>>>> 82843d53d216502db8c2950e57408c302caba98d
 	public void findEATargets(float centerX, float centerY, int range) {
 		List<Hero> targs = tman.getEnemyTeam ();
 		List<Hero> allies = tman.getTeam ();
@@ -602,6 +606,7 @@ public class Hero : MovingObject {
 		return false;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	virtual public  string Info() {
 		return "";
@@ -610,6 +615,9 @@ public class Hero : MovingObject {
 
 	//Buffs
 	/*
+=======
+			
+>>>>>>> 82843d53d216502db8c2950e57408c302caba98d
 =======
 			
 >>>>>>> 82843d53d216502db8c2950e57408c302caba98d

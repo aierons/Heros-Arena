@@ -14,7 +14,10 @@ TagManager:
   - Pendragon
   - RadioFreak
   - Songbird
+<<<<<<< HEAD
   - DeadEye
+=======
+>>>>>>> 82843d53d216502db8c2950e57408c302caba98d
   layers:
   - Default
   - TransparentFX
