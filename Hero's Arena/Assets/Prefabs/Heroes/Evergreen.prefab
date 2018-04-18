@@ -133,6 +133,8 @@ MonoBehaviour:
   gameOverSound: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
   Target: {fileID: 1495216852867464, guid: 3f11c150eaaa7e34fb0f825c89eb7b03, type: 2}
   team: {fileID: 0}
+  Food: {fileID: 1355230908519504, guid: 4c01934b158760943856c3ec5d9ef4e9, type: 2}
+  Wall: {fileID: 1376078220667972, guid: 379184528e16fa745b3d5156d7ad9d73, type: 2}
 --- !u!212 &212370502992371268
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -21,6 +21,7 @@ TagManager:
   - DeadEye
   - RadioFreak
   - Floor
+  - TempWall
   layers:
   - Default
   - TransparentFX

@@ -44,7 +44,7 @@ public class IronRebel : Hero {
 		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [2]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
-			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [4]";
+			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [5]";
 		}
 
 		base.Update ();
@@ -66,8 +66,9 @@ public class IronRebel : Hero {
 
 	public override void Losehp (int loss) {
 		if (spiked) {
-			tman.etman.getCurrentHero ().Losehp (15);
-			tman.msgText.text = tman.etman.getCurrentHero ().tag + " took 15 damage from Armor Spike";
+			int spike = (int)(loss * .50);
+			tman.etman.getCurrentHero ().Losehp (spike);
+			tman.msgText.text = tman.etman.getCurrentHero ().tag + " took " + spike + " damage from Armor Spike";
 			spiked = false;
 		}
 
@@ -99,7 +100,7 @@ public class IronRebel : Hero {
 
 	//Panzer Smash: next attack deals damage in a 3x4 rectangle space infront of him, goes through walls and destroys walls, all enemies hit are stunned {4BP}
 	public override bool Ult() {
-		int cost = 4;
+		int cost = 5;
 		if (tman.BP >= cost && GameManager.instance.turn == team.tag
 		    && tman.getCurrentHero ().tag == this.tag) {
 			List<Hero> targets = getEnemyTrgts ();
@@ -160,15 +161,12 @@ public class IronRebel : Hero {
 		List<Wall> walls = new List<Wall>();
 		foreach (GameObject w in wallList) {
 			walls.Add (w.GetComponent<Wall> ());
-			print (w.transform.position.ToString());
 		}
-		print (transform.position.ToString());
-		foreach (Wall w in walls) {
+		foreach (GameObject w in GameObject.FindGameObjectsWithTag("TempWall")) {
 			Vector3 wpos = w.transform.position;
 			if (pos.x + xlow <= wpos.x && wpos.x <= pos.x + xhi &&
 				pos.y + ylow <= wpos.y && wpos.y <= pos.y + yhi) {
-				print ("hit");
-				w.DamageWall (w.hp);
+				w.SetActive (false);
 			}
 		}
 		return targets;

@@ -49,7 +49,24 @@ public class RadioFreak : Hero
 	//Static: target enemy can't use one of their skills (chosen by random) during their next turn {2BP}
 	override public bool Skill1 ()
 	{
-		return true;
+		int cost = 2;
+		if (tman.BP >= cost && GameManager.instance.turn == team.tag
+			&& tman.getCurrentHero ().tag == this.tag) {
+			targeting = true;
+			targetingType = 1;
+			makeTarget (3);
+			return true;
+		}
+		return false;
+	}
+
+	protected override void Skill1Calc() {
+		int cost = 2;
+		selectedTarget.effects.Add (Effects.STATIC);
+		tman.msgText.text = this.tag + " inflicted " + selectedTarget.tag + " with Static.";
+		tman.BP -= cost;
+		targeting = false;
+		Destroy (GameObject.Find ("Target"));
 	}
 
 	//SMPTE: inflict 1 random debuff on target [stun, freeze, DISADV, burn, poison, bleed] {2BP}
@@ -70,13 +87,19 @@ public class RadioFreak : Hero
 	{
 		int cost = 2;
 		float r = Random.value;
+		string type = "";
 		if (r <= .25) {
 			selectedTarget.Stun ();
+			type = "stun";
 		} else if (r <= .50) {
 			selectedTarget.effects.Add (Effects.DADV);
+			type = "disadvantage";
 		} else if (r <= .75) {
 			selectedTarget.Poison ();
+			type = "poison";
 		}
+		tman.msgText.text = this.tag + " inflicted " + type + " on " + selectedTarget.tag;
+		tman.BP -= cost;
 		targeting = false;
 		Destroy (GameObject.Find ("Target"));
 	}
@@ -90,27 +113,36 @@ public class RadioFreak : Hero
 			List<Hero> allies = tman.getTeam ();
 			List<Hero> enemies = tman.getEnemyTeam ();
 
-
+			string type = "";
+			tman.msgText.text = this.tag + "gave "; 
 			foreach (Hero a in allies) {
 				float r = Random.value;
 				if (r <= .25) {
 					a.effects.Add (Effects.ADV);
+					type = "advantage";
 				} else if (r <= .50) {
 					a.effects.Add (Effects.RNGUP);
+					type = "Range Up";
 				} else if (r <= .55) {
 					a.effects.Add (Effects.DOUBLEDMG);
+					type = "Double Damage";
 				}
+				tman.msgText.text += a.tag + " " + type + "\n";
 			}
 
 			foreach (Hero e in enemies) {
 				float r = Random.value;
 				if (r <= .25) {
 					e.Stun ();
+					type = "stun";
 				} else if (r <= .50) {
 					e.effects.Add (Effects.DADV);
+					type = "disadvantage";
 				} else if (r <= .75) {
 					e.Poison ();
+					type = "poison";
 				}
+				tman.msgText.text += e.tag + " " + type + "\n";
 			}
 			tman.BP -= cost;
 			return true;

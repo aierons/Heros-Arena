@@ -929,6 +929,12 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114396815901345882, guid: e3efbbbaf5375b74ca3857a43f87bf0f,
+        type: 2}
+      propertyPath: Target
+      value: 
+      objectReference: {fileID: 1704586726123994, guid: 86bd0841b1a2c794ca3ce356a529f6c5,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e3efbbbaf5375b74ca3857a43f87bf0f, type: 2}
   m_IsPrefabParent: 0
@@ -1154,12 +1160,12 @@ Prefab:
     - target: {fileID: 212719460343255850, guid: 9f1493101a52cc74f8fd6f17a22689df,
         type: 2}
       propertyPath: m_Color.r
-      value: 0.35040578
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 212719460343255850, guid: 9f1493101a52cc74f8fd6f17a22689df,
         type: 2}
       propertyPath: m_Color.g
-      value: 0.22794116
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 212719460343255850, guid: 9f1493101a52cc74f8fd6f17a22689df,
         type: 2}
@@ -1168,7 +1174,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1091997386656558, guid: 9f1493101a52cc74f8fd6f17a22689df, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114452949096548208, guid: 9f1493101a52cc74f8fd6f17a22689df, type: 2}
@@ -1204,6 +1210,7 @@ MonoBehaviour:
   drinkSound1: {fileID: 8300000, guid: b6b608537288246c9a464915db27bf52, type: 3}
   drinkSound2: {fileID: 8300000, guid: bcb9dda73ee914d3e8f252895f73f461, type: 3}
   gameOverSound: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
+  Target: {fileID: 1704586726123994, guid: 86bd0841b1a2c794ca3ce356a529f6c5, type: 2}
   team: {fileID: 885736392}
 --- !u!1 &661959383
 GameObject:
@@ -1468,6 +1475,10 @@ Prefab:
       propertyPath: team
       value: 
       objectReference: {fileID: 885736392}
+    - target: {fileID: 1071742861805008, guid: 2b1e841494d2e2f4c903ae12e9e8654a, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2b1e841494d2e2f4c903ae12e9e8654a, type: 2}
   m_IsPrefabParent: 0
@@ -1645,17 +1656,17 @@ Prefab:
         type: 2}
       propertyPath: captain
       value: 
-      objectReference: {fileID: 1853586064}
+      objectReference: {fileID: 768883353}
     - target: {fileID: 114310485270722782, guid: 33c78355b939f4644993b7630a26b58a,
         type: 2}
       propertyPath: member1
       value: 
-      objectReference: {fileID: 1122673185}
+      objectReference: {fileID: 625079343}
     - target: {fileID: 114310485270722782, guid: 33c78355b939f4644993b7630a26b58a,
         type: 2}
       propertyPath: member2
       value: 
-      objectReference: {fileID: 1986739324}
+      objectReference: {fileID: 1630218382}
     - target: {fileID: 1298121318397128, guid: 33c78355b939f4644993b7630a26b58a, type: 2}
       propertyPath: m_TagString
       value: Team2
@@ -1734,12 +1745,12 @@ Prefab:
     - target: {fileID: 212122945704955414, guid: 5c45b8e0ecfbae248a1748e03f2b4bb3,
         type: 2}
       propertyPath: m_Color.r
-      value: 0.35040578
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 212122945704955414, guid: 5c45b8e0ecfbae248a1748e03f2b4bb3,
         type: 2}
       propertyPath: m_Color.g
-      value: 0.22794116
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 212122945704955414, guid: 5c45b8e0ecfbae248a1748e03f2b4bb3,
         type: 2}
@@ -1753,7 +1764,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1113761398231756, guid: 5c45b8e0ecfbae248a1748e03f2b4bb3, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114385974986138966, guid: 5c45b8e0ecfbae248a1748e03f2b4bb3, type: 2}
@@ -1789,6 +1800,7 @@ MonoBehaviour:
   drinkSound1: {fileID: 8300000, guid: b6b608537288246c9a464915db27bf52, type: 3}
   drinkSound2: {fileID: 8300000, guid: bcb9dda73ee914d3e8f252895f73f461, type: 3}
   gameOverSound: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
+  Target: {fileID: 1704586726123994, guid: 86bd0841b1a2c794ca3ce356a529f6c5, type: 2}
   team: {fileID: 885736392}
 --- !u!1001 &833917248
 Prefab:
@@ -2130,6 +2142,10 @@ Prefab:
         type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1279617308594220, guid: 0d1ad25aaef3f934c91403fa433350d8, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0d1ad25aaef3f934c91403fa433350d8, type: 2}
@@ -2499,11 +2515,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 586af2a7a673c9041b87f8530afb9f99, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1122673185 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1279617308594220, guid: 0d1ad25aaef3f934c91403fa433350d8,
-    type: 2}
-  m_PrefabInternal: {fileID: 927518661}
 --- !u!1001 &1137839662
 Prefab:
   m_ObjectHideFlags: 0
@@ -2668,6 +2679,12 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114411951659735234, guid: a953a398cf004bc4e979b2e25275268c,
+        type: 2}
+      propertyPath: Target
+      value: 
+      objectReference: {fileID: 1704586726123994, guid: 86bd0841b1a2c794ca3ce356a529f6c5,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a953a398cf004bc4e979b2e25275268c, type: 2}
   m_IsPrefabParent: 0
@@ -3881,12 +3898,12 @@ Prefab:
     - target: {fileID: 212060311335431386, guid: cc5c0489fa95727439fed7b91499ece6,
         type: 2}
       propertyPath: m_Color.r
-      value: 0.35040578
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 212060311335431386, guid: cc5c0489fa95727439fed7b91499ece6,
         type: 2}
       propertyPath: m_Color.g
-      value: 0.22794116
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 212060311335431386, guid: cc5c0489fa95727439fed7b91499ece6,
         type: 2}
@@ -3895,7 +3912,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1604835769002498, guid: cc5c0489fa95727439fed7b91499ece6, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114095074523766878, guid: cc5c0489fa95727439fed7b91499ece6, type: 2}
@@ -3931,12 +3948,8 @@ MonoBehaviour:
   drinkSound1: {fileID: 8300000, guid: b6b608537288246c9a464915db27bf52, type: 3}
   drinkSound2: {fileID: 8300000, guid: bcb9dda73ee914d3e8f252895f73f461, type: 3}
   gameOverSound: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
+  Target: {fileID: 1704586726123994, guid: 86bd0841b1a2c794ca3ce356a529f6c5, type: 2}
   team: {fileID: 885736392}
---- !u!1 &1853586064 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1071742861805008, guid: 2b1e841494d2e2f4c903ae12e9e8654a,
-    type: 2}
-  m_PrefabInternal: {fileID: 741462034}
 --- !u!1 &1936874034
 GameObject:
   m_ObjectHideFlags: 0
@@ -4179,15 +4192,14 @@ Prefab:
       propertyPath: team
       value: 
       objectReference: {fileID: 885736392}
+    - target: {fileID: 1975522483666590, guid: 170b2d2ed5134fe40999e4be077ed751, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114468724571030646, guid: 170b2d2ed5134fe40999e4be077ed751, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 170b2d2ed5134fe40999e4be077ed751, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1986739324 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1975522483666590, guid: 170b2d2ed5134fe40999e4be077ed751,
-    type: 2}
-  m_PrefabInternal: {fileID: 1986739323}
 --- !u!1 &2050729594
 GameObject:
   m_ObjectHideFlags: 0
@@ -4613,6 +4625,12 @@ Prefab:
       propertyPath: team
       value: 
       objectReference: {fileID: 1145430173}
+    - target: {fileID: 114514967716296466, guid: 591a2993415e32d489a31bd575540501,
+        type: 2}
+      propertyPath: Target
+      value: 
+      objectReference: {fileID: 1704586726123994, guid: 86bd0841b1a2c794ca3ce356a529f6c5,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 591a2993415e32d489a31bd575540501, type: 2}
   m_IsPrefabParent: 0

@@ -31,14 +31,6 @@ public class Pendragon : Hero {
 	
 	// Update is called once per frame
 	public override void Update () {
-		/*
-		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
-			passive.interactable = true;
-		} else {
-			passive.interactable = false;
-		}
-		*/
-
 		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [1]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [1]";
@@ -47,7 +39,7 @@ public class Pendragon : Hero {
 		base.Update ();
 	}
 
-	//True Strike : grant next attack advantage
+	//Flash Strike : grant next attack advantage
 	override public bool Skill1() {
 		int cost = 1;
 		if (tman.BP >= cost && GameManager.instance.turn == team.tag
@@ -68,42 +60,24 @@ public class Pendragon : Hero {
 		int cost = 1;
 		if (tman.BP >= cost && GameManager.instance.turn == team.tag
 			&& tman.getCurrentHero ().tag == this.tag && tman.BP >= cost) {
-			GameObject t1 = tman.etman.captain;
-			GameObject t2 = tman.etman.member1;
-			GameObject t3 = tman.etman.member2;
-			Hero e1 = t1.GetComponent<Hero>();
-			Hero e2 = t2.GetComponent<Hero>();
-			Hero e3 = t3.GetComponent<Hero>();
-
-			if (Mathf.Abs (transform.position.x - t1.transform.position.x)
-			    + Mathf.Abs (transform.position.y - t1.transform.position.y) <= RNG
-			    && !e1.effects.Contains (Effects.STUN)) {
-				e1.Stun ();
-				tman.msgText.text = this.tag + " has inflicted stun on " + e1.tag;
-				tman.BP -= cost;
-				return true;
-			} else if (Mathf.Abs (transform.position.x - t2.transform.position.x)
-			         + Mathf.Abs (transform.position.y - t2.transform.position.y) <= RNG
-			         && !e2.effects.Contains (Effects.STUN)) {
-				e2.Stun ();
-				tman.msgText.text = this.tag + " has inflicted stun on " + e2.tag;
-				tman.BP -= cost;
-				return true;
-			} else if (Mathf.Abs (transform.position.x - t3.transform.position.x)
-			         + Mathf.Abs (transform.position.y - t3.transform.position.y) <= RNG
-			         && !e3.effects.Contains (Effects.STUN)) {
-				e3.Stun ();
-				tman.msgText.text = this.tag + " has inflicted stun on " + e3.tag;
-				tman.BP -= cost;
-				return true;
-			} else {
-			}
-
+			targeting = true;
+			targetingType = 2;
+			makeTarget (RNG);
+			return true;
 		}
 		return false;
 	}
 
-	//Bolster the Army : grat all allies advantage and all enemies disadvantage
+	protected override void Skill2Calc() {
+		int cost = 1;
+		selectedTarget.Stun ();
+		tman.msgText.text = this.tag + " used Shield Bash, " + selectedTarget.tag + " was stunned";
+		tman.BP -= cost;
+		targeting = false;
+		Destroy (GameObject.Find ("Target"));
+	}
+
+	//Bolster the Army : grant all allies advantage and all enemies disadvantage
 	public override bool Ult() {
 		int cost = 5;
 		if (tman.BP >= cost && GameManager.instance.turn == team.tag
@@ -125,97 +99,28 @@ public class Pendragon : Hero {
 		
 	}
 
-	/*
-	private bool alliesInRange() {
-		List<Vector3> p = tman.getAllyPoses (this);
-		Vector3 pos = this.transform.position;
-
-		for (int i = 0; i < p.Count; i++) {
-			if ((p [i].x >= pos.x - 3 || p [i].x <= pos.x + 3) &&
-			   (p [i].y >= pos.y - 3 || p [i].y <= pos.x + 3)) {
-				target.effects.Add (Effects.ADV);
-				return true;
+	protected override void AttackCalc() {
+		int loss = 0;
+		bool challenger = false;
+		if (isHit (selectedTarget)) {
+			loss = getDamage (selectedTarget.getDEF());
+			if (selectedTarget.getHP() > this.HP){
+				challenger = true;
 			}
-		}
-		return false;
-	}
-
-	*/
-
-	public override bool Attack() {
-		if (GameManager.instance.turn == team.tag && tman.getCurrentHero ().tag == this.tag) {
-			GameObject t1 = tman.etman.captain;
-			GameObject t2 = tman.etman.member1;
-			GameObject t3 = tman.etman.member2;
-			Hero e1 = t1.GetComponent<Hero>();
-			Hero e2 = t2.GetComponent<Hero>();
-			Hero e3 = t3.GetComponent<Hero>();
-			int loss = 0;
-			bool challenger = false;
-
-			if (Mathf.Abs (transform.position.x - t1.transform.position.x)
-				+ Mathf.Abs (transform.position.y - t1.transform.position.y) <= RNG) {
-				if (isHit (e1)) {
-					if (e1.getHP() > this.HP){
-						e1.Losehp (15);
-						challenger = true;
-					}
-					loss = getDamage (e1.getDEF());
-					e1.Losehp (loss);
-					tman.msgText.text = this.tag + " landed a hit on " + e1.tag + " dealt " + loss + " damage";
-					if (challenger) {
-						tman.msgText.text += this.tag + " passive (Challenger) activated ";
-						challenger = false;
-					}
-					animator.SetTrigger ("ATK");
-				} else {
-					tman.msgText.text = this.tag + " missed a hit on " + e1.tag;
-				}
-				return true;
-			} 
-			if (Mathf.Abs (transform.position.x - t2.transform.position.x)
-				+ Mathf.Abs (transform.position.y - t2.transform.position.y) <= RNG) {
-				if (isHit (e2)) {
-					if (e1.getHP() > this.HP){
-						e1.Losehp (15);
-						challenger = true;
-					}
-					loss = getDamage (e2.getDEF());
-					e2.Losehp (loss);
-					tman.msgText.text = this.tag + " landed a hit on " + e2.tag + " dealt " + loss + " damage";
-					if (challenger) {
-						tman.msgText.text += this.tag + " passive (Challenger) activated ";
-						challenger = false;
-					}
-					animator.SetTrigger ("ATK");
-				} else {
-					tman.msgText.text = this.tag + " missed a hit on " + e2.tag;
-				}
-				return true;
-			} 
-			if (Mathf.Abs (transform.position.x - t3.transform.position.x)
-				+ Mathf.Abs (transform.position.y - t3.transform.position.y) <= RNG) {
-				if (isHit (e3)) {
-					if (e1.getHP() > this.HP){
-						e1.Losehp (15);
-						challenger = true;
-					}
-					loss = getDamage (e3.getDEF());
-					e3.Losehp (loss);
-					tman.msgText.text = this.tag + " landed a hit on " + e3.tag + " dealt " + loss + " damage";
-					if (challenger) {
-						tman.msgText.text += this.tag + " passive (Challenger) activated ";
-						challenger = false;
-					}
-					animator.SetTrigger ("ATK");
-				} else {
-					tman.msgText.text = this.tag + " missed a hit on " + e3.tag;
-				}
-				return true;
+			selectedTarget.Losehp (loss);
+			tman.msgText.text = this.tag + " landed a hit on " + selectedTarget.tag + " dealt " + loss + " damage";
+			if (challenger) {
+				int dmg = (int)(selectedTarget.getMaxHP() * .1);
+				selectedTarget.Losehp (dmg);
+				tman.msgText.text += "\n" + this.tag + " dealt " + dmg + " extra damage to " + selectedTarget.tag + " because of Challenger";
+				challenger = false;
 			}
-
+			animator.SetTrigger ("ATK");
+		} else {
+			tman.msgText.text = this.tag + " missed a hit on " + selectedTarget.tag;
 		}
-		return false;
+		targeting = false;
+		Destroy (GameObject.Find ("Target"));
 	}
 		
 }

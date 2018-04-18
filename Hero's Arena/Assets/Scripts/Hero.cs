@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Hero : MovingObject {
 
@@ -9,7 +10,7 @@ public class Hero : MovingObject {
 	//Number of points to add to player hp points when picking up a soda object.
 	public int pointsPerSoda = 2;
 
-	public enum Effects {ADV, DADV, STUN, DOUBLEDMG, BOOST, VBOOST, RNGUP, PSN};
+	public enum Effects {ADV, DADV, STUN, DOUBLEDMG, BOOST, VBOOST, RNGUP, PSN, STATIC, ELIXIR};
 
 	public List<Effects> effects;
 	/*
@@ -39,6 +40,7 @@ public class Hero : MovingObject {
 	protected int RNG = 1;
 
 	protected int psn_count  = 0;
+	protected int elixir_count = 0;
 
 	protected int Direction;
 
@@ -62,9 +64,11 @@ public class Hero : MovingObject {
 	//0 = Attack, 1 = Skill 1, 2 = Skill 2, 3 = Ultimate
 	protected int targetingType;
 	protected List<Hero> targets;
-	private List<GameObject> tileTargets;
+	protected List<GameObject> tileTargets;
 	protected int currentTarget = 0;
 	protected Hero selectedTarget;
+
+	//protected GameObject selectedTiletarget;
 
 	protected Animator animator;
 
@@ -118,6 +122,8 @@ public class Hero : MovingObject {
 			//print (this.tag + ":" +team.tag + ":" + "stuck");
 			return;
 		}
+
+		checkStatic ();
 
 		if ((
 			((Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D)) && team.tag == "Team1")
@@ -198,6 +204,7 @@ public class Hero : MovingObject {
 			}
 			if (Input.GetKeyDown (KeyCode.Space)) {
 				selectedTarget = targets[currentTarget];
+
 				if (targetingType == 0) {
 					AttackCalc ();
 				}
@@ -223,7 +230,7 @@ public class Hero : MovingObject {
 	protected virtual void UltCalc() {
 	}
 
-	protected void AttackCalc() {
+	protected virtual void AttackCalc() {
 		//attack calcs
 		int loss = 0;
 		if (isHit (selectedTarget)) {
@@ -364,6 +371,31 @@ public class Hero : MovingObject {
 			targeting = false;
 		}
 	}
+	protected void makeAllyTarget(int r) {
+		Vector3 pos = transform.position;
+		findAllyTargets (pos.x, pos.y, r);
+		if (targets.Count > 0) {
+			GameObject t = Instantiate (Target);
+			t.name = "Target";
+			t.transform.position = targets [0].transform.position;
+			t.layer = 8;
+		} else {
+			targeting = false;
+		}
+	}
+
+	protected void makeEATarget(int r) {
+		Vector3 pos = transform.position;
+		findEATargets (pos.x, pos.y, r);
+		if (targets.Count > 0) {
+			GameObject t = Instantiate (Target);
+			t.name = "Target";
+			t.transform.position = targets [0].transform.position;
+			t.layer = 8;
+		} else {
+			targeting = false;
+		}
+	}
 
 	public virtual bool Attack() {
 		if (GameManager.instance.turn == team.tag && tman.getCurrentHero ().tag == this.tag) {
@@ -384,6 +416,36 @@ public class Hero : MovingObject {
 			   + Mathf.Abs (centerY - enemy.transform.position.y) <= range
 			   && enemy.getHP () > 0) {
 				targets.Add (enemy);
+
+			}
+		}
+	}
+
+	public void findAllyTargets(float centerX, float centerY, int range) {
+		List<Hero> allies = tman.getTeam ();
+
+		targets = new List<Hero> ();
+		foreach (Hero ally in allies) {
+			if (Mathf.Abs (centerX - ally.transform.position.x)
+				+ Mathf.Abs (centerY - ally.transform.position.y) <= range
+				&& ally.getHP () > 0) {
+				targets.Add (ally);
+			}
+		}
+	}
+
+	public void findEATargets(float centerX, float centerY, int range) {
+		List<Hero> targs = tman.getEnemyTeam ();
+		List<Hero> allies = tman.getTeam ();
+		foreach (Hero a in allies) {
+			targs.Add (a);
+		}
+		targets = new List<Hero> ();
+		foreach (Hero t in targs) {
+			if (Mathf.Abs (centerX - t.transform.position.x)
+				+ Mathf.Abs (centerY - t.transform.position.y) <= range
+				&& t.getHP () > 0) {
+				targets.Add (t);
 			}
 		}
 	}
@@ -392,7 +454,7 @@ public class Hero : MovingObject {
 		tileTargets = new List<GameObject>();
 		foreach(GameObject tile in GameObject.FindGameObjectsWithTag("Floor")) {
 			if (Mathf.Abs (centerX - tile.transform.position.x)
-				+ Mathf.Abs (centerY - tile.transform.position.y) <= RNG) {
+				+ Mathf.Abs (centerY - tile.transform.position.y) <= range) {
 				tileTargets.Add (tile);
 			}
 		}
@@ -403,7 +465,7 @@ public class Hero : MovingObject {
 
 		if (effects.Contains(Effects.DOUBLEDMG)) {
 			effects.Remove (Effects.DOUBLEDMG);
-			return Mathf.RoundToInt( ((6 * DMG * ((float)ATK / (float)eDEF)) / 50 + 2) * r);
+			return Mathf.RoundToInt( ((6 * DMG * ((float)ATK / (float)eDEF)) / 50 + 2) * r) * 2;
 		} else {
 			return Mathf.RoundToInt( ((6 * DMG * ((float)ATK / (float)eDEF)) / 50 + 2) * r);
 		}
@@ -428,10 +490,31 @@ public class Hero : MovingObject {
 
 			if (effects.Contains (Effects.PSN)) {
 				if (psn_count > 0) {
-					HP -= (int)(HP * .1);
+					int dmg = (int)(maxHP * .05);
+					HP -= dmg;
+					tman.msgText.text = this.tag + " has taken damage " + dmg + " from poison";
 				} else {
 					psn_count--;
+					if (psn_count == 0) {
+						effects.Remove (Effects.PSN);
+					}
 				}
+			}
+
+			if (effects.Contains (Effects.ELIXIR)) {
+				elixir_count--;
+				if (elixir_count == 0) {
+					effects.Remove (Effects.ELIXIR);
+					ATK -= 3;
+					DEF -= 3;
+					SPEED -= 4;
+					maxSPEED -= 4;
+					DMG -= 15;
+				}
+			}
+
+			if (effects.Contains (Effects.STATIC)) {
+				effects.Remove (Effects.STATIC);
 			}
 		}
 	}
@@ -477,12 +560,10 @@ public class Hero : MovingObject {
 	public bool isHit(Hero trgt) {
 		float r = Random.value;
 		if (effects.Contains(Effects.ADV) && !(effects.Contains(Effects.DADV))) {
-			effects.Remove (Effects.ADV);
 			RemoveHitEffects ();
 			return r < ACCb * (ACC + .3 / trgt.EV);
 
 		} else if (effects.Contains(Effects.DADV) && !(effects.Contains(Effects.ADV))) {
-			effects.Remove (Effects.DADV);
 			RemoveHitEffects ();
 			return r < ACCb * (ACC - .3 / trgt.EV);
 		} else {
@@ -499,8 +580,10 @@ public class Hero : MovingObject {
 			RNG -= 1;
 		}
 
-		if (effects.Contains (Effects.ADV) && effects.Contains (Effects.DADV)) {
+		if (effects.Contains (Effects.ADV)) {
 			effects.Remove (Effects.ADV);
+		}
+		if (effects.Contains (Effects.DADV)) {
 			effects.Remove (Effects.DADV);
 		}
 		
@@ -511,6 +594,7 @@ public class Hero : MovingObject {
 		ATK += 1;
 		DMG += 1;
 	}
+
 
 	public void RangeUp() {
 		effects.Add (Effects.RNGUP);
@@ -534,6 +618,34 @@ public class Hero : MovingObject {
 		if (!effects.Contains (Effects.PSN)) {
 			effects.Add (Effects.PSN);
 			psn_count = 3;
+		}
+	}
+
+	public void Elixir() {
+		if (!selectedTarget.effects.Contains (Effects.ELIXIR)) {
+			effects.Add (Effects.ELIXIR);
+			elixir_count = 2;
+			ATK += 3;
+			DEF += 3;
+			SPEED += 4;
+			maxSPEED += 4;
+			DMG += 15;
+		}
+	}
+
+	public void checkStatic() {
+		if (effects.Contains(Effects.STATIC)) {
+			int r = Random.Range (0, 3);
+			if (r == 0) {
+				tman.skill1Button.interactable = false;
+				tman.skill1Button.GetComponentInChildren<Text> ().text = "STATIC";
+			} else if (r == 1) {
+				tman.skill2Button.interactable = false;
+				tman.skill2Button.GetComponentInChildren<Text> ().text = "STATIC";
+			} else if (r == 2) {
+				tman.ultButton.interactable = false;
+				tman.ultButton.GetComponentInChildren<Text> ().text = "STATIC";
+			}
 		}
 	}
 

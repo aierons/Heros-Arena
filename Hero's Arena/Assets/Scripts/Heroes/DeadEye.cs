@@ -7,8 +7,8 @@ public class DeadEye : Hero
 {
 
 	private string s1name = "Steady Aim";
-	private string s2name = "Knee Shot";
-	private string ultName = "Mark The Dead Man";
+	private string s2name = "Twin Bullets";
+	private string ultName = "For Whom the Bell Toles";
 
 	// Use this for initialization
 	public override void Start ()
@@ -22,7 +22,7 @@ public class DeadEye : Hero
 
 		ATK = 16;
 		DEF = 12;
-		DMG = 70;
+		DMG = 75;
 
 		HP = 220;
 		maxHP = 220;
@@ -39,7 +39,12 @@ public class DeadEye : Hero
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [1]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [6]";
+
+			if (!tman.attackButton.interactable) {
+				tman.skill2Button.interactable = false;
+			}
 		}
+			
 
 		base.Update ();
 		
@@ -55,8 +60,12 @@ public class DeadEye : Hero
 				tman.msgText.text = "can not currently activate this ability";
 				return false;
 			} else {
-				base.RangeUp ();
-				effects.Add (Effects.ADV);
+				if (!effects.Contains (Effects.RNGUP)) {
+					RangeUp ();
+				}
+				if (!effects.Contains (Effects.ADV)) {
+					effects.Add (Effects.ADV);
+				}
 				tman.BP -= cost;
 				tman.msgText.text = this.tag + " used Steady Hand, gained advantage and +1 RANGE for next attack.";
 				return true;
@@ -66,16 +75,79 @@ public class DeadEye : Hero
 		}
 	}
 
-	//Knee Shot: next hit stuns target and grants them disadvantage on their next turn. {2BP}
+	//Twin Bullets: make two attacks on a target with disadvantage {3BP}
 	override public bool Skill2 ()
 	{
-		
+		int cost = 3;
+		if (tman.BP >= cost && GameManager.instance.turn == team.tag
+		    && tman.getCurrentHero ().tag == this.tag) {
+			if (!tman.attackButton.interactable) {
+				tman.msgText.text = "can not currently use this ability";
+				return false;
+			}
+			targeting = true;
+			targetingType = 2;
+			makeTarget (RNG);
+			return true;
+		}
 		return true;
 	}
 
-	//Mark the Dead Man: choose target, next attack deals very large amount of damage [6BP]
+	override protected void Skill2Calc() {
+		int cost = 3;
+		int loss1 = 0;
+		int loss2 = 0;
+		tman.msgText.text = "";
+		for (int i = 0; i < 2; i++) {
+			
+			if (!effects.Contains(Effects.DADV)) {
+				effects.Add (Effects.DADV);
+			}
+
+			if (isHit (selectedTarget)) {
+				loss1 = getDamage (selectedTarget.getDEF());
+				selectedTarget.Losehp (loss1);
+				tman.msgText.text += this.tag + " landed a hit on " + selectedTarget.tag + " dealt " + loss1 + " damage\n";
+				animator.SetTrigger ("ATK");
+			} else {
+				tman.msgText.text += this.tag + " missed a hit on " + selectedTarget.tag + "\n";
+			}
+		}
+
+		tman.BP -= cost;
+		tman.attackButton.interactable = false;
+		targeting = false;
+		Destroy (GameObject.Find ("Target"));
+	}
+
+	//For Whom the Bell Toles: deal large amount of damage to one target no matter how far away they are [6BP]
 	public override bool Ult ()
 	{
-		return true;
+		int cost = 6;
+		if (tman.BP >= cost && GameManager.instance.turn == team.tag
+		    && tman.getCurrentHero ().tag == this.tag) {
+			targeting = true;
+			targetingType = 3;
+			makeTarget (RNG*25);
+			return true;
+		}
+		return false;
+	}
+
+	protected override void UltCalc() {
+		int cost = 6;
+		int loss = 0;
+
+		if (!effects.Contains (Effects.DOUBLEDMG)) {
+			effects.Add (Effects.DOUBLEDMG);
+		}
+		loss = getDamage (selectedTarget.getDEF());
+		selectedTarget.Losehp (loss);
+		tman.msgText.text = " The bell toles " + selectedTarget.tag +"'s name " + this.tag + " dealt " + loss + " damage";
+		animator.SetTrigger ("ATK");
+
+		tman.BP -= cost;
+		targeting = false;
+		Destroy (GameObject.Find ("Target"));
 	}
 }

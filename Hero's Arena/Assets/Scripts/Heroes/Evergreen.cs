@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class Evergreen : Hero
 {
-
+	public GameObject Food;
+	public GameObject Wall;
 	private string s1name = "Nature's Bounty";
 	private string s2name = "Toxic Bloom";
-	private string ultName = "Guardian of the Forest";
+	private string ultName = "Forest Prison";
 
 	private float poison = .65f;
 
@@ -47,11 +48,52 @@ public class Evergreen : Hero
 
 	}
 
-	//Natures Bounty: creates "Food" on target space within 1 space. {2BP}
+	//Natures Bounty: creates "Food" items on spaces around her. {3BP}
 	override public bool Skill1 ()
 	{
-		return true;
+		int cost = 2;
+		if (tman.BP >= cost && GameManager.instance.turn == team.tag
+		    && tman.getCurrentHero ().tag == this.tag) {
+			Vector3 pos = transform.position;
+
+			GameObject p1 = Instantiate (Food);
+			p1.transform.position = new Vector3(pos.x + 1, pos.y, pos.z);
+
+			GameObject p2 = Instantiate (Food);
+			p2.transform.position = new Vector3(pos.x - 1, pos.y, pos.z);
+
+			GameObject p3 = Instantiate (Food);
+			p3.transform.position = new Vector3(pos.x, pos.y + 1, pos.z);
+
+			GameObject p4 = Instantiate (Food);
+			p4.transform.position = new Vector3(pos.x, pos.y - 1, pos.z);
+
+			tman.msgText.text = this.tag + " used Nature's Bounty"; 
+			tman.BP -= cost;
+			return true;
+		}
+		return false;
 	}
+
+	/*
+	protected override void Skill1Calc() {
+		int cost = 2;
+		Vector3 tpos = selectedTiletarget.transform.position;
+		foreach (GameObject wall in GameObject.FindGameObjectsWithTag("TempWall")) {
+			if (wall.transform.position.x == tpos.x &&
+			    wall.transform.position.y == tpos.y) {
+				tman.msgText.text = "can not target this space";
+				return;
+			}
+		}
+		GameObject p = Instantiate (Food);
+		p.transform.position = tpos;
+		tman.BP -= cost;
+		animator.SetTrigger ("ATK");
+		targeting = false;
+		Destroy (GameObject.Find ("Target"));
+	}
+*/
 
 	//Toxic Bloom: all enemies within 3 spaces have a chance to be poisoned. {3BP}
 	override public bool Skill2 ()
@@ -66,7 +108,7 @@ public class Evergreen : Hero
 					float r = Random.value;
 					if (r < poison) {
 						e.Poison ();
-						text += e.tag + " was poissoned " + "\n";
+						text += e.tag + " was poisoned " + "\n";
 					}
 				}
 				tman.msgText.text = text;
@@ -115,9 +157,39 @@ public class Evergreen : Hero
 		return e;
 	}
 
-	//Guardian of the Forest: Turns into a giant for 2 turns [takes up 4x4 space] deals extra damage while during duration {5BP}
+	//Forest Prison: surround target with temporary walls  {5BP}
 	public override bool Ult ()
 	{
-		return true;
+		int cost = 5;
+		if (tman.BP >= cost && GameManager.instance.turn == team.tag
+		    && tman.getCurrentHero ().tag == this.tag) {
+			targeting = true;
+			targetingType = 3;
+			makeEATarget (RNG * 30);
+			return true;
+		}
+		return false;
+	}
+
+	protected override void UltCalc() {
+		int cost = 5;
+
+		Vector3 tpos = selectedTarget.transform.position;
+
+		GameObject p1 = Instantiate (Wall);
+		p1.transform.position = new Vector3(tpos.x + 1, tpos.y, tpos.z);
+
+		GameObject p2 = Instantiate (Wall);
+		p2.transform.position = new Vector3(tpos.x - 1, tpos.y, tpos.z);
+
+		GameObject p3 = Instantiate (Wall);
+		p3.transform.position = new Vector3(tpos.x, tpos.y + 1, tpos.z);
+
+		GameObject p4 = Instantiate (Wall);
+		p4.transform.position = new Vector3(tpos.x, tpos.y - 1, tpos.z);
+
+		tman.BP -= cost;
+		targeting = false;
+		Destroy (GameObject.Find ("Target"));
 	}
 }
