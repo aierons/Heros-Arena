@@ -62,7 +62,7 @@ public class RadioFreak : Hero
 
 	protected override void Skill1Calc() {
 		int cost = 2;
-		selectedTarget.effects.Add (Effects.STATIC);
+		selectedTarget.Static ();
 		tman.msgText.text = this.tag + " inflicted " + selectedTarget.tag + " with Static.";
 		tman.BP -= cost;
 		targeting = false;

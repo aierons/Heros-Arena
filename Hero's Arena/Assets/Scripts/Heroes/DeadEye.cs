@@ -85,6 +85,7 @@ public class DeadEye : Hero
 				tman.msgText.text = "can not currently use this ability";
 				return false;
 			}
+			print ("reach1");
 			targeting = true;
 			targetingType = 2;
 			makeTarget (RNG);
@@ -97,6 +98,7 @@ public class DeadEye : Hero
 		int cost = 3;
 		int loss1 = 0;
 		int loss2 = 0;
+		print ("reach2");
 		tman.msgText.text = "";
 		for (int i = 0; i < 2; i++) {
 			

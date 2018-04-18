@@ -38,7 +38,11 @@ public class JackFrost : Hero {
 	public override void Update () {
 		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [3]";
-			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
+			if (ult > 0){
+				tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [0]";
+			} else {
+				tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
+			}
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultname + " [4]";
 		}
 		base.Update ();
