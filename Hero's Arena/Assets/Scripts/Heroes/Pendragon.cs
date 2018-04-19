@@ -7,6 +7,10 @@ public class Pendragon : Hero {
 	private string s1name = "Flash Strike";
 	private string s2name = "Shield Bash";
 	private string ultName = "Bolster The Army";
+	private string info = "Shield Bash: Inlfict stun on target within 1 space [half their speed on their next turn] {1BP}\n\t" +
+	                      "Flash Strike: Grant self ADV on next attack and gain 1 SPEED {1BP}\n\t" +
+	                      "Bolster the Army: Grant entire team ADV and enemy team DISADV {4BP}\n\t" +
+	                      "Challenger: If target of standard attack has more health than her she deals additional damage";
 	//passive : Challenger deal 1 extra damage on hit if target has more hp than her.
 
 	// Use this for initialization
@@ -96,7 +100,10 @@ public class Pendragon : Hero {
 			return true;
 		}
 		return false;
-		
+	}
+
+	public override string Info() {
+		return info;
 	}
 
 	protected override void AttackCalc() {

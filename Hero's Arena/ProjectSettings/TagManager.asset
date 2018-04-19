@@ -4,24 +4,24 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
-  - Exit
-  - Food
-  - Soda
-  - Pendragon
-  - IronRebel
-  - Team1
-  - Team2
-  - Songbird
-  - JackFrost
   - Ferocity
-  - Medico
-  - GameManager
-  - Evergreen
-  - DeadEye
-  - RadioFreak
-  - Floor
   - TempWall
+  - Medico
+  - Characters1.1
+  - IronRebel
+  - Songbird
+  - Pendragon
+  - Floor
+  - Evergreen
+  - Exit
+  - RadioFreak
+  - DeadEye
+  - Team2
+  - Team1
+  - Food
+  - JackFrost
+  - Soda
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -60,11 +60,11 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: Floor
-    uniqueID: 1109611689
+    uniqueID: 2242625911
     locked: 0
   - name: Items
-    uniqueID: 3376898989
+    uniqueID: 3345654639
     locked: 0
   - name: Units
-    uniqueID: 2242452663
+    uniqueID: 2826188835
     locked: 0
