@@ -48,7 +48,7 @@ public class Ferocity : Hero {
 		int beforeAttack = selectedTarget.getHP ();
 		base.AttackCalc ();
 		if (beforeAttack != selectedTarget.getHP ()) {
-			if (Random.value < burn) {
+			if (ult > 0 || Random.value < burn) {
 				selectedTarget.Burn ();
 				tman.msgText.text += "\n" + this.tag + " was burned!";
 			}
@@ -76,7 +76,7 @@ public class Ferocity : Hero {
 			selectedTarget.Losehp (loss);
 			tman.msgText.text = this.tag + " landed a hit on " + selectedTarget.tag + " dealt " + loss + " damage";
 			animator.SetTrigger ("ATK");
-			if (ult > 0 && Random.value < burn) {
+			if (ult > 0 || Random.value < burn) {
 				selectedTarget.Burn ();
 				tman.msgText.text += "\n" + this.tag + " was burned!";
 			}
@@ -140,5 +140,5 @@ public class Ferocity : Hero {
 		}
 	}
 
-	//Immolate: all direct attacks (basically the chosen target)
+
 }

@@ -436,9 +436,15 @@ public class Hero : MovingObject {
 		return false;
 	}
 
-	//**********************************************************************************************************************
-	public bool TargetInRange() {
-		return true;
+	protected virtual bool TargetInRange() {
+		foreach (Hero enemy in tman.getEnemyTeam()) {
+			if (Mathf.Abs (this.transform.position.x - enemy.transform.position.x)
+				+ Mathf.Abs (this.transform.position.y - enemy.transform.position.y) <= RNG
+				&& enemy.getHP () > 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void findPlayerTargets(float centerX, float centerY, int range) {
