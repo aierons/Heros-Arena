@@ -87,44 +87,7 @@ public class BoardManager : MonoBehaviour {
 
 	void BoardSetup(){
 		boardHolder = new GameObject ("Board").transform;
-		/*for (int i = 0; i < 6; i++) {
-			if (i < 3) {
-				
-				for (int x = -1; x < columns + 1; x++) {
 
-					for (int y = -1; y < rows + 1; y++) {
-						GameObject toInstantiate = floorTiles [Random.Range (0, floorTiles.Length)];
-						if (x == -1 ||  y == rows) {
-							toInstantiate = wallTiles [Random.Range (0, wallTiles.Length)];
-						}
-						if (x + i == -1 || (x == columns && i == 2) || y == -1) {
-							toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
-						}
-						GameObject instance = Instantiate (toInstantiate, new Vector3 (x + (9 * i), y, 0f), Quaternion.identity) as GameObject;
-
-						instance.transform.SetParent (boardHolder);
-					}
-				}
-			} else {
-				for (int x = -1; x < columns + 1; x++) {
-
-					for (int y = -1; y < rows + 1; y++) {
-						GameObject toInstantiate = floorTiles [Random.Range (0, floorTiles.Length)];
-						if (x == -1) {
-							toInstantiate = wallTiles [Random.Range (0, wallTiles.Length)];
-						}
-						if (x + (i - 3) == -1 || (x == columns && i == 5) || y == rows) {
-							toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
-						}
-						GameObject instance = Instantiate (toInstantiate, new Vector3 (x + (9 * (i - 3)), y + 9, 0f), Quaternion.identity) as GameObject;
-
-						instance.transform.SetParent (boardHolder);
-					}
-				}
-			}
-
-			boardAmount++;
-		}*/
 		//creat the Main Tile1
 		for (int a = 0; a < 7; a++) {
 			for (int b = 0; b < 9; b++) {
@@ -341,7 +304,19 @@ public class BoardManager : MonoBehaviour {
 		for (int i = 0; i < objectCount; i++) {
 			Vector3 randomPosition = RandomPosition ();
 			GameObject tileChoice = tileArray [Random.Range (0, tileArray.Length)];
-			Instantiate (tileChoice, randomPosition, Quaternion.identity);
+			GameObject instance = Instantiate (tileChoice, randomPosition, Quaternion.identity) as GameObject;
+			if((0f <= randomPosition.x && randomPosition.x <= 5f) && (9f <= randomPosition.y && randomPosition.y <= 14f)) {
+				instance.transform.SetParent (Tile3.transform);
+			}
+			if((5f <= randomPosition.x && randomPosition.x <= 12f) && (11f <= randomPosition.y && randomPosition.y <= 15f)) {
+				instance.transform.SetParent (Tile4.transform);
+			}
+			if((2f <= randomPosition.x && randomPosition.x <= 9f) && (-4f <= randomPosition.y && randomPosition.y <= 0f)) {
+				instance.transform.SetParent (Tile6.transform);
+			}
+			if((9f <= randomPosition.x && randomPosition.x <= 14f) && (-3f <= randomPosition.y && randomPosition.y <= 2f)) {
+				instance.transform.SetParent (Tile5.transform);
+			}
 		}
 	}
 
@@ -350,5 +325,52 @@ public class BoardManager : MonoBehaviour {
 		InitializeList ();
 		LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
 		LayoutObjectAtRandom (wallTiles, wallCount.minimum, wallCount.maximum);
+	}
+
+	public void removeTile() {
+		GameObject[] Team1 = GameObject.FindGameObjectsWithTag ("Team1");
+		GameObject[] Team2 = GameObject.FindGameObjectsWithTag ("Team2");
+		List<GameObject> heros = new List<GameObject> ();
+		heros.Add (Team1[0].GetComponent<TeamManager>().captain);
+		heros.Add (Team2[0].GetComponent<TeamManager>().captain);
+		heros.Add (Team1[0].GetComponent<TeamManager>().member1);
+		heros.Add (Team1[0].GetComponent<TeamManager>().member2);
+		heros.Add (Team2[0].GetComponent<TeamManager>().member1);
+		heros.Add (Team2[0].GetComponent<TeamManager>().member2);
+		int randTile = Random.Range (0, 3);
+		switch (randTile) {
+		case 0:
+			Tile4.SetActive (false);
+			foreach(GameObject a in heros) {
+				if((5f <= a.transform.position.x && a.transform.position.x <= 12f) && (11f <= a.transform.position.y && a.transform.position.y <= 15f)) {
+					a.transform.position = a.GetComponent<Hero> ().getStartPosition ();
+				}
+			}
+			break;
+		case 1:
+			Tile5.SetActive (false);
+			foreach(GameObject a in heros) {
+				if((9f <= a.transform.position.x && a.transform.position.x <= 14f) && (-3f <= a.transform.position.y && a.transform.position.y <= 2f)) {
+					a.transform.position = a.GetComponent<Hero> ().getStartPosition ();
+				}
+			}
+			break;
+		case 2:
+			Tile6.SetActive (false);
+			foreach (GameObject a in heros) {
+				if ((2f <= a.transform.position.x && a.transform.position.x <= 9f) && (-4f <= a.transform.position.y && a.transform.position.y <= 0f)) {
+					a.transform.position = a.GetComponent<Hero> ().getStartPosition ();
+				}
+			}
+			break;
+		case 3:
+			Tile3.SetActive (false);
+			foreach(GameObject a in heros) {
+				if((0f <= a.transform.position.x && a.transform.position.x <= 5f) && (9f <= a.transform.position.y && a.transform.position.y <= 14f)) {
+					a.transform.position = a.GetComponent<Hero> ().getStartPosition ();
+				}
+			}
+			break;
+		}
 	}
 }
