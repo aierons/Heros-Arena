@@ -9,6 +9,8 @@ public class Hero : MovingObject {
 	public int pointsPerFood = 10;
 	//Number of points to add to player hp points when picking up a soda object.
 	public int pointsPerSoda = 20;
+	//point where the hero started
+	private  Vector3 startPosition;
 
 	public int ult = 0;
 
@@ -84,6 +86,14 @@ public class Hero : MovingObject {
 	//Getter and Setters
 	public virtual string getHeroText() {
 		return tag + " : " + HP + "/" + maxHP + " SPEED:" + SPEED;
+	}
+
+	public Vector3 getStartPosition() {
+		return startPosition;
+	}
+
+	public void setStartPosition(Vector3 pos) {
+		startPosition = pos;
 	}
 
 
@@ -385,6 +395,7 @@ public class Hero : MovingObject {
 			SoundManager.instance.PlaySingle (gameOverSound);
 			tman.CheckIfGameOver ();
 			this.gameObject.SetActive (false);
+			GameManager.instance.gameObject.GetComponent<BoardManager>().removeTile();
 		}
 	}
 
