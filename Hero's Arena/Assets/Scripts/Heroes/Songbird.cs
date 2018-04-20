@@ -8,16 +8,16 @@ public class Songbird : Hero {
 	private string s1name = "Song of Healing";
 	private string s2name = "Song of Battle";
 	private string ultName = "Song of Valor";
-	private string info = "Song of Healing: all allies within 1 space heal 2 hp. {3BP}\n\t" +
-	                      "Song of Battle: allies within 1 space get a bonus to ATK and a bonus to DMG {3BP} \n\t" +
-	                      "Song of Valor: all allies within 3 spaces gain a large bonus to ATK and a larger bonus to DMG until the end of their next turn. {5 BP}\n\t" +
-	                      "Inner Song: Heal a small amount of health to self every other turn.";
+	private string info = "Songbird: \nSong of Healing: All allies within 1 space heal 2 HP. {3BP}\n" +
+	                      "Song of Battle: Allies within 1 space get a bonus to ATK and a bonus to DMG {3BP} \n" +
+	                      "Song of Valor: All allies within 3 spaces gain a large bonus to ATK and a large bonus to DMG until the end of their next turn {5 BP}\n" +
+	                      "Inner Song: Heal a small amount of HP to self every other turn";
 
 	private bool sing;
 
 	// Use this for initialization
-	public override void Start () {
-		base.Start ();
+	public override void StartGame () {
+		base.StartGame ();
 
 		EV = 1f;
 		ACCb = .90f;
@@ -39,7 +39,7 @@ public class Songbird : Hero {
 	
 	// Update is called once per frame
 	public override void Update () {
-		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
+		if (tman != null && GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [3]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [3]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [7]";
@@ -105,6 +105,9 @@ public class Songbird : Hero {
 		return false;
 	}
 
+	public override string Info() {
+		return info;
+	}
 
 	//inner song
 	public override void EndTurn() {

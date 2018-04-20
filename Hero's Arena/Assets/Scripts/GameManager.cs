@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
 	public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
 	[HideInInspector] public bool Team1Turn = true;       //Boolean to check if it's players turn, hidden in inspector but public.
 	[HideInInspector] public string turn = "Team1";
+	public Camera main;
+	public Canvas maingame;
+	public Canvas select;
 
 	private Text levelText;                                 //Text to display current level number.
 	private BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
@@ -45,7 +48,7 @@ public class GameManager : MonoBehaviour
 		boardScript = GetComponent<BoardManager>();
 
 		//Call the InitGame function to initialize the first level 
-		InitGame();
+		InitCharacterSelect();
 	}
 
 	//This is called each time a scene is loaded.
@@ -57,9 +60,21 @@ public class GameManager : MonoBehaviour
 		InitGame();
 	}
 
+	void InitCharacterSelect() {
+		main.transform.position = new Vector3 (300, 8, -10);
+		maingame.GetComponent<Canvas> ().enabled = false;
+		select.GetComponent<Canvas> ().enabled = true;
+	}
+
 	//Initializes the game for each level.
-	void InitGame()
+	public void InitGame()
 	{
+		main.transform.position = new Vector3 (6, 5, -10);
+		maingame.enabled = true;
+		maingame.GetComponent<Canvas> ().enabled = true;
+		GameObject tm = GameObject.FindGameObjectWithTag ("Team1");
+		select.GetComponent<Canvas> ().enabled = false;
+
 		//While doingSetup is true the player can't move, prevent player from moving while title card is up.
 		doingSetup = true;
 

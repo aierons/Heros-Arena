@@ -55,8 +55,18 @@ MonoBehaviour:
   etman: {fileID: 0}
   attackButton: {fileID: 0}
   endTurnButton: {fileID: 0}
+  skill1Button: {fileID: 0}
+  skill2Button: {fileID: 0}
+  ultButton: {fileID: 0}
+  infoButton: {fileID: 0}
   hpText: {fileID: 0}
+  msgText: {fileID: 0}
+  actText: {fileID: 0}
+  infoText: {fileID: 0}
   captain: {fileID: 0}
   member1: {fileID: 0}
   member2: {fileID: 0}
   turn: 
+  BP: 0
+  maxBP: 0
+  start: 0

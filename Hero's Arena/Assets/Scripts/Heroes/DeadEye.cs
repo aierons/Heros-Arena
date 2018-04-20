@@ -9,12 +9,14 @@ public class DeadEye : Hero
 	private string s1name = "Steady Aim";
 	private string s2name = "Twin Bullets";
 	private string ultName = "For Whom the Bell Toles";
+	private string info = "DeadEye: \nSteady Hand: Grants self ADV and increases range by 1 {1BP}\n" +
+	                      "Twin Shot: Inflict DISADV on self and make two consecutive attacks against a target in range {2BP}\n" +
+	                      "The Bell Toles Thy Name: Target any enemy no matter how far away and deal a large amount of damage {6BP}";
 
 	// Use this for initialization
-	public override void Start ()
+	public override void StartGame ()
 	{
-
-		base.Start ();
+		base.StartGame ();
 
 		EV = 1f;
 		ACCb = .92f;
@@ -35,7 +37,7 @@ public class DeadEye : Hero
 	// Update is called once per frame
 	public override void Update ()
 	{
-		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
+		if (tman != null && GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [1]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [6]";
@@ -45,7 +47,6 @@ public class DeadEye : Hero
 			}
 		}
 			
-
 		base.Update ();
 		
 	}
@@ -151,5 +152,9 @@ public class DeadEye : Hero
 		tman.BP -= cost;
 		targeting = false;
 		Destroy (GameObject.Find ("Target"));
+	}
+
+	public override string Info() {
+		return info;
 	}
 }

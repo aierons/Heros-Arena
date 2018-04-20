@@ -6,10 +6,8 @@ using UnityEngine.UI;
 public class PopupWindow : MonoBehaviour {
 
 	public GameObject window;
-	public Text characterInfo;
 
-	public void Show (string message) {
-		characterInfo.text = message;
+	public void Show () {
 		window.SetActive (true);
 	}
 

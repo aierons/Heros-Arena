@@ -13,7 +13,7 @@ using System.Collections;
 		
 		
 		//Protected, virtual functions can be overridden by inheriting classes.
-		public virtual void Start ()
+		public virtual void StartGame ()
 		{
 			//Get a component reference to this object's BoxCollider2D
 			boxCollider = GetComponent <BoxCollider2D> ();
@@ -54,10 +54,6 @@ using System.Collections;
 			//If something was hit, return false, Move was unsuccesful.
 			return false;
 		}
-		
-		
-		
-		
 		
 		//The virtual keyword means AttemptMove can be overridden by inheriting classes using the override keyword.
 		//AttemptMove takes a generic parameter T to specify the type of component we expect our unit to interact with if blocked (Player for Enemies, Wall for Player).

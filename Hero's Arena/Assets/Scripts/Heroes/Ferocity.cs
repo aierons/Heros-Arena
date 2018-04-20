@@ -9,12 +9,16 @@ public class Ferocity : Hero {
 	private string s2name = "Ignition";
 	private string ultname = "Hellfire";
 	private string passname = "Immolate";
+	private string info = "Ferocity: \nExplosion: Next attack deals damage to all enemies within 2 spaces of target. {3BP}\n" +
+	                      "Ignition: Next attack has increased range and inflicts burn on the enemy [Burn deals damage to unit at the start of each turn lasting 1-3 turns] {2BP}\n" +
+	                      "Hellfire: Until the end of next turn, DMG is increased and all abilities have a larger chance to inflict burn on the target {4BP}\n" +
+	                      "Immolate: All direct attacks [any attack which requires target selection] has a chance to burn the target";
 
 	private float burn = .65f;
 
 	// Use this for initialization
-	public override void Start () {
-		base.Start ();
+	public override void StartGame () {
+		base.StartGame ();
 
 		EV = 1f;
 		ACCb = .90f;
@@ -34,7 +38,7 @@ public class Ferocity : Hero {
 	
 	// Update is called once per frame
 	public override void Update () {
-		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
+		if (tman != null && GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [3]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultname + " [4]";
@@ -138,6 +142,10 @@ public class Ferocity : Hero {
 		} else {
 			return false;
 		}
+	}
+
+	public override string Info() {
+		return info;
 	}
 
 	//Immolate: all direct attacks (basically the chosen target)

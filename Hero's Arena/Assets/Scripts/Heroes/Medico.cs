@@ -10,14 +10,18 @@ public class Medico : Hero
 	private string s2name = "Patch Up";
 	private string ultname = "Elixir";
 	private string passname = "This Might Sting A Bit";
+	private string info = "Medico: \nInjection: Heals 3 hp to target ally in range or inflicts poison on target enemy [Poison deals damage at end of units turn lasting 1-4 turns]. Can also target self {2BP}\n" +
+	                      "Patch: Remove all effects from a target including ADV and DISADV {1BP}\n" +
+	                      "Elixir: Choose target in range, for next 2 turns target has increased DMG, DEF, SPEED. Once over they are unable to move for 1 turn. {4BP}\n" +
+	                      "This Might Sting a Bit: Can attack his allies which heals a small amount of health for them";
 
 	private float poison = .65f;
 
 
 	// Use this for initialization
-	public override void Start ()
+	public override void StartGame ()
 	{
-		base.Start ();
+		base.StartGame ();
 
 		EV = 1f;
 		ACCb = .90f;
@@ -39,7 +43,7 @@ public class Medico : Hero
 	// Update is called once per frame
 	public override void Update ()
 	{
-		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
+		if (tman != null && GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [2]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [3]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultname + " [5]";
@@ -193,6 +197,10 @@ public class Medico : Hero
 
 		targeting = false;
 		Destroy (GameObject.Find ("Target"));
+	}
+
+	public override string Info() {
+		return info;
 	}
 
 }

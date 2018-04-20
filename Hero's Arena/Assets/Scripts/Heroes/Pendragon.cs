@@ -7,15 +7,16 @@ public class Pendragon : Hero {
 	private string s1name = "Flash Strike";
 	private string s2name = "Shield Bash";
 	private string ultName = "Bolster The Army";
-	private string info = "Shield Bash: Inlfict stun on target within 1 space [half their speed on their next turn] {1BP}\n\t" +
-	                      "Flash Strike: Grant self ADV on next attack and gain 1 SPEED {1BP}\n\t" +
-	                      "Bolster the Army: Grant entire team ADV and enemy team DISADV {4BP}\n\t" +
-	                      "Challenger: If target of standard attack has more health than her she deals additional damage";
+	private string info = "Pendragon: \n" +
+	                      "Shield Bash: Inlfict stun on target within 1 space [target's speed is reduced by half on their next turn] {1BP}\n" +
+	                      "Flash Strike: Grants self ADV on next attack and gain 1 SPEED {1BP}\n" +
+	                      "Bolster the Army: Grants entire team ADV and enemy team DISADV {4BP}\n" +
+	                      "Challenger: If target of standard attack has more health, Pendragon deals additional damage";
 	//passive : Challenger deal 1 extra damage on hit if target has more hp than her.
 
 	// Use this for initialization
-	public override void Start () {
-		base.Start ();
+	public override void StartGame () {
+		base.StartGame ();
 
 		EV = 1f;
 		ACCb = .90f;
@@ -35,7 +36,7 @@ public class Pendragon : Hero {
 	
 	// Update is called once per frame
 	public override void Update () {
-		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
+		if (tman != null && GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [1]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [1]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [5]";

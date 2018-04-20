@@ -17,14 +17,14 @@ public class TeamManager : MonoBehaviour
 	public Button skill1Button;
 	public Button skill2Button;
 	public Button ultButton;
-	//public Button infoButton; 
+	public Button infoButton; 
 
 	//UI Text to display current hp for each hero
 	public Text hpText;
 
 	public Text msgText;
 	public Text actText;
-	//public Text infoText;
+	public Text infoText;
 
 	public GameObject captain;
 	public GameObject member1;
@@ -39,6 +39,8 @@ public class TeamManager : MonoBehaviour
 
 	public int BP;
 	public int maxBP;
+
+	public bool start = false;
 
 	public List<Hero> getTeam() {
 		List<Hero> t = new List<Hero> ();
@@ -88,70 +90,112 @@ public class TeamManager : MonoBehaviour
 		
 
 	// Use this for initialization
-	void Start ()
+	public void StartGame ()
 	{
 		turnCount = 0;
 		BP = 1;
 		maxBP = 1;
 
+		/*
 		hcaptain = captain.GetComponent<Hero> ();
 		hmember1 = member1.GetComponent<Hero>();
 		hmember2 = member2.GetComponent<Hero>();
+		*/
 
 		etman = enemyTeam.GetComponent<TeamManager> ();
 
 		turn = captain.tag;
+		Debug.Log (turn);
 
 		hpText.text = hcaptain.getHeroText () + "\n" + hmember1.getHeroText () + "\n" + hmember2.getHeroText ()
 			+ "\n" + BP.ToString() + "/" + maxBP.ToString();
+		infoText.text = "";
 		msgText.text = "";
 		actText.text = "";
-		//infoText.text = "";
-
+		
 		attackButton.onClick.AddListener (TriggerAttack);
 		endTurnButton.onClick.AddListener (TurnEnd);
 		skill1Button.onClick.AddListener (TriggerSkill1);
 		skill2Button.onClick.AddListener (TriggerSkill2);
 		ultButton.onClick.AddListener (TriggerUlt);
-		//infoButton.onClick.AddListener (TriggerInfo);
+		infoButton.onClick.AddListener (TriggerInfo);
+
+		start = true;
+
+		captain.GetComponent<Hero> ().StartGame ();
+		member1.GetComponent<Hero> ().StartGame ();
+		member2.GetComponent<Hero> ().StartGame ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		hpText.text = hcaptain.getHeroText() + "\n" + hmember1.getHeroText() + "\n" + hmember2.getHeroText()
-			+ "\n" + BP.ToString() + "/" + maxBP.ToString();
+		if (start) {
+			hpText.text = hcaptain.getHeroText () + "\n" + hmember1.getHeroText () + "\n" + hmember2.getHeroText ()
+			+ "\n" + BP.ToString () + "/" + maxBP.ToString ();
 
-		if (GameManager.instance.turn == tag) {
-			actText.color = Color.red;
-			actText.text = turn;
+			if (GameManager.instance.turn == tag) {
+				actText.color = Color.red;
+				actText.text = turn;
+			} else {
+				actText.text = "";
+			}
+
+			if (hmember1.getHP () <= 0 && turn == member1.tag) {
+				turn = member2.tag;
+			}
+			if (hmember2.getHP () <= 0 && turn == member2.tag) {
+				turn = captain.tag;
+			}
+		}
+	}
+
+	public void SetCaptain(GameObject cap, int team) {
+		captain = cap;
+		//turn = captain.tag;
+		hcaptain = cap.GetComponent<Hero> ();
+		captain.GetComponent<SpriteRenderer> ().enabled = true;
+		captain.GetComponent<BoxCollider2D> ().enabled = true;
+		captain.GetComponent<Hero> ().enabled = true;
+
+		if (team == 1) {
+			captain.GetComponent<Hero> ().setTeam (team);
+			captain.transform.position = new Vector3 (0, 0, 0);
 		} else {
-			actText.text = "";
-		}
-
-		if (hmember1.getHP () <= 0 && turn == member1.tag) {
-			turn = member2.tag;
-		}
-		if (hmember2.getHP () <= 0 && turn == member2.tag) {
-			turn = captain.tag;
+			captain.GetComponent<Hero> ().setTeam (team);
+			captain.transform.position = new Vector3 (13, 10, 0);
 		}
 	}
 
-	public void SetCaptain(Hero cap) {
-		captain.SetActive (false);
-		hcaptain = cap;
-		captain.SetActive (true);
+	public void SetMember1(GameObject member, int team) {
+		member1 = member;
+		hmember1 = member.GetComponent<Hero> ();
+		member1.GetComponent<SpriteRenderer> ().enabled = true;
+		member1.GetComponent<BoxCollider2D> ().enabled = true;
+		member1.GetComponent<Hero> ().enabled = true;
+
+		if (team == 1) {
+			member1.GetComponent<Hero> ().setTeam (team);
+			member1.transform.position = new Vector3 (2, 0, 0);
+		} else {
+			member1.GetComponent<Hero> ().setTeam (team);
+			member1.transform.position = new Vector3 (11, 10, 0);
+		}
 	}
 
-	public void SetMember1(Hero member) {
-		member1.SetActive (false);
-		hmember1 = member;
-		member1.SetActive (true);
-	}
+	public void SetMember2(GameObject member, int team) {
+		member2 = member;
+		hmember2 = member.GetComponent<Hero> ();
+		member2.GetComponent<SpriteRenderer> ().enabled = true;
+		member2.GetComponent<BoxCollider2D> ().enabled = true;
+		member2.GetComponent<Hero> ().enabled = true;
 
-	public void SetMember2(Hero member) {
-		member2.SetActive (false);
-		hmember2 = member;
-		member2.SetActive (true);
+		if (team == 1) {
+			member2.GetComponent<Hero> ().setTeam (team);
+			member2.transform.position = new Vector3 (0, 2, 0);
+		} else {
+			member2.GetComponent<Hero> ().setTeam (team);	
+			member2.transform.position = new Vector3 (13, 8, 0);
+		}
 	}
 
 	public void CheckIfGameOver() {
@@ -238,7 +282,7 @@ public class TeamManager : MonoBehaviour
 		bool act;
 		if (GameManager.instance.turn == tag) {
 			if (turn == captain.tag || turn == member1.tag || turn == member2.tag) {
-				//infoText.text = hcaptain.Info () + hmember1.Info () + hmember2.Info ();
+				infoText.text = hcaptain.Info () + hmember1.Info () + hmember2.Info ();
 			} 
 		}
 	}
@@ -250,14 +294,14 @@ public class TeamManager : MonoBehaviour
 			skill1Button.interactable = false;
 			skill2Button.interactable = false;
 			ultButton.interactable = false;
-			//infoButton.interactable = false;
+			infoButton.interactable = false;
 
 			etman.attackButton.interactable = true;
 			etman.endTurnButton.interactable = true;
 			etman.skill1Button.interactable = true;
 			etman.skill2Button.interactable = true;
 			etman.ultButton.interactable = true;
-			//etman.infoButton.interactable = true;
+			etman.infoButton.interactable = true;
 
 			skill1Button.GetComponentInChildren<Text> ().text = "Skill1";
 			skill2Button.GetComponentInChildren<Text> ().text = "Skill2";

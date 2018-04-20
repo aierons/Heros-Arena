@@ -8,6 +8,10 @@ public class JackFrost : Hero {
 	private string s2name = "Frostbite";
 	private string ultname = "Zeroth Hour";
 	private string passname = "Permafrost";
+	private string info = "JackFrost: \nArctic Cliff: Creates a wall within 5 spaces, wall covers 3 empty spaces, lasts 2 turns or until it is destroyed {2BP}\n" +
+	                      "Frostbite: Next attack has a chance of freezing the target [Freeze causes targets to be unable to move on their next turn (doesn't stack)] {3BP}\n" +
+	                      "Zeroth Hour: For the next 2 turns Frostbite costs 0BP and Permafrost has a chance to freeze targets in range. {5BP}\n" +
+	                      "Permafrost: If an enemy ends their turn within 1 space their SPD is reduced by 2 on their next turn";
 
 	private float freeze = .65f;
 
@@ -15,8 +19,8 @@ public class JackFrost : Hero {
 	private int jackWallTime = 0;
 
 	// Use this for initialization
-	public override void Start () {
-		base.Start ();
+	public override void StartGame () {
+		base.StartGame ();
 
 		EV = 1f;
 		ACCb = .90f;
@@ -36,7 +40,7 @@ public class JackFrost : Hero {
 
 	// Update is called once per frame
 	public override void Update () {
-		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
+		if (tman != null && GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [3]";
 			if (ult > 0){
 				tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [0]";
@@ -211,6 +215,10 @@ public class JackFrost : Hero {
 		} else {
 			return false;
 		}
+	}
+
+	public override string Info() {
+		return info;
 	}
 
 	//Permafrost: when target ends turn within 1 space their speed is reduced on their next turn

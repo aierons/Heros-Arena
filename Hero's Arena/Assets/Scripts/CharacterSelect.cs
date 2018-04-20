@@ -11,6 +11,14 @@ public class CharacterSelect : MonoBehaviour {
 	private int current = 0; 
 	private Button lastClicked;
 	private string tag;
+	public Text info;
+
+	public GameObject t1capAnim; 
+	public GameObject t1m1Anim;
+	public GameObject t1m2Anim;
+	public GameObject t2capAnim;
+	public GameObject t2m1Anim;
+	public GameObject t2m2Anim;
 
 	/*
 	 * current starts from characters1.1
@@ -78,7 +86,7 @@ public class CharacterSelect : MonoBehaviour {
 			Select ("Medico");
 		});
 		selectEverGreen.onClick.AddListener (delegate {
-			Select ("EverGreen");
+			Select ("Evergreen");
 		});
 		selectRadioFreak.onClick.AddListener (delegate {
 			Select ("RadioFreak");
@@ -99,6 +107,7 @@ public class CharacterSelect : MonoBehaviour {
 	//	characters [characterIndex].SetActive (false);
 		//characterIndex = index;
 		tag = index; 
+		info.text = GameObject.FindGameObjectWithTag (tag).GetComponent<Hero> ().Info ();
 		//characters [characterIndex].SetActive (true);
 
 		switch (tag) {
@@ -140,34 +149,84 @@ public class CharacterSelect : MonoBehaviour {
 
 		switch (current) {
 		case 0: //1.1
+			//lastClicked.GetComponentInChildren<Text> ().text = "Team 1 Captain";
+			tm.GetComponent<TeamManager> ().SetCaptain (GameObject.FindGameObjectWithTag (tag), 1);
+
+			Animator anim = t1capAnim.GetComponent<Animator> ();
+			SpriteRenderer sprite = t1capAnim.GetComponent<SpriteRenderer> ();
+			anim.runtimeAnimatorController = GameObject.FindGameObjectWithTag (tag).GetComponent<Animator> ().runtimeAnimatorController;
+			sprite = GameObject.FindGameObjectWithTag (tag).GetComponent<SpriteRenderer> ();
+
+			lastClicked.interactable = false;
 			current++;
-			lastClicked.GetComponentInChildren<Text>().text = "Team 1 Captain";
-			tm.GetComponent<TeamManager> ().SetCaptain(GameObject.FindGameObjectWithTag(tag).GetComponent<Hero>());
 
 			break;
 		case 1: //2.1
+			//lastClicked.GetComponentInChildren<Text>().text = "Team 2 Captain";
+			tm2.GetComponent<TeamManager> ().SetCaptain(GameObject.FindGameObjectWithTag(tag),  2);
+
+			Animator anim0 = t2capAnim.GetComponent<Animator> ();
+			SpriteRenderer sprite0 = t2capAnim.GetComponent<SpriteRenderer> ();
+			anim0.runtimeAnimatorController = GameObject.FindGameObjectWithTag (tag).GetComponent<Animator> ().runtimeAnimatorController;
+			sprite0 = GameObject.FindGameObjectWithTag (tag).GetComponent<SpriteRenderer> ();
+
+			lastClicked.interactable = false;
 			current++;
-			lastClicked.GetComponentInChildren<Text>().text = "Team 2 Captain";
-			tm2.GetComponent<TeamManager> ().SetCaptain(GameObject.FindGameObjectWithTag(tag).GetComponent<Hero>());
+
 			break;
-		case 2: //1.2
+		case 2: //1.2			
+			//lastClicked.GetComponentInChildren<Text>().text = "Team 1 Member 1";
+			tm.GetComponent<TeamManager> ().SetMember1(GameObject.FindGameObjectWithTag(tag), 1);
+
+			Animator anim1 = t1m1Anim.GetComponent<Animator> ();
+			SpriteRenderer sprite1 = t1m1Anim.GetComponent<SpriteRenderer> ();
+			anim1.runtimeAnimatorController = GameObject.FindGameObjectWithTag (tag).GetComponent<Animator> ().runtimeAnimatorController;
+			sprite1 = GameObject.FindGameObjectWithTag (tag).GetComponent<SpriteRenderer> ();
+
+			lastClicked.interactable = false;
 			current++;
-			lastClicked.GetComponentInChildren<Text>().text = "Team 1 Member 1";
-			tm.GetComponent<TeamManager> ().SetMember1(GameObject.FindGameObjectWithTag(tag).GetComponent<Hero>());
+
 			break;
 		case 3: //2.2
+			//team 2 member 1 is getting set as team 1 member 3 
+			//team 1 member 3 is getting set as team 2 member 1 
+			//lastClicked.GetComponentInChildren<Text>().text = "Team 2 Member 1";
+			tm2.GetComponent<TeamManager> ().SetMember1(GameObject.FindGameObjectWithTag(tag), 2);
+
+			Animator anim2 = t2m1Anim.GetComponent<Animator> ();
+			SpriteRenderer sprite2 = t2m1Anim.GetComponent<SpriteRenderer> ();
+			anim2.runtimeAnimatorController = GameObject.FindGameObjectWithTag (tag).GetComponent<Animator> ().runtimeAnimatorController;
+			sprite2 = GameObject.FindGameObjectWithTag (tag).GetComponent<SpriteRenderer> ();
+
+			lastClicked.interactable = false;
 			current++;
-			lastClicked.GetComponentInChildren<Text>().text = "Team 2 Member 1";
-			tm2.GetComponent<TeamManager> ().SetMember1(GameObject.FindGameObjectWithTag(tag).GetComponent<Hero>());
+
 			break;
 		case 4: //1.3
+			//lastClicked.GetComponentInChildren<Text>().text = "Team 1 Member 2";
+			tm.GetComponent<TeamManager> ().SetMember2(GameObject.FindGameObjectWithTag(tag), 1);
+
+			Animator anim3 = t1m2Anim.GetComponent<Animator> ();
+			SpriteRenderer sprite3 = t1m2Anim.GetComponent<SpriteRenderer> ();
+			anim3.runtimeAnimatorController = GameObject.FindGameObjectWithTag (tag).GetComponent<Animator> ().runtimeAnimatorController;
+			sprite3 = GameObject.FindGameObjectWithTag (tag).GetComponent<SpriteRenderer> ();
+
+			lastClicked.interactable = false;
 			current++;
-			lastClicked.GetComponentInChildren<Text>().text = "Team 1 Member 2";
-			tm.GetComponent<TeamManager> ().SetMember2(GameObject.FindGameObjectWithTag(tag).GetComponent<Hero>());
+
 			break;
 		case 5:
-			lastClicked.GetComponentInChildren<Text>().text = "Team 2 Member 2";
-			tm2.GetComponent<TeamManager> ().SetMember2 (GameObject.FindGameObjectWithTag(tag).GetComponent<Hero>());
+			//lastClicked.GetComponentInChildren<Text>().text = "Team 2 Member 2";
+			tm2.GetComponent<TeamManager> ().SetMember2 (GameObject.FindGameObjectWithTag (tag), 2);
+
+			Animator anim4 = t2m2Anim.GetComponent<Animator> ();
+			SpriteRenderer sprite4 = t2m2Anim.GetComponent<SpriteRenderer> ();
+			anim4.runtimeAnimatorController = GameObject.FindGameObjectWithTag (tag).GetComponent<Animator> ().runtimeAnimatorController;
+			sprite4 = GameObject.FindGameObjectWithTag (tag).GetComponent<SpriteRenderer> ();
+
+			lastClicked.interactable = false;
+			current++;
+
 			break;
 		default:
 			return;

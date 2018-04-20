@@ -10,14 +10,17 @@ public class Evergreen : Hero
 	private string s1name = "Nature's Bounty";
 	private string s2name = "Toxic Bloom";
 	private string ultName = "Forest Prison";
+	private string info = "Evergreen: \nNatures Bounty: Creates \"Food\" on all spaces within 1 space of Evergreen {2BP}\n" +
+	                      "Toxic Bloom: All enemies within 3 spaces have a chance to be poisoned {3BP}\n" +
+	                      "Forest Prison: Surround a target with destructable walls {5BP}";
 
 	private float poison = .65f;
 
 	// Use this for initialization
-	public override void Start ()
+	public override void StartGame ()
 	{
 
-		base.Start ();
+		base.StartGame ();
 
 		EV = 1f;
 		ACCb = .90f;
@@ -38,7 +41,7 @@ public class Evergreen : Hero
 	// Update is called once per frame
 	public override void Update ()
 	{
-		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
+		if (tman != null && GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [2]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [3]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [5]";
@@ -191,5 +194,9 @@ public class Evergreen : Hero
 		tman.BP -= cost;
 		targeting = false;
 		Destroy (GameObject.Find ("Target"));
+	}
+
+	public override string Info() {
+		return info;
 	}
 }

@@ -10,12 +10,15 @@ public class RadioFreak : Hero
 	private string s1name = "Static";
 	private string s2name = "SMPTE";
 	private string ultName = "Glitch";
+	private string info = "RadioFreak: \nStatic: Target enemy can't use one of their skills (selected by random) during their next turn {2BP}\n" +
+	                      "SMPTE: Inflict 1 random DISADV on target [stun, freeze, burn, poison, bleed] {2BP}\n" +
+	                      "Glitch: All allies get a random ADV, all enemies get a random DISADV {5BP}";
 
 	// Use this for initialization
-	public override void Start ()
+	public override void StartGame ()
 	{
 
-		base.Start ();
+		base.StartGame ();
 
 		EV = 1f;
 		ACCb = .90f;
@@ -36,7 +39,7 @@ public class RadioFreak : Hero
 	// Update is called once per frame
 	public override void Update ()
 	{
-		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
+		if (tman != null && GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [2]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [5]";
@@ -149,5 +152,9 @@ public class RadioFreak : Hero
 		} else {
 			return false;
 		}
+	}
+
+	public override string Info() {
+		return info;
 	}
 }

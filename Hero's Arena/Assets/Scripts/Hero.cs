@@ -79,14 +79,15 @@ public class Hero : MovingObject {
 	protected Animator animator;
 
 	public GameObject team;
-	protected TeamManager tman;
+	protected TeamManager tman; 
+
+	public bool start = false;
 
 	//Getter and Setters
 	public virtual string getHeroText() {
 		return tag + " : " + HP + "/" + maxHP + " SPEED:" + SPEED;
 	}
-
-
+		
 	public int getHP() {
 		return HP;
 	}
@@ -104,147 +105,149 @@ public class Hero : MovingObject {
 	}
 
 	//Start overrides the Start function of MovingObject
-    public override void Start ()
+    public override void StartGame ()
 	{
 		effects = new List<Effects> ();
-
-		tman = team.GetComponent<TeamManager> ();
 
 		//Get a component reference to the Player's animator component
 		animator = GetComponent<Animator> ();
 
 		Direction = 0;
 
+		tman = team.GetComponent<TeamManager> ();
 		//Call the Start function of the MovingObject base class.
-		base.Start ();
+		base.StartGame ();
+
+		start = true;
 	}
 	
 	virtual public void Update ()
 	{
-		CheckIfDead ();
-		//If it's not the player's turn, exit the function.
-		//print(this.tag + ":" +team.tag + ":" + (GameManager.instance.turn == team.tag).ToString() + " , " + (tman.turn == this.tag).ToString());
-		if (!(GameManager.instance.turn == team.tag && tman.turn == this.tag)) {
-			//print (this.tag + ":" +team.tag + ":" + "stuck");
-			return;
-		}
-
-		checkStatic ();
-
-		if ((
-			((Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D)) && team.tag == "Team1")
-			|| ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) 
-				&& team.tag == "Team2")) && !targeting
-			)  {
-			if (effects.Contains (Effects.FROZEN)) {
-				tman.msgText.text = this.tag + " is frozen and unable to move";
-				//EndTurn ();
-				SPEED = 0;
-			} else {
-				//print (this.tag + ":" +team.tag + ":" + "reach");
-				int horizontal = 0;  	//Used to store the horizontal move direction.
-				int vertical = 0;		//Used to store the vertical move direction.
-
-				//Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
-				horizontal = (int)(Input.GetAxisRaw ("Horizontal"));
-
-				//Get input from the input manager, round it to an integer and store in vertical to set y axis move direction
-				vertical = (int)(Input.GetAxisRaw ("Vertical"));
-
-				//Check if moving horizontally, if so set vertical to zero.
-				if (horizontal != 0) {
-					vertical = 0;
-				}
-
-				if (vertical > 0) {
-					animator.SetInteger ("Direction", 2);
-					Direction = 2;
-				} else if (vertical < 0) {
-					animator.SetInteger ("Direction", 0);
-					Direction = 0;
-				} else if (horizontal > 0) {
-					animator.SetInteger ("Direction", 3);
-					Direction = 3;
-				} else if (horizontal < 0) {
-					animator.SetInteger ("Direction", 1);
-					Direction = 1;
-				}
-
-				if (SPEED > 0) {
-					//Check if we have a non-zero value for horizontal or vertical
-					if (horizontal != 0 || vertical != 0) {
-						//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
-						//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
-						AttemptMove<Wall> (horizontal, vertical);
-					}
-				}
+		if (start) {
+			CheckIfDead ();
+			//If it's not the player's turn, exit the function.
+			//print(this.tag + ":" +team.tag + ":" + (GameManager.instance.turn == team.tag).ToString() + " , " + (tman.turn == this.tag).ToString());
+			if (!(GameManager.instance.turn == team.tag && tman.turn == this.tag)) {
+				//print (this.tag + ":" +team.tag + ":" + "stuck");
+				return;
 			}
-		}
-		if (targeting) {
-			int lastTarget = currentTarget;
-			if ((Input.GetKeyDown (KeyCode.A) && team.tag == "Team1") ||
-				(Input.GetKeyDown (KeyCode.LeftArrow) && team.tag == "Team2")) {
-				--currentTarget;
-			}
-			if ((Input.GetKeyDown (KeyCode.D) && team.tag == "Team1") ||
-				(Input.GetKeyDown (KeyCode.RightArrow) && team.tag == "Team2")) {
-				++currentTarget;
-			}
-			if (tileTargeting) {
-				currentTarget = (currentTarget % tileTargets.Count + tileTargets.Count) % tileTargets.Count;
-				if (lastTarget != currentTarget) {
-					GameObject.Find ("Target").transform.position = tileTargets [currentTarget].transform.position;
-					if (tileTargets [currentTarget].transform.position.y > transform.position.y) {
-						animator.SetInteger ("Direction", 2);
-						Direction = 2;
-					} else if (tileTargets [currentTarget].transform.position.y < transform.position.y) {
-						animator.SetInteger ("Direction", 0);
-						Direction = 0;
-					} else if (tileTargets [currentTarget].transform.position.x < transform.position.x) {
-						animator.SetInteger ("Direction", 1);
-						Direction = 1;
-					} else if (tileTargets [currentTarget].transform.position.x > transform.position.x) {
-						animator.SetInteger ("Direction", 3);
-						Direction = 3;
-					}
-				}
-			} else {
-				currentTarget = (currentTarget % targets.Count + targets.Count) % targets.Count;
-				if (lastTarget != currentTarget) {
-					GameObject.Find ("Target").transform.position = targets [currentTarget].transform.position;
-					if (targets [currentTarget].transform.position.y > transform.position.y) {
-						animator.SetInteger ("Direction", 2);
-						Direction = 2;
-					} else if (targets [currentTarget].transform.position.y < transform.position.y) {
-						animator.SetInteger ("Direction", 0);
-						Direction = 0;
-					} else if (targets [currentTarget].transform.position.x < transform.position.x) {
-						animator.SetInteger ("Direction", 1);
-						Direction = 1;
-					} else if (targets [currentTarget].transform.position.x > transform.position.x) {
-						animator.SetInteger ("Direction", 3);
-						Direction = 3;
-					}
-				}
-			}
-			if (Input.GetKeyDown (KeyCode.Space)) {
 
-				if (tileTargeting) {
-					selectedTile = tileTargets [currentTarget];
+			checkStatic ();
+
+			if ((
+			       ((Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.D)) && team.tag == "Team1")
+			       || ((Input.GetKeyDown (KeyCode.DownArrow) || Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.RightArrow))
+			       && team.tag == "Team2")) && !targeting) {
+				if (effects.Contains (Effects.FROZEN)) {
+					tman.msgText.text = this.tag + " is frozen and unable to move";
+					//EndTurn ();
+					SPEED = 0;
 				} else {
-					selectedTarget = targets [currentTarget];
+					//print (this.tag + ":" +team.tag + ":" + "reach");
+					int horizontal = 0;  	//Used to store the horizontal move direction.
+					int vertical = 0;		//Used to store the vertical move direction.
+
+					//Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
+					horizontal = (int)(Input.GetAxisRaw ("Horizontal"));
+
+					//Get input from the input manager, round it to an integer and store in vertical to set y axis move direction
+					vertical = (int)(Input.GetAxisRaw ("Vertical"));
+
+					//Check if moving horizontally, if so set vertical to zero.
+					if (horizontal != 0) {
+						vertical = 0;
+					}
+
+					if (vertical > 0) {
+						animator.SetInteger ("Direction", 2);
+						Direction = 2;
+					} else if (vertical < 0) {
+						animator.SetInteger ("Direction", 0);
+						Direction = 0;
+					} else if (horizontal > 0) {
+						animator.SetInteger ("Direction", 3);
+						Direction = 3;
+					} else if (horizontal < 0) {
+						animator.SetInteger ("Direction", 1);
+						Direction = 1;
+					}
+
+					if (SPEED > 0) {
+						//Check if we have a non-zero value for horizontal or vertical
+						if (horizontal != 0 || vertical != 0) {
+							//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
+							//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
+							AttemptMove<Wall> (horizontal, vertical);
+						}
+					}
 				}
-				if (targetingType == 0) {
-					AttackCalc ();
+			}
+			if (targeting) {
+				int lastTarget = currentTarget;
+				if ((Input.GetKeyDown (KeyCode.A) && team.tag == "Team1") ||
+				   (Input.GetKeyDown (KeyCode.LeftArrow) && team.tag == "Team2")) {
+					--currentTarget;
 				}
-				if (targetingType == 1) {
-					Skill1Calc ();
+				if ((Input.GetKeyDown (KeyCode.D) && team.tag == "Team1") ||
+				   (Input.GetKeyDown (KeyCode.RightArrow) && team.tag == "Team2")) {
+					++currentTarget;
 				}
-				if (targetingType == 2) {
-					Skill2Calc ();
+				if (tileTargeting) {
+					currentTarget = (currentTarget % tileTargets.Count + tileTargets.Count) % tileTargets.Count;
+					if (lastTarget != currentTarget) {
+						GameObject.Find ("Target").transform.position = tileTargets [currentTarget].transform.position;
+						if (tileTargets [currentTarget].transform.position.y > transform.position.y) {
+							animator.SetInteger ("Direction", 2);
+							Direction = 2;
+						} else if (tileTargets [currentTarget].transform.position.y < transform.position.y) {
+							animator.SetInteger ("Direction", 0);
+							Direction = 0;
+						} else if (tileTargets [currentTarget].transform.position.x < transform.position.x) {
+							animator.SetInteger ("Direction", 1);
+							Direction = 1;
+						} else if (tileTargets [currentTarget].transform.position.x > transform.position.x) {
+							animator.SetInteger ("Direction", 3);
+							Direction = 3;
+						}
+					}
+				} else {
+					currentTarget = (currentTarget % targets.Count + targets.Count) % targets.Count;
+					if (lastTarget != currentTarget) {
+						GameObject.Find ("Target").transform.position = targets [currentTarget].transform.position;
+						if (targets [currentTarget].transform.position.y > transform.position.y) {
+							animator.SetInteger ("Direction", 2);
+							Direction = 2;
+						} else if (targets [currentTarget].transform.position.y < transform.position.y) {
+							animator.SetInteger ("Direction", 0);
+							Direction = 0;
+						} else if (targets [currentTarget].transform.position.x < transform.position.x) {
+							animator.SetInteger ("Direction", 1);
+							Direction = 1;
+						} else if (targets [currentTarget].transform.position.x > transform.position.x) {
+							animator.SetInteger ("Direction", 3);
+							Direction = 3;
+						}
+					}
 				}
-				if (targetingType == 3) {
-					UltCalc ();
+				if (Input.GetKeyDown (KeyCode.Space)) {
+
+					if (tileTargeting) {
+						selectedTile = tileTargets [currentTarget];
+					} else {
+						selectedTarget = targets [currentTarget];
+					}
+					if (targetingType == 0) {
+						AttackCalc ();
+					}
+					if (targetingType == 1) {
+						Skill1Calc ();
+					}
+					if (targetingType == 2) {
+						Skill2Calc ();
+					}
+					if (targetingType == 3) {
+						UltCalc ();
+					}
 				}
 			}
 		}
@@ -602,7 +605,7 @@ public class Hero : MovingObject {
 		return false;
 	}
 
-	virtual public  string Info() {
+	virtual public string Info() {
 		return "";
 	}
 
@@ -712,6 +715,14 @@ public class Hero : MovingObject {
 			effects.Add (Effects.BURN);
 		}
 		brn_count = 2;
+	}
+
+	public void setTeam(int teamIndex) {
+		if (teamIndex == 1) {
+			team = GameObject.FindGameObjectWithTag ("Team1");
+		} else {
+			team = GameObject.FindGameObjectWithTag ("Team2");
+		}
 	}
 
 }

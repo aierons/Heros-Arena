@@ -7,6 +7,10 @@ public class IronRebel : Hero {
 	private string s1name = "Armor Spike";
 	private string s2name = "Iron Hide";
 	private string ultName = "Panzer Smash";
+	private string info = "IronRebel: \nThorny Devil: Next time a target deals damage to IronRebel, they take a small amount of damage as well {2BP}\n" +
+	                      "Iron Hide: Grants self a small amount of armor [temporary health that can go beyond max health, does not stack] {2BP}\n" +
+	                      "Panzer Smash: Next attack deals damage in a 3x4 rectangle space infront of IronRebel.  This attack also goes through and destroys walls and all enemies hit are stunned {4BP}\n" +
+	                      "Unstoppable: It costs IronRebel 0 movement to destroy walls";
 
 	private bool spiked;
 
@@ -18,8 +22,8 @@ public class IronRebel : Hero {
 	}
 
 	// Use this for initialization
-	public override void Start () {
-		base.Start ();
+	public override void StartGame () {
+		base.StartGame ();
 	
 		EV = 1f;
 		ACCb = .90f;
@@ -41,7 +45,7 @@ public class IronRebel : Hero {
 	}
 	
 	public override void Update () {
-		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
+		if (tman != null && GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [2]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [5]";
@@ -113,6 +117,10 @@ public class IronRebel : Hero {
 		} else {
 			return false;
 		}
+	}
+
+	public override string Info() {
+		return info;
 	}
 
 	private List<Hero> getEnemyTrgts() {
