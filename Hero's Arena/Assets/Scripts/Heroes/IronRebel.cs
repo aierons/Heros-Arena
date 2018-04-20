@@ -102,21 +102,20 @@ public class IronRebel : Hero {
 		}
 	}
 
-	//Panzer Smash: next attack deals damage in a 3x4 rectangle space infront of him, goes through walls and destroys walls, all enemies hit are stunned {4BP}
-	public override bool Ult() {
+	protected override void UltCalc() {
 		int cost = 5;
-		if (tman.BP >= cost && GameManager.instance.turn == team.tag
-		    && tman.getCurrentHero ().tag == this.tag) {
-			List<Hero> targets = getEnemyTrgts ();
-			foreach (Hero e in targets) {
-				e.Losehp (getDamage (e.getDEF ()));
-			}
-			tman.msgText.text = this.tag + " has used Panzer Smash";
-			tman.BP -= cost;
-			return true;
-		} else {
-			return false;
+		List<Hero> targets = getEnemyTrgts ();
+		tman.msgText.text = this.tag + " has used Panzer Smash";
+
+		foreach (Hero e in targets) {
+			int l = getDamage (e.getDEF ());
+			e.Losehp (l);
+			tman.msgText.text += e.tag + " took " + l + " damage"; 
 		}
+		targeting = false;
+		tileTargeting = false;
+		tman.BP -= cost;
+		Destroy (GameObject.Find ("Target"));
 	}
 
 	public override string Info() {
@@ -159,13 +158,12 @@ public class IronRebel : Hero {
 		foreach (Hero e in enemies) {
 			Vector3 epos = e.transform.position;
 			if (pos.x + xlow <= epos.x && epos.x <= pos.x + xhi &&
-			    pos.y + ylow <= epos.y && epos.y <= pos.y + yhi) {
+				pos.y + ylow <= epos.y && epos.y <= pos.y + yhi) {
 				targets.Add (e);
 			}
 		}
 
-		BoardManager bm = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<BoardManager>();
-		GameObject[] wallList = bm.wallTiles;
+		GameObject[] wallList = GameObject.FindGameObjectsWithTag ("TempWall");
 		List<Wall> walls = new List<Wall>();
 		foreach (GameObject w in wallList) {
 			walls.Add (w.GetComponent<Wall> ());
@@ -179,6 +177,4 @@ public class IronRebel : Hero {
 		}
 		return targets;
 	}
-
-
 }

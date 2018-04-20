@@ -92,38 +92,40 @@ public class TeamManager : MonoBehaviour
 	// Use this for initialization
 	public void StartGame ()
 	{
-		turnCount = 0;
-		BP = 1;
-		maxBP = 1;
+		if (member2 != null) {
+			turnCount = 0;
+			BP = 1;
+			maxBP = 1;
 
-		/*
+			/*
 		hcaptain = captain.GetComponent<Hero> ();
 		hmember1 = member1.GetComponent<Hero>();
 		hmember2 = member2.GetComponent<Hero>();
 		*/
 
-		etman = enemyTeam.GetComponent<TeamManager> ();
+			etman = enemyTeam.GetComponent<TeamManager> ();
 
-		turn = captain.tag;
+			turn = captain.tag;
 
-		hpText.text = hcaptain.getHeroText () + "\n" + hmember1.getHeroText () + "\n" + hmember2.getHeroText ()
-			+ "\n" + BP.ToString() + "/" + maxBP.ToString();
-		infoText.text = "";
-		msgText.text = "";
-		actText.text = "";
+			hpText.text = hcaptain.getHeroText () + "\n" + hmember1.getHeroText () + "\n" + hmember2.getHeroText ()
+			+ "\n" + BP.ToString () + "/" + maxBP.ToString ();
+			infoText.text = "";
+			msgText.text = "";
+			actText.text = "";
 		
-		attackButton.onClick.AddListener (TriggerAttack);
-		endTurnButton.onClick.AddListener (TurnEnd);
-		skill1Button.onClick.AddListener (TriggerSkill1);
-		skill2Button.onClick.AddListener (TriggerSkill2);
-		ultButton.onClick.AddListener (TriggerUlt);
-		infoButton.onClick.AddListener (TriggerInfo);
+			attackButton.onClick.AddListener (TriggerAttack);
+			endTurnButton.onClick.AddListener (TurnEnd);
+			skill1Button.onClick.AddListener (TriggerSkill1);
+			skill2Button.onClick.AddListener (TriggerSkill2);
+			ultButton.onClick.AddListener (TriggerUlt);
+			infoButton.onClick.AddListener (TriggerInfo);
 
-		start = true;
+			start = true;
 
-		captain.GetComponent<Hero> ().StartGame ();
-		member1.GetComponent<Hero> ().StartGame ();
-		member2.GetComponent<Hero> ().StartGame ();
+			captain.GetComponent<Hero> ().StartGame ();
+			member1.GetComponent<Hero> ().StartGame ();
+			member2.GetComponent<Hero> ().StartGame ();
+		}
 	}
 	
 	// Update is called once per frame

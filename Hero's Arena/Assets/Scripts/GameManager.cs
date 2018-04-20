@@ -76,24 +76,26 @@ public class GameManager : MonoBehaviour
 	//Initializes the game for each level.
 	public void InitGame()
 	{
-		main.transform.position = new Vector3 (6, 5, -10);
-		maingame.enabled = true;
-		maingame.GetComponent<Canvas> ().enabled = true;
-		GameObject tm = GameObject.FindGameObjectWithTag ("Team1");
-		select.GetComponent<Canvas> ().enabled = false;
+		GameObject tm2 = GameObject.FindGameObjectWithTag ("Team2");
+		if (tm2.GetComponent<TeamManager> ().member2 != null) {
+			main.transform.position = new Vector3 (6, 5, -10);
+			maingame.enabled = true;
+			maingame.GetComponent<Canvas> ().enabled = true;
 
-		//While doingSetup is true the player can't move, prevent player from moving while title card is up.
-		doingSetup = true;
+			select.GetComponent<Canvas> ().enabled = false;
 
-		//Call the HideLevelImage function with a delay in seconds of levelStartDelay.
-		Invoke("HideLevelImage", levelStartDelay);
+			//While doingSetup is true the player can't move, prevent player from moving while title card is up.
+			doingSetup = true;
 
-		//Clear any Enemy objects in our List to prepare for next level.
-		//enemies.Clear();
+			//Call the HideLevelImage function with a delay in seconds of levelStartDelay.
+			Invoke ("HideLevelImage", levelStartDelay);
 
-		//Call the SetupScene function of the BoardManager script, pass it current level number.
-		boardScript.SetupScene(level);
+			//Clear any Enemy objects in our List to prepare for next level.
+			//enemies.Clear();
 
+			//Call the SetupScene function of the BoardManager script, pass it current level number.
+			boardScript.SetupScene (level);
+		}
 	}
 
 

@@ -33,17 +33,7 @@ public class Hero : MovingObject
 		QUICK};
 
 	public List<Effects> effects;
-	/*
-	protected int HP = 8;
-	protected int maxHP = 8;
-	protected int DEF = 13;
-	protected int SPEED = 5;
-	protected int maxSPEED = 5;
-	protected int ATK = 2;
-	protected int DMG = 3;
-	protected int wallDMG = 1;
-	protected int RNG = 1;
-*/
+
 	protected float EV = 1f;
 	// (.7 <STUN- 1 -QUICK> 1.1)
 	protected float ACCb = .90f;
@@ -394,7 +384,6 @@ public class Hero : MovingObject
 				effects.Remove (Effects.PSN);
 				tman.msgText.text += this.tag + "'s poison has worn off";
 			}
-
 		}
 
 		//Check if the tag of the trigger collided with is Soda.

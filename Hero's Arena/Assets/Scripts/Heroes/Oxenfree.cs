@@ -7,9 +7,9 @@ public class Oxenfree : Hero {
 	private string s1name = "Catapult";
 	private string s2name = "Mad Rush";
 	private string ultName = "Brave Horn";
-	private string info = "Catapult: Can throw one ally within 1 space to an open space within 7 spaces. {1BP}\n\t" +
-		"Mad Rush: Charge foward up to 8 spaces, each enemy moved through is inflicted with bleed. {2BP}\n\t" +
-		"Brave Horn: Next attack inflicts bleed and deals double damage if target is already inflicted with bleed. {4BP}\n\t" +
+	private string info = "Oxenfree: \n Catapult: Can throw one ally within 1 space to an open space within 7 spaces. {1BP}\n" +
+		"Mad Rush: Charge foward up to 8 spaces, each enemy moved through is inflicted with bleed. {2BP}\n" +
+		"Brave Horn: Next attack inflicts bleed and deals double damage if target is already inflicted with bleed. {4BP}\n" +
 		"Red Rage: Deal a small amount of extra damage to targets inflicted with bleed.";
 
 	private bool hold = false;
@@ -32,10 +32,10 @@ public class Oxenfree : Hero {
 		wallDMG = 2;
 		RNG = 1;
 	}
-	
+
 	// Update is called once per frame
 	public override void Update () {
-		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
+		if (tman != null && GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [1]";
 			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [4]";
@@ -84,7 +84,7 @@ public class Oxenfree : Hero {
 	{
 		int cost = 1;
 		if (!hold && tman.BP >= cost && GameManager.instance.turn == team.tag
-		    && tman.getCurrentHero ().tag == this.tag && AllyInRange (1)) {
+			&& tman.getCurrentHero ().tag == this.tag && AllyInRange (1)) {
 			makeAllyTarget (1);
 			targeting = true;
 			targetingType = 1;
@@ -153,181 +153,17 @@ public class Oxenfree : Hero {
 	public override bool Skill2 ()
 	{
 		int cost = 2;
-		if (!hold && tman.BP >= cost && GameManager.instance.turn == team.tag
-		    && tman.getCurrentHero ().tag == this.tag) {
+		if (tman.BP >= cost && GameManager.instance.turn == team.tag
+			&& tman.getCurrentHero ().tag == this.tag && SPEED >= 6) {
+			SPEED -= 6;
+
 			tileTargets = new List<GameObject> ();
-			GameObject[] tiles = GameObject.FindGameObjectsWithTag ("Floor");
-			GameObject[] walls = GameObject.FindGameObjectsWithTag ("TempWall");
-			GameObject[] outerWalls = GameObject.FindGameObjectsWithTag ("OuterWall");
-			List<Hero> allies = tman.getTeam ();
-			List<Hero> enemies = tman.getEnemyTeam ();
-			bool good = true;
-			bool stop = false;
-			int tileIndex = 0;
-			for (int n = 1; n < 9; ++n) {
-				int currentIndex = 0;
-				foreach (GameObject tile in tiles) {
-					if(tile.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y + n, this.transform.position.z))) {
-						good = true;
-						tileIndex = currentIndex;
-					}
-					++currentIndex;
-				}
-				foreach (GameObject outWall in outerWalls) {
-					if(outWall.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y + n, this.transform.position.z))) {
-						stop = true;
-						good = false;
-					}
-				}
-				foreach (GameObject wall in walls) {
-					if(wall.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y + n, this.transform.position.z))) {
-						stop = true;
-						good = false;
-					}
-				}
-				foreach (Hero ally in allies) {
-					if(ally.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y + n, this.transform.position.z))) {
-						good = false;
-					}
-				}
-				foreach (Hero enemy in enemies) {
-					if(enemy.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y + n, this.transform.position.z))) {
-						good = false;
-					}
-				}
-				if (stop) {
-					stop = false;
-					break;
-				}
-				if (good) {
-					tileTargets.Add (tiles [tileIndex]);
-				} else {
-					good = true;
-				}
-			}
-			for (int e = 1; e < 9; ++e) {
-				int currentIndex = 0;
-				foreach (GameObject tile in tiles) {
-					if(tile.transform.position.Equals(new Vector3(this.transform.position.x + e, this.transform.position.y, this.transform.position.z))) {
-						good = true;
-						tileIndex = currentIndex;
-					}
-					++currentIndex;
-				}
-				foreach (GameObject outWall in outerWalls) {
-					if(outWall.transform.position.Equals(new Vector3(this.transform.position.x + e, this.transform.position.y, this.transform.position.z))) {
-						stop = true;
-						good = false;
-					}
-				}
-				foreach (GameObject wall in walls) {
-					if(wall.transform.position.Equals(new Vector3(this.transform.position.x + e, this.transform.position.y, this.transform.position.z))) {
-						stop = true;
-						good = false;
-					}
-				}
-				foreach (Hero ally in allies) {
-					if(ally.transform.position.Equals(new Vector3(this.transform.position.x + e, this.transform.position.y, this.transform.position.z))) {
-						good = false;
-					}
-				}
-				foreach (Hero enemy in enemies) {
-					if(enemy.transform.position.Equals(new Vector3(this.transform.position.x + e, this.transform.position.y, this.transform.position.z))) {
-						good = false;
-					}
-				}
-				if (stop) {
-					stop = false;
-					break;
-				}
-				if (good) {
-					tileTargets.Add (tiles[tileIndex]);
-				} else {
-					good = true;
-				}
-			}
-			for (int s = 1; s < 9; ++s) {
-				int currentIndex = 0;
-				foreach (GameObject tile in tiles) {
-					if(tile.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y - s, this.transform.position.z))) {
-						good = true;
-						tileIndex = currentIndex;
-					}
-					++currentIndex;
-				}
-				foreach (GameObject outWall in outerWalls) {
-					if(outWall.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y - s, this.transform.position.z))) {
-						stop = true;
-						good = false;
-					}
-				}
-				foreach (GameObject wall in walls) {
-					if(wall.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y - s, this.transform.position.z))) {
-						stop = true;
-						good = false;
-					}
-				}
-				foreach (Hero ally in allies) {
-					if(ally.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y - s, this.transform.position.z))) {
-						good = false;
-					}
-				}
-				foreach (Hero enemy in enemies) {
-					if(enemy.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y - s, this.transform.position.z))) {
-						good = false;
-					}
-				}
-				if (stop) {
-					stop = false;
-					break;
-				}
-				if (good) {
-					tileTargets.Add (tiles[tileIndex]);
-				} else {
-					good = true;
-				}
-			}
-			for (int w = 1; w < 9; ++w) {
-				int currentIndex = 0;
-				foreach (GameObject tile in tiles) {
-					if(tile.transform.position.Equals(new Vector3(this.transform.position.x - w, this.transform.position.y, this.transform.position.z))) {
-						good = true;
-						tileIndex = currentIndex;
-					}
-					++currentIndex;
-				}
-				foreach (GameObject outWall in outerWalls) {
-					if(outWall.transform.position.Equals(new Vector3(this.transform.position.x - w, this.transform.position.y, this.transform.position.z))) {
-						stop = true;
-						good = false;
-					}
-				}
-				foreach (GameObject wall in walls) {
-					if(wall.transform.position.Equals(new Vector3(this.transform.position.x - w, this.transform.position.y, this.transform.position.z))) {
-						stop = true;
-						good = false;
-					}
-				}
-				foreach (Hero ally in allies) {
-					if(ally.transform.position.Equals(new Vector3(this.transform.position.x - w, this.transform.position.y, this.transform.position.z))) {
-						good = false;
-					}
-				}
-				foreach (Hero enemy in enemies) {
-					if(enemy.transform.position.Equals(new Vector3(this.transform.position.x - w, this.transform.position.y, this.transform.position.z))) {
-						good = false;
-					}
-				}
-				if (stop) {
-					stop = false;
-					break;
-				}
-				if (good) {
-					tileTargets.Add (tiles[tileIndex]);
-				} else {
-					good = true;
-				}
-			}
+
+			Skill2NS (1);
+			Skill2NS (-1);
+			Skill2WE (1);
+			Skill2WE (-1);
+
 			if (tileTargets.Count > 0) {
 				targeting = true;
 				tileTargeting = true;
@@ -340,6 +176,112 @@ public class Oxenfree : Hero {
 			}
 		}
 		return false;
+	}
+
+	private void Skill2NS(int g) {
+		GameObject[] tiles = GameObject.FindGameObjectsWithTag ("Floor");
+		GameObject[] walls = GameObject.FindGameObjectsWithTag ("TempWall");
+		GameObject[] outerWalls = GameObject.FindGameObjectsWithTag ("OuterWall");
+		List<Hero> allies = tman.getTeam ();
+		List<Hero> enemies = tman.getEnemyTeam ();
+		bool good = true;
+		bool stop = false;
+		int tileIndex = 0;
+
+		for (int i = 1; i < 9; ++i) {
+			int currentIndex = 0;
+			foreach (GameObject tile in tiles) {
+				if(tile.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y + i*g, this.transform.position.z))) {
+					good = true;
+					tileIndex = currentIndex;
+				}
+				++currentIndex;
+			}
+			foreach (GameObject outWall in outerWalls) {
+				if(outWall.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y + i*g, this.transform.position.z))) {
+					stop = true;
+					good = false;
+				}
+			}
+			foreach (GameObject wall in walls) {
+				if(wall.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y + i*g, this.transform.position.z))) {
+					stop = true;
+					good = false;
+				}
+			}
+			foreach (Hero ally in allies) {
+				if(ally.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y + i*g, this.transform.position.z))) {
+					good = false;
+				}
+			}
+			foreach (Hero enemy in enemies) {
+				if(enemy.transform.position.Equals(new Vector3(this.transform.position.x, this.transform.position.y + i*g, this.transform.position.z))) {
+					good = false;
+				}
+			}
+			if (stop) {
+				stop = false;
+				break;
+			}
+			if (good) {
+				tileTargets.Add (tiles [tileIndex]);
+			} else {
+				good = true;
+			}
+		}
+	}
+
+	private void Skill2WE(int g) {
+		GameObject[] tiles = GameObject.FindGameObjectsWithTag ("Floor");
+		GameObject[] walls = GameObject.FindGameObjectsWithTag ("TempWall");
+		GameObject[] outerWalls = GameObject.FindGameObjectsWithTag ("OuterWall");
+		List<Hero> allies = tman.getTeam ();
+		List<Hero> enemies = tman.getEnemyTeam ();
+		bool good = true;
+		bool stop = false;
+		int tileIndex = 0;
+
+		for (int i = 1; i < 9; ++i) {
+			int currentIndex = 0;
+			foreach (GameObject tile in tiles) {
+				if(tile.transform.position.Equals(new Vector3(this.transform.position.x + i*g, this.transform.position.y, this.transform.position.z))) {
+					good = true;
+					tileIndex = currentIndex;
+				}
+				++currentIndex;
+			}
+			foreach (GameObject outWall in outerWalls) {
+				if(outWall.transform.position.Equals(new Vector3(this.transform.position.x + i*g, this.transform.position.y, this.transform.position.z))) {
+					stop = true;
+					good = false;
+				}
+			}
+			foreach (GameObject wall in walls) {
+				if(wall.transform.position.Equals(new Vector3(this.transform.position.x + i*g, this.transform.position.y, this.transform.position.z))) {
+					stop = true;
+					good = false;
+				}
+			}
+			foreach (Hero ally in allies) {
+				if(ally.transform.position.Equals(new Vector3(this.transform.position.x + i*g, this.transform.position.y, this.transform.position.z))) {
+					good = false;
+				}
+			}
+			foreach (Hero enemy in enemies) {
+				if(enemy.transform.position.Equals(new Vector3(this.transform.position.x + + i*g, this.transform.position.y, this.transform.position.z))) {
+					good = false;
+				}
+			}
+			if (stop) {
+				stop = false;
+				break;
+			}
+			if (good) {
+				tileTargets.Add (tiles [tileIndex]);
+			} else {
+				good = true;
+			}
+		}
 	}
 
 	protected override void Skill2Calc ()
@@ -355,19 +297,7 @@ public class Oxenfree : Hero {
 					&& enemy.transform.position.y == this.transform.position.y
 					&& enemy.transform.position.x > prevPos.x 
 					&& enemy.transform.position.x < this.transform.position.x) {
-					int loss = 0;
-					if (isHit (enemy)) {
-						if (enemy.effects.Contains (Effects.BLEED)) {
-							DMG = 88;
-						}
-						loss = getDamage (enemy.getDEF ()) / 2;
-						DMG = 80;
-						enemy.Losehp (loss);
-						tman.msgText.text += enemy.tag + " took " + loss + " damage and was inflicted with bleed\n";
-						enemy.Bleed ();
-					} else {
-						tman.msgText.text += this.tag + " missed a hit on " + enemy.tag + "\n";
-					}
+					Skill2CalcHelper (enemy);
 				}
 			}
 		} else if (prevPos.x > this.transform.position.x) {
@@ -376,19 +306,7 @@ public class Oxenfree : Hero {
 					&& enemy.transform.position.y == this.transform.position.y 
 					&& enemy.transform.position.x < prevPos.x 
 					&& enemy.transform.position.x > this.transform.position.x) {
-					int loss = 0;
-					if (isHit (enemy)) {
-						if (enemy.effects.Contains (Effects.BLEED)) {
-							DMG = 88;
-						}
-						loss = getDamage (enemy.getDEF ()) / 2;
-						DMG = 80;
-						enemy.Losehp (loss);
-						tman.msgText.text += enemy.tag + " took " + loss + " damage and was inflicted with bleed\n";
-						enemy.Bleed ();
-					} else {
-						tman.msgText.text += this.tag + " missed a hit on " + enemy.tag + "\n";
-					}
+					Skill2CalcHelper (enemy);
 				}
 			}
 		} else if (prevPos.y < this.transform.position.y) {
@@ -396,19 +314,7 @@ public class Oxenfree : Hero {
 				if (enemy.getHP() > 0 && enemy.transform.position.x == this.transform.position.x 
 					&& enemy.transform.position.y > prevPos.y 
 					&& enemy.transform.position.y < this.transform.position.y) {
-					int loss = 0;
-					if (isHit (enemy)) {
-						if (enemy.effects.Contains (Effects.BLEED)) {
-							DMG = 88;
-						}
-						loss = getDamage (enemy.getDEF ()) / 2;
-						DMG = 80;
-						enemy.Losehp (loss);
-						tman.msgText.text += enemy.tag + " took " + loss + " damage and was inflicted with bleed\n";
-						enemy.Bleed ();
-					} else {
-						tman.msgText.text += this.tag + " missed a hit on " + enemy.tag + "\n";
-					}
+					Skill2CalcHelper (enemy);
 				}
 			}
 		} else {
@@ -417,24 +323,29 @@ public class Oxenfree : Hero {
 					&& enemy.transform.position.x == this.transform.position.x
 					&& enemy.transform.position.y < prevPos.y 
 					&& enemy.transform.position.y > this.transform.position.y) {
-					int loss = 0;
-					if (isHit (enemy)) {
-						if (enemy.effects.Contains (Effects.BLEED)) {
-							DMG = 88;
-						}
-						loss = getDamage (enemy.getDEF ()) / 2;
-						DMG = 80;
-						enemy.Losehp (loss);
-						tman.msgText.text += enemy.tag + " took " + loss + " damage and was inflicted with bleed\n";
-						enemy.Bleed ();
-					} else {
-						tman.msgText.text += this.tag + " missed a hit on " + enemy.tag + "\n";
-					}
+					Skill2CalcHelper (enemy);
 				}
 			}
 		}
 		targeting = false;
 		tileTargeting = false;
+		tman.BP -= cost;
+	}
+
+	private void Skill2CalcHelper(Hero enemy) {
+		int loss = 0;
+		if (isHit (enemy)) {
+			if (enemy.effects.Contains (Effects.BLEED)) {
+				DMG = 88;
+			}
+			loss = getDamage (enemy.getDEF ()) / 2;
+			DMG = 80;
+			enemy.Losehp (loss);
+			tman.msgText.text += enemy.tag + " took " + loss + " damage and was inflicted with bleed\n";
+			enemy.Bleed ();
+		} else {
+			tman.msgText.text += this.tag + " missed a hit on " + enemy.tag + "\n";
+		}
 	}
 
 	//Brave Horn: Next attack inflicts bleed and deals double damage if target is already inflicted with bleed
@@ -451,5 +362,9 @@ public class Oxenfree : Hero {
 		return false;
 	}
 
+	public override string Info()
+	{
+		return info;
+	}
 	//Red Rage: Deal a small amount of extra damage to targets inflicted with bleed
 }
