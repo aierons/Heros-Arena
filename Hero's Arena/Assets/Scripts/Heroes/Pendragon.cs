@@ -28,8 +28,8 @@ public class Pendragon : Hero {
 
 		HP = 300;
 		maxHP = 300;
-		SPEED = 15;
-		maxSPEED = 15;
+		SPEED = 7;
+		maxSPEED = 7;
 		wallDMG = 2;
 		RNG = 1;
 	}

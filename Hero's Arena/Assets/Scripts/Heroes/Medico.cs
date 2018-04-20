@@ -30,8 +30,8 @@ public class Medico : Hero
 
 		HP = 250;
 		maxHP = 250;
-		SPEED = 15;
-		maxSPEED = 15;
+		SPEED = 8;
+		maxSPEED = 8;
 		wallDMG = 1;
 		RNG = 1;
 		

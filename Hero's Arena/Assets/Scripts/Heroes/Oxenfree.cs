@@ -28,8 +28,8 @@ public class Oxenfree : Hero {
 
 		HP = 400;
 		maxHP = 400;
-		SPEED = 15;
-		maxSPEED = 15;
+		SPEED = 9;
+		maxSPEED = 9;
 		wallDMG = 2;
 		RNG = 1;
 	}
