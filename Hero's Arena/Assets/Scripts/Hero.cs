@@ -389,6 +389,12 @@ public class Hero : MovingObject
 
 			//Disable the hp object the player collided with.
 			other.gameObject.SetActive (false);
+			if (effects.Contains (Effects.PSN)) {
+				psn_count = 0;
+				effects.Remove (Effects.PSN);
+				tman.msgText.text += this.tag + "'s poison has worn off";
+			}
+
 		}
 
 		//Check if the tag of the trigger collided with is Soda.
@@ -407,6 +413,11 @@ public class Hero : MovingObject
 
 			//Disable the soda object the player collided with.
 			other.gameObject.SetActive (false);
+			if (effects.Contains (Effects.BURN)) {
+				brn_count = 0;
+				effects.Remove (Effects.BURN);
+				tman.msgText.text += this.tag + "'s burn has worn off";
+			}
 		}
 	}
 
@@ -650,7 +661,7 @@ public class Hero : MovingObject
 					HP -= 15;
 					--brn_count;
 					if (brn_count == 0) {
-						effects.Remove (Effects.BLEED);
+						effects.Remove (Effects.BURN);
 						tman.msgText.text += this.tag + "'s burn has worn off";
 					}
 				}
@@ -865,6 +876,7 @@ public class Hero : MovingObject
 			}
 		}
 	}
+
 
 	public void setTeam (int teamIndex)
 	{
