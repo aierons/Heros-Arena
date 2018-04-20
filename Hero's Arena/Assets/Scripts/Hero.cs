@@ -87,7 +87,10 @@ public class Hero : MovingObject {
 	public virtual string getHeroText() {
 		return tag + " : " + HP + "/" + maxHP + " SPEED:" + SPEED;
 	}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> 4af9063e48f5618ffb7eb42b9fd37cb1ab6e7aa6
 	public int getHP() {
 		return HP;
 	}
@@ -123,6 +126,7 @@ public class Hero : MovingObject {
 	
 	virtual public void Update ()
 	{
+<<<<<<< HEAD
 		if (start) {
 			CheckIfDead ();
 			//If it's not the player's turn, exit the function.
@@ -131,6 +135,8 @@ public class Hero : MovingObject {
 				//print (this.tag + ":" +team.tag + ":" + "stuck");
 				return;
 			}
+=======
+>>>>>>> 4af9063e48f5618ffb7eb42b9fd37cb1ab6e7aa6
 
 			checkStatic ();
 
@@ -439,7 +445,6 @@ public class Hero : MovingObject {
 		return false;
 	}
 
-	//**********************************************************************************************************************
 	public bool TargetInRange() {
 		return true;
 	}
@@ -717,11 +722,14 @@ public class Hero : MovingObject {
 		brn_count = 2;
 	}
 
+<<<<<<< HEAD
 	public void setTeam(int teamIndex) {
 		if (teamIndex == 1) {
 			team = GameObject.FindGameObjectWithTag ("Team1");
 		} else {
 			team = GameObject.FindGameObjectWithTag ("Team2");
+=======
+>>>>>>> 4af9063e48f5618ffb7eb42b9fd37cb1ab6e7aa6
 		}
 	}
 

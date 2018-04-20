@@ -47,14 +47,23 @@ public class Ferocity : Hero {
 		base.Update ();
 	}
 
-	protected void AttackCalc ()
+	public override void EndTurn ()
+	{
+		base.EndTurn ();
+		if (ult == 0) {
+			burn = .65f;
+			DMG = 90;
+		}
+	}
+
+	protected override void AttackCalc ()
 	{
 		int beforeAttack = selectedTarget.getHP ();
 		base.AttackCalc ();
 		if (beforeAttack != selectedTarget.getHP ()) {
 			if (Random.value < burn) {
 				selectedTarget.Burn ();
-				tman.msgText.text += "\n" + this.tag + " was burned!";
+				tman.msgText.text += "\n" + selectedTarget.tag + " was burned!";
 			}
 		}
 	}
@@ -82,14 +91,14 @@ public class Ferocity : Hero {
 			animator.SetTrigger ("ATK");
 			if (ult > 0 && Random.value < burn) {
 				selectedTarget.Burn ();
-				tman.msgText.text += "\n" + this.tag + " was burned!";
+				tman.msgText.text += "\n" + selectedTarget.tag + " was burned!";
 			}
 			foreach (Hero e in tman.getEnemyTeam()) {
 				if (e.transform.position.y == selectedTarget.transform.position.y + 1
 				   || e.transform.position.y == selectedTarget.transform.position.y - 1) {
 					loss = getDamage (e.getDEF ());
 					e.Losehp (loss);
-					tman.msgText.text += "\n" + e.tag + " took " + loss + "splash damage";
+					tman.msgText.text += "\n" + e.tag + " took " + loss + " splash damage";
 				}
 			}
 		} else {
@@ -138,6 +147,8 @@ public class Ferocity : Hero {
 			&& tman.getCurrentHero ().tag == this.tag) {
 			tman.BP -= cost;
 			ult = 2;
+			burn = .90f;
+			DMG = 100;
 			return true;
 		} else {
 			return false;

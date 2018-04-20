@@ -132,18 +132,27 @@ public class RadioFreak : Hero
 				}
 				tman.msgText.text += a.tag + " " + type + "\n";
 			}
-
+			this.GetComponent<Hero> ();
 			foreach (Hero e in enemies) {
 				float r = Random.value;
-				if (r <= .25) {
+				if (r <= .18) {
 					e.Stun ();
 					type = "stun";
-				} else if (r <= .50) {
+				} else if (r <= .35) {
 					e.effects.Add (Effects.DADV);
 					type = "disadvantage";
-				} else if (r <= .75) {
+				} else if (r <= .52) {
 					e.Poison ();
 					type = "poison";
+				} else if (r <= .69) {
+					e.Burn ();
+					type = "burn";
+				} else if (r <= 85) {
+					e.Freeze ();
+					type = "freeze";
+				} else if (r <= 1) {
+					e.Bleed ();
+					type = "bleed";
 				}
 				tman.msgText.text += e.tag + " " + type + "\n";
 			}

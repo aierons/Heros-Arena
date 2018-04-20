@@ -96,6 +96,7 @@ public class JackFrost : Hero {
 
 	protected override void Skill1Calc() {
 		int cost = 3;
+		jackWallTime = 3;
 		GameObject old1 = GameObject.Find ("j1");
 		if (old1 != null) {
 			Destroy (old1);
