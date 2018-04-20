@@ -14,8 +14,8 @@ public class Oxenfree : Hero {
 
 	private bool hold = false;
 	// Use this for initialization
-	void Start () {
-		base.Start ();
+	public override void StartGame () {
+		base.StartGame ();
 
 		EV = 1f;
 		ACCb = .90f;

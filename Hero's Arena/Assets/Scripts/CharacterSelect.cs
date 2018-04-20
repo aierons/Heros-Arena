@@ -129,7 +129,7 @@ public class CharacterSelect : MonoBehaviour {
 		case "Medico":
 			lastClicked = selectMedico;
 			break;
-		case "EverGreen": 
+		case "Evergreen": 
 			lastClicked = selectEverGreen;
 			break;
 		case "RadioFreak": 

@@ -10,8 +10,8 @@ public class Panther : Hero {
 	private string ultName = "Catastrophe";
 
 	// Use this for initialization
-	public override void Start () {
-		base.Start ();
+	public override void StartGame () {
+		base.StartGame ();
 
 		EV = 1f;
 		ACCb = .91f;
