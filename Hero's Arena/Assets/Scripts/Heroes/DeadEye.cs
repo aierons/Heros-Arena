@@ -28,8 +28,8 @@ public class DeadEye : Hero
 
 		HP = 220;
 		maxHP = 220;
-		SPEED = 15;
-		maxSPEED = 15;
+		SPEED = 6;
+		maxSPEED = 6;
 		wallDMG = 1;
 		RNG = 4;
 	}
@@ -98,7 +98,6 @@ public class DeadEye : Hero
 	override protected void Skill2Calc() {
 		int cost = 3;
 		int loss1 = 0;
-		int loss2 = 0;
 		print ("reach2");
 		tman.msgText.text = "";
 		for (int i = 0; i < 2; i++) {

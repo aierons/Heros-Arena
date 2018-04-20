@@ -9,13 +9,10 @@ public class Medico : Hero
 	private string s1name = "Injection";
 	private string s2name = "Patch Up";
 	private string ultname = "Elixir";
-	private string passname = "This Might Sting A Bit";
 	private string info = "Medico: \nInjection: Heals 3 hp to target ally in range or inflicts poison on target enemy [Poison deals damage at end of units turn lasting 1-4 turns]. Can also target self {2BP}\n" +
 	                      "Patch: Remove all effects from a target including ADV and DISADV {1BP}\n" +
 	                      "Elixir: Choose target in range, for next 2 turns target has increased DMG, DEF, SPEED. Once over they are unable to move for 1 turn. {4BP}\n" +
 	                      "This Might Sting a Bit: Can attack his allies which heals a small amount of health for them";
-
-	private float poison = .65f;
 
 
 	// Use this for initialization
@@ -167,7 +164,7 @@ public class Medico : Hero
 		return false;
 	}
 
-	protected virtual bool TargetInRange() {
+	private bool TargetInRange() {
 		List<Hero> allies = tman.getTeam ();
 		List<Hero> targets = tman.getEnemyTeam ();
 		foreach (Hero a in allies) {

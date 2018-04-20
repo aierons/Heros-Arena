@@ -120,7 +120,7 @@ MonoBehaviour:
   moveTime: 0.1
   blockingLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   pointsPerFood: 1
   pointsPerSoda: 2
   ult: 0

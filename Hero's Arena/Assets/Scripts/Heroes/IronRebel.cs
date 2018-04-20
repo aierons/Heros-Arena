@@ -102,6 +102,32 @@ public class IronRebel : Hero {
 		}
 	}
 
+	//Panzer Smash: next attack deals damage in a 3x4 rectangle space infront of him, goes through walls and destroys walls, all enemies hit are stunned {4BP}
+	public override bool Ult() {
+		int cost = 5;
+		if (tman.BP >= cost && GameManager.instance.turn == team.tag
+			&& tman.getCurrentHero ().tag == this.tag) {
+			targeting = true;
+			tileTargeting = true;
+			targetingType = 3;
+			findTileTargets (this.transform.position.x, this.transform.position.y, 1);
+			List<GameObject> temp = new List<GameObject> ();
+			foreach (GameObject trgt in tileTargets) {
+				if (trgt.transform.position != transform.position) {
+					temp.Add(trgt);
+				}
+			}
+			tileTargets = temp;
+			GameObject t = Instantiate (Target);
+			t.name = "Target";
+			t.transform.position = tileTargets [0].transform.position;
+			t.layer = 8;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	protected override void UltCalc() {
 		int cost = 5;
 		List<Hero> targets = getEnemyTrgts ();

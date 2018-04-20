@@ -8,7 +8,6 @@ public class Ferocity : Hero {
 	private string s1name = "Explosion";
 	private string s2name = "Ignition";
 	private string ultname = "Hellfire";
-	private string passname = "Immolate";
 	private string info = "Ferocity: \nExplosion: Next attack deals damage to all enemies within 2 spaces of target. {3BP}\n" +
 	                      "Ignition: Next attack has increased range and inflicts burn on the enemy [Burn deals damage to unit at the start of each turn lasting 1-3 turns] {2BP}\n" +
 	                      "Hellfire: Until the end of next turn, DMG is increased and all abilities have a larger chance to inflict burn on the target {4BP}\n" +
@@ -30,8 +29,8 @@ public class Ferocity : Hero {
 
 		HP = 280;
 		maxHP = 280;
-		SPEED = 15;
-		maxSPEED = 15;
+		SPEED = 7;
+		maxSPEED = 7;
 		wallDMG = 2;
 		RNG = 3;
 	}

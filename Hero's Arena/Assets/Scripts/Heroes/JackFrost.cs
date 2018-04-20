@@ -7,7 +7,6 @@ public class JackFrost : Hero {
 	private string s1name = "Arctic Cliff";
 	private string s2name = "Frostbite";
 	private string ultname = "Zeroth Hour";
-	private string passname = "Permafrost";
 	private string info = "JackFrost: \nArctic Cliff: Creates a wall within 5 spaces, wall covers 3 empty spaces, lasts 2 turns or until it is destroyed {2BP}\n" +
 	                      "Frostbite: Next attack has a chance of freezing the target [Freeze causes targets to be unable to move on their next turn (doesn't stack)] {3BP}\n" +
 	                      "Zeroth Hour: For the next 2 turns Frostbite costs 0BP and Permafrost has a chance to freeze targets in range. {5BP}\n" +
@@ -32,8 +31,8 @@ public class JackFrost : Hero {
 
 		HP = 295;
 		maxHP = 295;
-		SPEED = 15;
-		maxSPEED = 15;
+		SPEED = 6;
+		maxSPEED = 6;
 		wallDMG = 1;
 		RNG = 2;
 	}
