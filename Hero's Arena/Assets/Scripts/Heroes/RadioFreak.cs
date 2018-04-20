@@ -30,8 +30,8 @@ public class RadioFreak : Hero
 
 		HP = 350;
 		maxHP = 350;
-		SPEED = 15;
-		maxSPEED = 15;
+		SPEED = 7;
+		maxSPEED = 7;
 		wallDMG = 2;
 		RNG = 2;
 	}

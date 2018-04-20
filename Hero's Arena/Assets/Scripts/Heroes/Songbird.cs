@@ -29,8 +29,8 @@ public class Songbird : Hero {
 
 		HP = 200;
 		maxHP = 200;
-		SPEED = 15;
-		maxSPEED = 15;
+		SPEED = 8;
+		maxSPEED = 8;
 		wallDMG = 1;
 		RNG = 2;
 

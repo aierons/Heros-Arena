@@ -35,8 +35,8 @@ public class IronRebel : Hero {
 
 		HP = 400;
 		maxHP = 400;
-		SPEED = 15;
-		maxSPEED = 15;
+		SPEED = 5;
+		maxSPEED = 5;
 		wallDMG = 3;
 		RNG = 1;
 
