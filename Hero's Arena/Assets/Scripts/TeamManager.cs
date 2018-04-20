@@ -97,12 +97,6 @@ public class TeamManager : MonoBehaviour
 			BP = 1;
 			maxBP = 1;
 
-			/*
-		hcaptain = captain.GetComponent<Hero> ();
-		hmember1 = member1.GetComponent<Hero>();
-		hmember2 = member2.GetComponent<Hero>();
-		*/
-
 			etman = enemyTeam.GetComponent<TeamManager> ();
 
 			turn = captain.tag;
@@ -203,16 +197,6 @@ public class TeamManager : MonoBehaviour
 		//Check if hp point total is less than or equal to zero.
 		if (hcaptain.getHP() <= 0) {
 			GameManager.instance.Reset ();
-
-			//Stop the background music.
-			/*
-			SoundManager.instance.musicSource.Stop ();
-
-			//Call the GameOver function of GameManager.
-			GameManager.instance.GameOver ();
-
-			this.gameObject.SetActive (false);
-*/
 		}
 	}
 

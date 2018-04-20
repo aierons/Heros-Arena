@@ -7,10 +7,11 @@ public class Oxenfree : Hero {
 	private string s1name = "Catapult";
 	private string s2name = "Mad Rush";
 	private string ultName = "Brave Horn";
-	private string info = "Oxenfree: \n Catapult: Can throw one ally within 1 space to an open space within 7 spaces. {1BP}\n" +
-		"Mad Rush: Charge foward up to 8 spaces, each enemy moved through is inflicted with bleed. {2BP}\n" +
-		"Brave Horn: Next attack inflicts bleed and deals double damage if target is already inflicted with bleed. {4BP}\n" +
-		"Red Rage: Deal a small amount of extra damage to targets inflicted with bleed.";
+	private string info = "Oxenfree: \n " +
+		"Catapult: Can throw one ally within 1 space to an open space within 7 spaces {1BP}\n" +
+		"Mad Rush: Charge foward up to 8 spaces, each enemy moved through is inflicted with bleed {2BP}\n" +
+		"Brave Horn: Next attack inflicts bleed and deals double damage if target is already inflicted with bleed {4BP}\n" +
+		"Red Rage: Deal a small amount of extra damage to targets inflicted with bleed";
 
 	private bool hold = false;
 	// Use this for initialization
