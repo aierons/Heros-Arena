@@ -24,6 +24,7 @@ TagManager:
   - Enemy
   - Oxenfree
   - Panther
+  - OuterWall
   layers:
   - Default
   - TransparentFX

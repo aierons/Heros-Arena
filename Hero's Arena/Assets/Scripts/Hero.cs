@@ -11,10 +11,10 @@ public class Hero : MovingObject {
 	public int pointsPerSoda = 20;
 	//point where the hero started
 	private  Vector3 startPosition;
-
+	[HideInInspector]
 	public int ult = 0;
 
-	public enum Effects {ADV, DADV, STUN, DOUBLEDMG, BOOST, VBOOST, RNGUP, PSN, FROZEN, BURN, STATIC, ELIXIR};
+	public enum Effects {ADV, DADV, STUN, DOUBLEDMG, BOOST, VBOOST, RNGUP, PSN, FROZEN, BURN, STATIC, ELIXIR, BLEED};
 
 	public List<Effects> effects;
 	/*
@@ -46,6 +46,7 @@ public class Hero : MovingObject {
 	protected int psn_count  = 0;
 	protected int elixir_count = 0;
 	protected int brn_count = 0;
+	protected int bld_count = 0;
 	protected int static_count = 0;
 
 	protected int Direction;
@@ -96,7 +97,6 @@ public class Hero : MovingObject {
 		startPosition = pos;
 	}
 
-
 	public int getHP() {
 		return HP;
 	}
@@ -131,7 +131,6 @@ public class Hero : MovingObject {
 	
 	virtual public void Update ()
 	{
-		CheckIfDead ();
 		//If it's not the player's turn, exit the function.
 		//print(this.tag + ":" +team.tag + ":" + (GameManager.instance.turn == team.tag).ToString() + " , " + (tman.turn == this.tag).ToString());
 		if (!(GameManager.instance.turn == team.tag && tman.turn == this.tag)) {
@@ -260,6 +259,10 @@ public class Hero : MovingObject {
 		}
 	}
 
+	public void LateUpdate() {
+		CheckIfDead ();
+	}
+
 	protected virtual void Skill1Calc () {
 	}
 
@@ -298,12 +301,13 @@ public class Hero : MovingObject {
 		//If Move returns true, meaning Player was able to move into an empty space.
 		if (Move (xDir, yDir, out hit)) {
 			//Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
+			if (this.effects.Contains(Effects.BLEED)) {
+				this.HP -= 5;
+				tman.msgText.text = this.tag + " took 5 damage from bleed";
+			}
 			SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
 			SPEED--;
 		}
-
-		//Since the player has moved and lost hp points, check if the game has ended.
-		CheckIfDead ();
 	}
 
 	//OnCantMove overrides the abstract function OnCantMove in MovingObject.
@@ -394,8 +398,10 @@ public class Hero : MovingObject {
 			//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
 			SoundManager.instance.PlaySingle (gameOverSound);
 			tman.CheckIfGameOver ();
+			if (HP < 0) {
+				HP = 0;
+			}
 			this.gameObject.SetActive (false);
-			GameManager.instance.gameObject.GetComponent<BoardManager>().removeTile();
 		}
 	}
 
@@ -447,11 +453,22 @@ public class Hero : MovingObject {
 		return false;
 	}
 
-	protected virtual bool TargetInRange() {
+	public bool TargetInRange() {
 		foreach (Hero enemy in tman.getEnemyTeam()) {
 			if (Mathf.Abs (this.transform.position.x - enemy.transform.position.x)
 				+ Mathf.Abs (this.transform.position.y - enemy.transform.position.y) <= RNG
 				&& enemy.getHP () > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public bool AllyInRange(int r) {
+		foreach (Hero ally in tman.getTeam()) {
+			if (ally != this && Mathf.Abs (this.transform.position.x - ally.transform.position.x)
+				+ Mathf.Abs (this.transform.position.y - ally.transform.position.y) <= r
+				&& ally.getHP () > 0) {
 				return true;
 			}
 		}
@@ -477,7 +494,7 @@ public class Hero : MovingObject {
 
 		targets = new List<Hero> ();
 		foreach (Hero ally in allies) {
-			if (Mathf.Abs (centerX - ally.transform.position.x)
+			if (ally != this && Mathf.Abs (centerX - ally.transform.position.x)
 				+ Mathf.Abs (centerY - ally.transform.position.y) <= range
 				&& ally.getHP () > 0) {
 				targets.Add (ally);
@@ -570,7 +587,18 @@ public class Hero : MovingObject {
 					HP -= 15;
 					--brn_count;
 					if(brn_count == 0) {
+						effects.Remove (Effects.BLEED);
 						tman.msgText.text += this.tag + "'s burn has worn off";
+					}
+				}
+			}
+
+			if (effects.Contains (Effects.BLEED)) {
+				if (bld_count > 0) {
+					--bld_count;
+					if (bld_count == 0) {
+						effects.Remove (Effects.BLEED);
+						tman.msgText.text += this.tag + "'s bleeding has stopped";
 					}
 				}
 			}
@@ -729,6 +757,21 @@ public class Hero : MovingObject {
 			effects.Add (Effects.BURN);
 		}
 		brn_count = 2;
+	}
+
+	public void Bleed() {
+		if (!effects.Contains (Effects.BLEED)) {
+			effects.Add (Effects.BLEED);
+			bld_count = (int)(Random.value * 3 + 1);
+			if (bld_count > 3) {
+				bld_count = 3;
+			}
+		} else {
+			bld_count += (int)(Random.value * 2 + 1);
+			if (bld_count > 3) {
+				bld_count = 3;
+			}
+		}
 	}
 
 }
