@@ -105,7 +105,6 @@ public class TeamManager : MonoBehaviour
 		etman = enemyTeam.GetComponent<TeamManager> ();
 
 		turn = captain.tag;
-		Debug.Log (turn);
 
 		hpText.text = hcaptain.getHeroText () + "\n" + hmember1.getHeroText () + "\n" + hmember2.getHeroText ()
 			+ "\n" + BP.ToString() + "/" + maxBP.ToString();
@@ -197,17 +196,21 @@ public class TeamManager : MonoBehaviour
 			member2.transform.position = new Vector3 (13, 8, 0);
 		}
 	}
-
+		
 	public void CheckIfGameOver() {
 		//Check if hp point total is less than or equal to zero.
 		if (hcaptain.getHP() <= 0) {
+			GameManager.instance.Reset ();
+
 			//Stop the background music.
+			/*
 			SoundManager.instance.musicSource.Stop ();
 
 			//Call the GameOver function of GameManager.
 			GameManager.instance.GameOver ();
 
 			this.gameObject.SetActive (false);
+*/
 		}
 	}
 
@@ -325,5 +328,26 @@ public class TeamManager : MonoBehaviour
 		}
 	}
 
+	public void ResetGame() {
+		captain.GetComponent<SpriteRenderer> ().enabled = false;
+		captain.GetComponent<BoxCollider2D> ().enabled = false;
+		captain.GetComponent<Hero> ().ResetHero ();
+		captain.GetComponent<Hero> ().enabled = false; 
+		captain = null;
+
+		member1.GetComponent<SpriteRenderer> ().enabled = false;
+		member1.GetComponent<BoxCollider2D> ().enabled = false;
+		member1.GetComponent<Hero> ().ResetHero ();
+		member1.GetComponent<Hero> ().enabled = false; 
+		member1 = null;
+
+		member2.GetComponent<SpriteRenderer> ().enabled = false;
+		member2.GetComponent<BoxCollider2D> ().enabled = false;
+		member2.GetComponent<Hero> ().ResetHero ();
+		member2.GetComponent<Hero> ().enabled = false; 
+		member2 = null;
+
+		start = false;
+	}
 }
 

@@ -141,6 +141,10 @@ public class Hero : MovingObject
 		return SPEED;
 	}
 
+	public void resetHp() {
+		HP = getMaxHP ();
+	}
+
 	//Start overrides the Start function of MovingObject
 	public override void StartGame ()
 	{
@@ -437,12 +441,17 @@ public class Hero : MovingObject
 		if (HP <= 0) {
 			//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
 			SoundManager.instance.PlaySingle (gameOverSound);
-			tman.CheckIfGameOver ();
+
+			if (!this.tag.Equals(tman.captain.tag)) {
+				GameManager.instance.GetComponentInParent<BoardManager> ().removeTile ();
+				this.gameObject.SetActive (false);
+			}
+
 			if (HP < 0) {
 				HP = 0;
 			}
-			this.gameObject.SetActive (false);
-			GameManager.instance.GetComponentInParent<BoardManager> ().removeTile ();
+
+			tman.CheckIfGameOver ();
 		}
 	}
 
@@ -864,5 +873,11 @@ public class Hero : MovingObject
 		} else {
 			team = GameObject.FindGameObjectWithTag ("Team2");
 		}
+	}
+
+	public void ResetHero() {
+		team = null;
+		start = false;
+		resetHp ();
 	}
 }

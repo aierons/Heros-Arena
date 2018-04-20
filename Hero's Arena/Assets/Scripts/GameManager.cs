@@ -60,10 +60,17 @@ public class GameManager : MonoBehaviour
 		InitGame();
 	}
 
-	void InitCharacterSelect() {
+	public void InitCharacterSelect() {
 		main.transform.position = new Vector3 (300, 8, -10);
 		maingame.GetComponent<Canvas> ().enabled = false;
 		select.GetComponent<Canvas> ().enabled = true;
+	}
+
+	public void Reset() {
+		InitCharacterSelect ();
+
+		GameObject cs = GameObject.FindGameObjectWithTag ("AllButtons");
+		cs.GetComponent<CharacterSelect> ().ResetScene ();
 	}
 
 	//Initializes the game for each level.

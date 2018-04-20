@@ -53,8 +53,6 @@ public class Medico : Hero
 			}
 		}
 
-
-
 		base.Update ();
 		
 	}
@@ -219,5 +217,4 @@ public class Medico : Hero
 	public override string Info() {
 		return info;
 	}
-
 }

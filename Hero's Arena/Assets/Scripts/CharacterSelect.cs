@@ -6,13 +6,11 @@ using UnityEngine.Events;
 
 public class CharacterSelect : MonoBehaviour
 {
+	public Text info;
 
-	private List<GameObject> characters;
-	private int characterIndex = 0;
 	private int current = 0;
 	private Button lastClicked;
 	private string tag;
-	public Text info;
 
 	public GameObject t1capAnim;
 	public GameObject t1m1Anim;
@@ -51,19 +49,6 @@ public class CharacterSelect : MonoBehaviour
 	 * 2 = songbird
 	 * 
 	 */
-
-
-	/*
-	void Awake () {
-		characters = new List<GameObject> ();	
-		foreach (Transform t in transform) {
-			characters.Add (t.gameObject);
-			t.gameObject.SetActive (false);
-		}
-		characters [characterIndex].SetActive (true);
-
-	}
-	*/
 
 	void Start ()
 	{
@@ -106,17 +91,9 @@ public class CharacterSelect : MonoBehaviour
 
 	public void Select (string index)
 	{
-		/*
-		if (index == characterIndex || index < 0 || index >= characters.Count) {
-			return; 
-		}
-*/
 
-		//	characters [characterIndex].SetActive (false);
-		//characterIndex = index;
 		tag = index; 
 		info.text = GameObject.FindGameObjectWithTag (tag).GetComponent<Hero> ().Info ();
-		//characters [characterIndex].SetActive (true);
 
 		switch (tag) {
 		case "Pendragon": 
@@ -238,5 +215,46 @@ public class CharacterSelect : MonoBehaviour
 		default:
 			return;
 		}
+	}
+
+	public void ResetScene() {
+		GameObject tm = GameObject.FindGameObjectWithTag ("Team1");
+		GameObject tm2 = GameObject.FindGameObjectWithTag ("Team2");
+
+		current = 0;
+
+		selectPendragon.interactable = true;
+		selectIronRebel.interactable = true;
+		selectSongbird.interactable = true;
+		selectFerocity.interactable = true;
+		selectJackFrost.interactable = true;
+		selectMedico.interactable = true;
+		selectEverGreen.interactable = true;
+		selectRadioFreak.interactable = true;
+		selectDeadEye.interactable = true;
+		selectOxenfree.interactable = true;
+		selectPanther.interactable = true;
+
+		tm.GetComponent<TeamManager> ().ResetGame ();
+		tm2.GetComponent<TeamManager> ().ResetGame ();
+
+		//reset character anims 
+		t1capAnim.GetComponent<Animator>().runtimeAnimatorController = null;
+		t1capAnim.GetComponent<SpriteRenderer> ().sprite = null;
+
+		t1m1Anim.GetComponent<Animator>().runtimeAnimatorController = null;
+		t1m1Anim.GetComponent<SpriteRenderer> ().sprite = null;
+
+		t1m2Anim.GetComponent<Animator>().runtimeAnimatorController = null;
+		t1m2Anim.GetComponent<SpriteRenderer> ().sprite = null;
+
+		t2capAnim.GetComponent<Animator>().runtimeAnimatorController = null;
+		t2capAnim.GetComponent<SpriteRenderer> ().sprite = null;
+
+		t2m1Anim.GetComponent<Animator>().runtimeAnimatorController = null;
+		t2m1Anim.GetComponent<SpriteRenderer> ().sprite = null;
+
+		t2m2Anim.GetComponent<Animator>().runtimeAnimatorController = null;
+		t2m2Anim.GetComponent<SpriteRenderer> ().sprite = null;
 	}
 }
