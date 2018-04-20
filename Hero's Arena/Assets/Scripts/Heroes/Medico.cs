@@ -156,11 +156,28 @@ public class Medico : Hero
 
 	public override bool Attack ()
 	{
-		if (GameManager.instance.turn == team.tag && tman.getCurrentHero ().tag == this.tag) {
+		if (GameManager.instance.turn == team.tag && tman.getCurrentHero ().tag == this.tag && TargetInRange()) {
 			targeting = true;
 			targetingType = 0;
 			makeEATarget (RNG);
 			return true;
+		}
+		return false;
+	}
+
+	protected virtual bool TargetInRange() {
+		List<Hero> allies = tman.getTeam ();
+		List<Hero> targets = tman.getEnemyTeam ();
+		foreach (Hero a in allies) {
+			targets.Add (a);
+		}
+
+		foreach (Hero trgt in targets) {
+			if (Mathf.Abs (this.transform.position.x - trgt.transform.position.x)
+				+ Mathf.Abs (this.transform.position.y - trgt.transform.position.y) <= RNG
+				&& trgt.getHP () > 0) {
+				return true;
+			}
 		}
 		return false;
 	}
