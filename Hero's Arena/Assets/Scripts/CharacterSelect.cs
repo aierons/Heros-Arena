@@ -4,16 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public class CharacterSelect : MonoBehaviour {
+public class CharacterSelect : MonoBehaviour
+{
 
 	private List<GameObject> characters;
 	private int characterIndex = 0;
-	private int current = 0; 
+	private int current = 0;
 	private Button lastClicked;
 	private string tag;
 	public Text info;
 
-	public GameObject t1capAnim; 
+	public GameObject t1capAnim;
 	public GameObject t1m1Anim;
 	public GameObject t1m2Anim;
 	public GameObject t2capAnim;
@@ -41,6 +42,8 @@ public class CharacterSelect : MonoBehaviour {
 	public Button selectEverGreen;
 	public Button selectRadioFreak;
 	public Button selectDeadEye;
+	public Button selectOxenfree;
+	public Button selectPanther;
 
 	/*
 	 * 0 = pendragon
@@ -49,9 +52,6 @@ public class CharacterSelect : MonoBehaviour {
 	 * 
 	 */
 
-	private UnityAction select0;
-	private UnityAction select1;
-	private UnityAction select2;
 
 	/*
 	void Awake () {
@@ -65,7 +65,8 @@ public class CharacterSelect : MonoBehaviour {
 	}
 	*/
 
-	void Start () {
+	void Start ()
+	{
 		nextButton.onClick.AddListener (NextCharacter);
 		selectPendragon.onClick.AddListener (delegate {
 			Select ("Pendragon");
@@ -94,17 +95,24 @@ public class CharacterSelect : MonoBehaviour {
 		selectDeadEye.onClick.AddListener (delegate {
 			Select ("DeadEye");
 		});
+		selectOxenfree.onClick.AddListener (delegate {
+			Select ("Oxenfree");
+		});
+		selectPanther.onClick.AddListener (delegate {
+			Select ("Panther");
+		});
 
 	}
 
-	public void Select(string index) {
+	public void Select (string index)
+	{
 		/*
 		if (index == characterIndex || index < 0 || index >= characters.Count) {
 			return; 
 		}
 */
 
-	//	characters [characterIndex].SetActive (false);
+		//	characters [characterIndex].SetActive (false);
 		//characterIndex = index;
 		tag = index; 
 		info.text = GameObject.FindGameObjectWithTag (tag).GetComponent<Hero> ().Info ();
@@ -138,18 +146,24 @@ public class CharacterSelect : MonoBehaviour {
 		case "DeadEye": 
 			lastClicked = selectDeadEye;
 			break;
+		case "Oxenfree":
+			lastClicked = selectOxenfree;
+			break;
+		case "Panther":
+			lastClicked = selectPanther;
+			break;
 		default:
 			return;
 		}
 	}
 
-	public void NextCharacter() {
+	public void NextCharacter ()
+	{
 		GameObject tm = GameObject.FindGameObjectWithTag ("Team1");
 		GameObject tm2 = GameObject.FindGameObjectWithTag ("Team2");
 
 		switch (current) {
 		case 0: //1.1
-			//lastClicked.GetComponentInChildren<Text> ().text = "Team 1 Captain";
 			tm.GetComponent<TeamManager> ().SetCaptain (GameObject.FindGameObjectWithTag (tag), 1);
 
 			Animator anim = t1capAnim.GetComponent<Animator> ();
@@ -162,8 +176,7 @@ public class CharacterSelect : MonoBehaviour {
 
 			break;
 		case 1: //2.1
-			//lastClicked.GetComponentInChildren<Text>().text = "Team 2 Captain";
-			tm2.GetComponent<TeamManager> ().SetCaptain(GameObject.FindGameObjectWithTag(tag),  2);
+			tm2.GetComponent<TeamManager> ().SetCaptain (GameObject.FindGameObjectWithTag (tag), 2);
 
 			Animator anim0 = t2capAnim.GetComponent<Animator> ();
 			SpriteRenderer sprite0 = t2capAnim.GetComponent<SpriteRenderer> ();
@@ -175,8 +188,7 @@ public class CharacterSelect : MonoBehaviour {
 
 			break;
 		case 2: //1.2			
-			//lastClicked.GetComponentInChildren<Text>().text = "Team 1 Member 1";
-			tm.GetComponent<TeamManager> ().SetMember1(GameObject.FindGameObjectWithTag(tag), 1);
+			tm.GetComponent<TeamManager> ().SetMember1 (GameObject.FindGameObjectWithTag (tag), 1);
 
 			Animator anim1 = t1m1Anim.GetComponent<Animator> ();
 			SpriteRenderer sprite1 = t1m1Anim.GetComponent<SpriteRenderer> ();
@@ -188,10 +200,7 @@ public class CharacterSelect : MonoBehaviour {
 
 			break;
 		case 3: //2.2
-			//team 2 member 1 is getting set as team 1 member 3 
-			//team 1 member 3 is getting set as team 2 member 1 
-			//lastClicked.GetComponentInChildren<Text>().text = "Team 2 Member 1";
-			tm2.GetComponent<TeamManager> ().SetMember1(GameObject.FindGameObjectWithTag(tag), 2);
+			tm2.GetComponent<TeamManager> ().SetMember1 (GameObject.FindGameObjectWithTag (tag), 2);
 
 			Animator anim2 = t2m1Anim.GetComponent<Animator> ();
 			SpriteRenderer sprite2 = t2m1Anim.GetComponent<SpriteRenderer> ();
@@ -203,8 +212,7 @@ public class CharacterSelect : MonoBehaviour {
 
 			break;
 		case 4: //1.3
-			//lastClicked.GetComponentInChildren<Text>().text = "Team 1 Member 2";
-			tm.GetComponent<TeamManager> ().SetMember2(GameObject.FindGameObjectWithTag(tag), 1);
+			tm.GetComponent<TeamManager> ().SetMember2 (GameObject.FindGameObjectWithTag (tag), 1);
 
 			Animator anim3 = t1m2Anim.GetComponent<Animator> ();
 			SpriteRenderer sprite3 = t1m2Anim.GetComponent<SpriteRenderer> ();
@@ -216,7 +224,6 @@ public class CharacterSelect : MonoBehaviour {
 
 			break;
 		case 5:
-			//lastClicked.GetComponentInChildren<Text>().text = "Team 2 Member 2";
 			tm2.GetComponent<TeamManager> ().SetMember2 (GameObject.FindGameObjectWithTag (tag), 2);
 
 			Animator anim4 = t2m2Anim.GetComponent<Animator> ();
@@ -232,18 +239,4 @@ public class CharacterSelect : MonoBehaviour {
 			return;
 		}
 	}
-
-	/*
-	public void PrevCharacter() {
-		
-	}
-
-
-	public void Done() {
-		gameObject.find ("characters...").GetComponent<CharacterSelect>().characterIndex;
-		//record that
-	}
-
-	//positions for characters 
-	*/
 }
