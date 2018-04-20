@@ -306,7 +306,6 @@ public class TeamManager : MonoBehaviour
 			skill1Button.GetComponentInChildren<Text> ().text = "Skill1";
 			skill2Button.GetComponentInChildren<Text> ().text = "Skill2";
 			ultButton.GetComponentInChildren<Text> ().text = "Ultimate";
-			//infoButton.GetComponentInChildren<Text> ().text = "Info";
 
 			Hero h = getCurrentHero ();
 			h.EndTurn ();

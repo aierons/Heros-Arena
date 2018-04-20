@@ -8,7 +8,7 @@ public class Pendragon : Hero {
 	private string s2name = "Shield Bash";
 	private string ultName = "Bolster The Army";
 	private string info = "Pendragon: \n" +
-	                      "Shield Bash: Inlfict stun on target within 1 space [target's speed is reduced by half on their next turn] {1BP}\n" +
+	                      "Shield Bash: Inflict stun on target within 1 space [target's speed is reduced by half on their next turn] {1BP}\n" +
 	                      "Flash Strike: Grants self ADV on next attack and gain 1 SPEED {1BP}\n" +
 	                      "Bolster the Army: Grants entire team ADV and enemy team DISADV {4BP}\n" +
 	                      "Challenger: If target of standard attack has more health, Pendragon deals additional damage";
