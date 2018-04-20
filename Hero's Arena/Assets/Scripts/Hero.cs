@@ -156,7 +156,6 @@ public class Hero : MovingObject
 	{
 		if (start) {
 			//If it's not the player's turn, exit the function.
-			//print(this.tag + ":" +team.tag + ":" + (GameManager.instance.turn == team.tag).ToString() + " , " + (tman.turn == this.tag).ToString());
 			if (!(GameManager.instance.turn == team.tag && tman.turn == this.tag)) {
 				//print (this.tag + ":" +team.tag + ":" + "stuck");
 				return;
@@ -288,6 +287,7 @@ public class Hero : MovingObject
 		CheckIfDead ();
 	}
 
+	//methods to be overwriten and implemented for each hero
 	protected virtual void Skill1Calc ()
 	{
 	}
@@ -359,6 +359,7 @@ public class Hero : MovingObject
 		animator.SetTrigger ("ATK");
 	}
 
+	//Used for interacting with pickups
 	private void OnTriggerEnter2D (Collider2D other)
 	{
 		if (HP == maxHP) {
@@ -424,6 +425,7 @@ public class Hero : MovingObject
 		CheckIfDead ();
 	}
 
+	//Called when a hero is healed.
 	public void Heal (int gain)
 	{
 		if (HP == maxHP) {
@@ -455,6 +457,7 @@ public class Hero : MovingObject
 		}
 	}
 
+	//Methods used for different types of targeting
 	protected void makeTarget (int r)
 	{
 		Vector3 pos = transform.position;
@@ -589,6 +592,7 @@ public class Hero : MovingObject
 		}
 	}
 
+	//Calculate damage to a character (takes the targets DEF as a parameter)
 	public int getDamage (int eDEF)
 	{
 		float r = Random.Range (2.85f, 4.85f);
@@ -601,6 +605,7 @@ public class Hero : MovingObject
 		}
 	}
 
+	//called when endTurn is pressed
 	public virtual void EndTurn ()
 	{
 		if (GameManager.instance.turn == team.tag && tman.turn == this.tag) {
@@ -703,6 +708,7 @@ public class Hero : MovingObject
 		}
 	}
 
+	//called when corresponding Skill button is pressed overwritten and implemented by each specific hero.
 	virtual public bool Skill1 ()
 	{
 		return false;
@@ -724,7 +730,7 @@ public class Hero : MovingObject
 	}
 
 
-	//Buffs
+	//Calculates if an attack hit the trgt
 	public bool isHit (Hero trgt)
 	{
 		float r = Random.value;
@@ -740,6 +746,8 @@ public class Hero : MovingObject
 			return r < ACCb * (ACC / trgt.EV);
 		}
 	}
+
+	//Methods involving buffs
 
 	//Removes effects which end once an attack lands
 	public void RemoveHitEffects ()
@@ -786,7 +794,7 @@ public class Hero : MovingObject
 		DMG += 2;
 	}
 
-	//Debuffs
+	//Methods involving Debuffs (most are removed at the end of the turn)
 
 	public void Stun ()
 	{
@@ -866,6 +874,7 @@ public class Hero : MovingObject
 		}
 	}
 
+	//Methods for the Hero selection menu
 
 	public void setTeam (int teamIndex)
 	{

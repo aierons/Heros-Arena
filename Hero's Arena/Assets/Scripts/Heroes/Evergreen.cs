@@ -32,8 +32,8 @@ public class Evergreen : Hero
 
 		HP = 290;
 		maxHP = 290;
-		SPEED = 15;
-		maxSPEED = 15;
+		SPEED = 7;
+		maxSPEED = 7;
 		wallDMG = 1;
 		RNG = 1;
 	}
@@ -77,26 +77,6 @@ public class Evergreen : Hero
 		}
 		return false;
 	}
-
-	/*
-	protected override void Skill1Calc() {
-		int cost = 2;
-		Vector3 tpos = selectedTiletarget.transform.position;
-		foreach (GameObject wall in GameObject.FindGameObjectsWithTag("TempWall")) {
-			if (wall.transform.position.x == tpos.x &&
-			    wall.transform.position.y == tpos.y) {
-				tman.msgText.text = "can not target this space";
-				return;
-			}
-		}
-		GameObject p = Instantiate (Food);
-		p.transform.position = tpos;
-		tman.BP -= cost;
-		animator.SetTrigger ("ATK");
-		targeting = false;
-		Destroy (GameObject.Find ("Target"));
-	}
-*/
 
 	//Toxic Bloom: all enemies within 3 spaces have a chance to be poisoned. {3BP}
 	override public bool Skill2 ()

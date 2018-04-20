@@ -268,7 +268,6 @@ public class TeamManager : MonoBehaviour
 	}
 
 	private void TriggerInfo() {
-		bool act;
 		if (GameManager.instance.turn == tag) {
 			if (turn == captain.tag || turn == member1.tag || turn == member2.tag) {
 				infoText.text = hcaptain.Info () + '\n' + hmember1.Info () + '\n' + hmember2.Info ();
