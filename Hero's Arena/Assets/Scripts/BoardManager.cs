@@ -371,11 +371,11 @@ public class BoardManager : MonoBehaviour {
 				}
 			}
 			//creates a new outerwall after the tile is removed
-			for (int b = 5; b < 12; b++) {
+			for (int b = 5; b < 13; b++) {
 				//creats the walltile object
 				GameObject toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
 				//puts the object in its place
-				GameObject instance = Instantiate (toInstantiate, new Vector3 (b, 12, 0f), Quaternion.identity) as GameObject;
+				GameObject instance = Instantiate (toInstantiate, new Vector3 (b, 11, 0f), Quaternion.identity) as GameObject;
 				//sets the parent as an object
 				instance.transform.SetParent (boardHolder);
 			}
@@ -385,7 +385,7 @@ public class BoardManager : MonoBehaviour {
 					//creats the walltile object
 					GameObject toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
 					//puts the object in its place
-					GameObject instance = Instantiate (toInstantiate, new Vector3 (6, b, 0f), Quaternion.identity) as GameObject;
+					GameObject instance = Instantiate (toInstantiate, new Vector3 (5, b, 0f), Quaternion.identity) as GameObject;
 					//sets the parent as an object
 					instance.transform.SetParent(Tile3.transform);
 
@@ -449,7 +449,7 @@ public class BoardManager : MonoBehaviour {
 					//creats the walltile object
 					GameObject toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
 					//puts the object in its place
-					GameObject instance = Instantiate (toInstantiate, new Vector3 (1, b, 0f), Quaternion.identity) as GameObject;
+					GameObject instance = Instantiate (toInstantiate, new Vector3 (8, b, 0f), Quaternion.identity) as GameObject;
 					//sets the parent as an object
 					instance.transform.SetParent(Tile5.transform);
 

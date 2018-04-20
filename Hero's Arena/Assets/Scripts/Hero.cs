@@ -402,6 +402,7 @@ public class Hero : MovingObject {
 				HP = 0;
 			}
 			this.gameObject.SetActive (false);
+			GameManager.instance.GetComponentInParent<BoardManager> ().removeTile ();
 		}
 	}
 
