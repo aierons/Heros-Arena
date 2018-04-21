@@ -39,7 +39,7 @@ public class DeadEye : Hero
 	{
 		if (tman != null && GameManager.instance.turn == team.tag && tman.turn == this.tag) {
 			tman.skill1Button.GetComponentInChildren<Text> ().text = s1name + " [1]";
-			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [2]";
+			tman.skill2Button.GetComponentInChildren<Text> ().text = s2name + " [3]";
 			tman.ultButton.GetComponentInChildren<Text> ().text = ultName + " [6]";
 
 			if (!tman.attackButton.interactable) {
@@ -86,19 +86,17 @@ public class DeadEye : Hero
 				tman.msgText.text = "can not currently use this ability";
 				return false;
 			}
-			print ("reach1");
 			targeting = true;
 			targetingType = 2;
 			makeTarget (RNG);
 			return true;
 		}
-		return true;
+		return false;
 	}
 
 	override protected void Skill2Calc() {
 		int cost = 3;
 		int loss1 = 0;
-		print ("reach2");
 		tman.msgText.text = "";
 		for (int i = 0; i < 2; i++) {
 			

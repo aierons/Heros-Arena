@@ -15,6 +15,9 @@ public class Hero : MovingObject
 	[HideInInspector]
 	public int ult = 0;
 
+	[HideInInspector]
+	public Dictionary<Effects,string> estrings = new Dictionary<Effects, string>();
+
 	public enum Effects
 	{
 		ADV,
@@ -98,7 +101,16 @@ public class Hero : MovingObject
 	//Getter and Setters
 	public virtual string getHeroText ()
 	{
-		return tag + " : " + HP + "/" + maxHP + " SPEED:" + SPEED;
+		string s = "";
+		if (this.effects.Count > 0) {
+			foreach (Effects e in effects) {
+				s += " " + estrings[e];
+			}
+		} else {
+			s = " NONE";
+		}
+		return tag + " : " + HP + "/" + maxHP + " SPD:" + SPEED + " RNG:" + RNG +
+		"\n\tEffects:" + s;
 	}
 
 	public Vector3 getStartPosition ()
@@ -139,6 +151,23 @@ public class Hero : MovingObject
 	public override void StartGame ()
 	{
 		effects = new List<Effects> ();
+		
+		estrings.Add (Effects.ADV, "ADV");
+		estrings.Add (Effects.BLEED, "BLD");
+		estrings.Add (Effects.BOOST, "BST");
+		estrings.Add (Effects.BURN, "BRN");
+		estrings.Add (Effects.DADV, "DADV");
+		estrings.Add (Effects.DOUBLEDMG, "2xDMG");
+		estrings.Add (Effects.ELIXIR, "ELXR");
+		estrings.Add (Effects.FROZEN, "FRZN");
+		estrings.Add (Effects.PSN, "PSN");
+		estrings.Add (Effects.QUICK, "QIK");
+		estrings.Add (Effects.RNGUP, "RNGUP");
+		estrings.Add (Effects.STATIC, "STC");
+		estrings.Add (Effects.VBOOST, "VBST");
+		estrings.Add (Effects.STUN, "STN");
+	
+	
 
 		//Get a component reference to the Player's animator component
 		animator = GetComponent<Animator> ();

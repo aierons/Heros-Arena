@@ -91,15 +91,21 @@ public class RadioFreak : Hero
 		int cost = 2;
 		float r = Random.value;
 		string type = "";
-		if (r <= .25) {
+		if (r <= .20) {
 			selectedTarget.Stun ();
 			type = "stun";
-		} else if (r <= .50) {
+		} else if (r <= .40) {
 			selectedTarget.effects.Add (Effects.DADV);
 			type = "disadvantage";
-		} else if (r <= .75) {
+		} else if (r <= .60) {
 			selectedTarget.Poison ();
 			type = "poison";
+		} else if (r <= .80) {
+			selectedTarget.Bleed ();
+			type = "bleed";
+		} else if (r <= 1) {
+			selectedTarget.Burn ();
+			type = "burn";
 		}
 		tman.msgText.text = this.tag + " inflicted " + type + " on " + selectedTarget.tag;
 		tman.BP -= cost;
@@ -116,24 +122,25 @@ public class RadioFreak : Hero
 			List<Hero> allies = tman.getTeam ();
 			List<Hero> enemies = tman.getEnemyTeam ();
 
-			string type = "";
-			tman.msgText.text = this.tag + "gave "; 
+			string type;
+			tman.msgText.text = this.tag + " gave "; 
 			foreach (Hero a in allies) {
+				type = "";
 				float r = Random.value;
-				if (r <= .25) {
+				if (r <= .33) {
 					a.effects.Add (Effects.ADV);
 					type = "advantage";
-				} else if (r <= .50) {
+				} else if (r <= .66) {
 					a.effects.Add (Effects.RNGUP);
 					type = "Range Up";
-				} else if (r <= .55) {
+				} else if (r < 1) {
 					a.effects.Add (Effects.DOUBLEDMG);
 					type = "Double Damage";
 				}
 				tman.msgText.text += a.tag + " " + type + "\n";
 			}
-			this.GetComponent<Hero> ();
 			foreach (Hero e in enemies) {
+				type = "";
 				float r = Random.value;
 				if (r <= .18) {
 					e.Stun ();

@@ -18,7 +18,16 @@ public class IronRebel : Hero {
 
 	public override string getHeroText ()
 	{
-		return tag + " : " + HP + "+" + armor + "/" + maxHP + " SPEED:" + SPEED;
+		string s = "";
+		if (effects.Count > 0) {
+			foreach (Effects e in effects) {
+				s += " " + estrings[e];
+			}
+		} else {
+			s = " NONE";
+		}
+		return tag + " : " + HP + "+" + armor + "/" + maxHP + " SPD:" + SPEED + " RNG:" + RNG +
+			"\n\tEffects:" + s;
 	}
 
 	// Use this for initialization
@@ -134,9 +143,11 @@ public class IronRebel : Hero {
 		tman.msgText.text = this.tag + " has used Panzer Smash";
 
 		foreach (Hero e in targets) {
+			if (e.getHP() != 0) {
 			int l = getDamage (e.getDEF ());
 			e.Losehp (l);
 			tman.msgText.text += e.tag + " took " + l + " damage"; 
+			}
 		}
 		targeting = false;
 		tileTargeting = false;
